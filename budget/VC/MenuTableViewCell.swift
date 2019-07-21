@@ -10,7 +10,7 @@ import UIKit
 
 class MenuTableViewCell: UITableViewCell {
     
-    var optionTitle : String?
+    var option : MenuOption?
     var titleLabel : UILabel?
     var fontSize : CGFloat = 50
    
@@ -32,8 +32,18 @@ class MenuTableViewCell: UITableViewCell {
         titleLabel?.textColor = .white
         titleLabel?.font = UIFont(name: fontName, size: fontSize)
         
-        if let title = optionTitle{
-            titleLabel?.text = title
+        if let option = option {
+            switch option {
+            case .details:
+                titleLabel?.text = "DETAILS"
+            case .expenses:
+                titleLabel?.text = "EXPENSES"
+            case .addAnEntry:
+                titleLabel?.text = "ADD AN ENTRY"
+            case .receiptAlbum:
+                titleLabel?.text = "RECEIPT ALBUM"
+            }
+           
             
         }
         self.addSubview(titleLabel!)

@@ -8,13 +8,20 @@
 
 import UIKit
 
+enum MenuOption {
+    case details
+    case expenses
+    case addAnEntry
+    case receiptAlbum
+}
+
 protocol MenuDelegate {
-    func goToVC(vc: UIViewController)
+    func goFromMenu(to: MenuOption)
 }
 
 class MenuViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    let menuOptions = ["DETAILS", "EXPENSES", "ADD AN ENTRY", "RECEIPT ALBUM" ]
+    let menuOptions : [MenuOption] = [.details, .expenses, .addAnEntry, .receiptAlbum]
     
     
     var delegate : MenuDelegate?
@@ -60,17 +67,16 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "menuCell") as! MenuTableViewCell
-        cell.optionTitle = menuOptions[indexPath.row]
+        cell.option = menuOptions[indexPath.row]
         cell.fontSize = 50 * heightRatio
         
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 0 {
-            detailsSelected()
-        }else if indexPath.row == 1{
-            expenseSelected()
-        }
+        
+        self.navigationController?.view.layer.add(CATransition().popFromLeft(), forKey: nil)
+        self.navigationController?.popViewController(animated: false)
+        delegate?.goFromMenu(to: menuOptions[indexPath.row])
         
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -78,20 +84,8 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     @objc func menuTapped(){
-        self.dismiss(animated: true, completion: nil)
-    }
-
-    
-    func detailsSelected () {
-        let detailVC = DetailsViewController()
-        delegate?.goToVC(vc: detailVC)
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    func expenseSelected() {
-        let expenseVC = ExpenseViewController()
-        delegate?.goToVC(vc: expenseVC)
-        self.dismiss(animated: true, completion: nil)
+        self.navigationController?.view.layer.add(CATransition().popFromLeft(), forKey: nil)
+        self.navigationController?.popViewController(animated: false)
     }
 
 

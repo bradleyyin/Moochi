@@ -98,8 +98,21 @@ class MainViewController: UIViewController, MenuDelegate {
         self.view.addSubview(button)
         self.view.addSubview(menuButton)
     }
-    func goToVC(vc: UIViewController) {
-        self.navigationController?.pushViewController(vc, animated: true)
+    func goFromMenu(to option:MenuOption) {
+        //self.navigationController?.view.layer.add(CATransition().segueFromLeft(), forKey: nil)
+        switch option {
+        case .details:
+            self.navigationController?.pushViewController(DetailsViewController(), animated: false)
+        case .expenses:
+            self.navigationController?.pushViewController(ExpenseViewController(), animated: false)
+        case .addAnEntry:
+            print("add an entry")
+        case .receiptAlbum:
+            print("receipt album")
+        }
+        
+        
+        
     }
     
     @objc func addEntry () {
@@ -109,7 +122,9 @@ class MainViewController: UIViewController, MenuDelegate {
         print("menu")
         let menuVC = MenuViewController()
         menuVC.delegate = self
-        self.present(menuVC, animated: true)
+        self.navigationController?.view.layer.add(CATransition().segueFromRight(), forKey: nil)
+        self.navigationController?.pushViewController(menuVC, animated: true)
+        
         
     }
 

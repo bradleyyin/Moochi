@@ -10,6 +10,8 @@ import UIKit
 
 
 class BasicViewController: UIViewController, MenuDelegate {
+
+    
     
     var titleOfVC : String = ""
     
@@ -30,16 +32,16 @@ class BasicViewController: UIViewController, MenuDelegate {
         titleLabel.text = titleOfVC.uppercased()
         
         
-        let menuButton = MenuButton(frame: CGRect(x: screenWidth - 40 - 5, y: statusBarHeight, width: 40 * heightRatio, height: buttonHeight * heightRatio))
+        let menuButton = MenuButton(frame: CGRect(x: screenWidth - 40 - 5, y: statusBarHeight, width: buttonWidth, height: buttonHeight))
         
         menuButton.addTarget(self, action: #selector(menuTapped), for: .touchUpInside)
 
         
-        let backButton = UIButton(frame: CGRect(x: 10, y: screenHeight - 10 - buttonHeight, width: 40, height: buttonHeight * heightRatio))
-        backButton.setImage(UIImage(named: "back"), for: .normal)
-        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+//        let backButton = UIButton(frame: CGRect(x: 10, y: screenHeight - 10 - buttonHeight, width: 40, height: buttonHeight * heightRatio))
+//        backButton.setImage(UIImage(named: "back"), for: .normal)
+//        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         
-        let homeButton = UIButton(frame: CGRect(x: screenWidth - 40 - 5, y: screenHeight - 10 - buttonHeight, width: 40, height: buttonHeight * heightRatio))
+        let homeButton = UIButton(frame: CGRect(x: screenWidth/2 - 20, y: screenHeight - 10 - buttonHeight, width: buttonWidth, height: buttonHeight))
         homeButton.setImage(UIImage(named: "home"), for: .normal)
         homeButton.addTarget(self, action: #selector(homeButtonTapped), for: .touchUpInside)
         
@@ -48,7 +50,7 @@ class BasicViewController: UIViewController, MenuDelegate {
         self.view.addSubview(menuButton)
         
         
-        self.view.addSubview(backButton)
+        //self.view.addSubview(backButton)
         self.view.addSubview(homeButton)
     }
     
@@ -62,14 +64,54 @@ class BasicViewController: UIViewController, MenuDelegate {
         print("menu")
         let menuVC = MenuViewController()
         menuVC.delegate = self
-        self.present(menuVC, animated: true)
+        self.navigationController?.view.layer.add(CATransition().segueFromRight(), forKey: nil)
+        self.navigationController?.pushViewController(menuVC, animated: true)
         
     }
-    func goToVC(vc: UIViewController) {
-        self.navigationController?.pushViewController(vc, animated: true)
-        if (self.navigationController?.topViewController?.isKind(of: DetailsViewController.self) != nil) {
-            print("already has detail")
+    func goFromMenu(to option:MenuOption) {
+        
+        //self.navigationController?.view.layer.add(CATransition().segueFromLeft(), forKey: nil)
+        
+        switch option {
+            
+        case .details:
+            if self.navigationController?.topViewController?.isKind(of: DetailsViewController.self) ?? false{
+                print("already detail")
+                if let viewControllers = self.navigationController?.viewControllers {
+                    for viewController in viewControllers {
+                        if let viewController = viewController as? DetailsViewController {
+                            self.navigationController?.popToViewController(viewController, animated: true)
+                            break
+                        }
+                    }
+                }
+            }else {
+               self.navigationController?.pushViewController(DetailsViewController(), animated: false)
+            }
+            
+        case .expenses:
+            if self.navigationController?.topViewController?.isKind(of: ExpenseViewController.self) ?? false{
+                print("already expense")
+                if let viewControllers = self.navigationController?.viewControllers {
+                    for viewController in viewControllers {
+                        if let viewController = viewController as? ExpenseViewController {
+                            self.navigationController?.popToViewController(viewController, animated: true)
+                            break
+                        }
+                    }
+                }
+            }else {
+                self.navigationController?.pushViewController(ExpenseViewController(), animated: false)
+            }
+            
+        case .addAnEntry:
+            print("add an entry")
+        case .receiptAlbum:
+            print("receipt album")
         }
+       
+        
+        
     }
 
 }
