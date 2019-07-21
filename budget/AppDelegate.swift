@@ -21,6 +21,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         mainNav.isNavigationBarHidden = true
         window?.rootViewController = mainNav
         window?.makeKeyAndVisible()
+        
+        #if DEBUG
+        Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
+        
+        #endif
         return true
     }
 

@@ -8,9 +8,11 @@
 
 import UIKit
 
-class BasicViewController: UIViewController {
+
+class BasicViewController: UIViewController, MenuDelegate {
     
     var titleOfVC : String = ""
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,9 +44,9 @@ class BasicViewController: UIViewController {
         homeButton.addTarget(self, action: #selector(homeButtonTapped), for: .touchUpInside)
         
         self.view.addSubview(titleLabel)
-        if titleOfVC.uppercased() != "MENU"{
-            self.view.addSubview(menuButton)
-        }
+        
+        self.view.addSubview(menuButton)
+        
         
         self.view.addSubview(backButton)
         self.view.addSubview(homeButton)
@@ -59,8 +61,15 @@ class BasicViewController: UIViewController {
     @objc func menuTapped(){
         print("menu")
         let menuVC = MenuViewController()
-        self.navigationController?.pushViewController(menuVC, animated: true)
+        menuVC.delegate = self
+        self.present(menuVC, animated: true)
         
+    }
+    func goToVC(vc: UIViewController) {
+        self.navigationController?.pushViewController(vc, animated: true)
+        if (self.navigationController?.topViewController?.isKind(of: DetailsViewController.self) != nil) {
+            print("already has detail")
+        }
     }
 
 }

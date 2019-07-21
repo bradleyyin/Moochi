@@ -8,22 +8,36 @@
 
 import UIKit
 
-class MenuViewController: BasicViewController, UITableViewDelegate, UITableViewDataSource {
+protocol MenuDelegate {
+    func goToVC(vc: UIViewController)
+}
+
+class MenuViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     let menuOptions = ["DETAILS", "EXPENSES", "ADD AN ENTRY", "RECEIPT ALBUM" ]
     
     
-    
+    var delegate : MenuDelegate?
 
     override func viewDidLoad() {
-        titleOfVC = "menu"
-        super.viewDidLoad()
         
+        super.viewDidLoad()
+        setupUI()
 
         // Do any additional setup after loading the view.
     }
-    override func setupUI (){
-        super.setupUI()
+    func setupUI (){
+        
+        self.view.backgroundColor = .darkGray
+        
+        let titleLabel = TitleLabel(frame: CGRect(x: 10, y: statusBarHeight, width: 300, height: 100 * heightRatio))
+        
+        titleLabel.text = "MENU"
+        
+        let menuButton = MenuButton(frame: CGRect(x: screenWidth - 40 - 5, y: statusBarHeight, width: 40 * heightRatio, height: buttonHeight * heightRatio))
+        
+        menuButton.addTarget(self, action: #selector(menuTapped), for: .touchUpInside)
+       
        
         let menuTableView = UITableView(frame: CGRect(x: 40, y: statusBarHeight + (100 * heightRatio), width: screenWidth - 40, height: screenHeight - statusBarHeight - (100 * heightRatio) - buttonHeight - 20))
         menuTableView.delegate = self
@@ -33,7 +47,9 @@ class MenuViewController: BasicViewController, UITableViewDelegate, UITableViewD
         menuTableView.separatorStyle = .none
         menuTableView.isScrollEnabled = false
         
+        self.view.addSubview(titleLabel)
         self.view.addSubview(menuTableView)
+        self.view.addSubview(menuButton)
         
         
     }
@@ -52,15 +68,30 @@ class MenuViewController: BasicViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             detailsSelected()
+        }else if indexPath.row == 1{
+            expenseSelected()
         }
+        
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100 * heightRatio
     }
     
+    @objc func menuTapped(){
+        self.dismiss(animated: true, completion: nil)
+    }
+
+    
     func detailsSelected () {
         let detailVC = DetailsViewController()
-        self.navigationController?.pushViewController(detailVC, animated: true)
+        delegate?.goToVC(vc: detailVC)
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func expenseSelected() {
+        let expenseVC = ExpenseViewController()
+        delegate?.goToVC(vc: expenseVC)
+        self.dismiss(animated: true, completion: nil)
     }
 
 

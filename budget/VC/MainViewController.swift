@@ -8,7 +8,8 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, MenuDelegate {
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -97,6 +98,9 @@ class MainViewController: UIViewController {
         self.view.addSubview(button)
         self.view.addSubview(menuButton)
     }
+    func goToVC(vc: UIViewController) {
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
     
     @objc func addEntry () {
         print("add")
@@ -104,7 +108,8 @@ class MainViewController: UIViewController {
     @objc func menuTapped(){
         print("menu")
         let menuVC = MenuViewController()
-        self.navigationController?.pushViewController(menuVC, animated: true)
+        menuVC.delegate = self
+        self.present(menuVC, animated: true)
         
     }
 
