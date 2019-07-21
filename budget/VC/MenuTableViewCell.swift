@@ -12,7 +12,7 @@ class MenuTableViewCell: UITableViewCell {
     
     var optionTitle : String?
     var titleLabel : UILabel?
-    var fontSize : CGFloat = 70
+    var fontSize : CGFloat = 50
    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

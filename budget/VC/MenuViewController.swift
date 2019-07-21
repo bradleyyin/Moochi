@@ -8,35 +8,24 @@
 
 import UIKit
 
-class MenuViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class MenuViewController: BasicViewController, UITableViewDelegate, UITableViewDataSource {
 
     let menuOptions = ["DETAILS", "EXPENSES", "ADD AN ENTRY", "RECEIPT ALBUM" ]
     
-    var heightRatio : CGFloat = 1
+    
     
 
     override func viewDidLoad() {
+        titleOfVC = "menu"
         super.viewDidLoad()
-        heightRatio = screenHeight / 896
-        setupUI()
+        
 
         // Do any additional setup after loading the view.
     }
-    func setupUI (){
-        
-        let buttonHeight : CGFloat = 40
-        
-        self.view.backgroundColor = .darkGray
-        
-        let menuLabel = UILabel(frame: CGRect(x: 10, y: statusBarHeight, width: 300, height: 100 * heightRatio))
-        menuLabel.textColor = .white
-        menuLabel.adjustsFontSizeToFitWidth = true
-        menuLabel.font = UIFont(name: fontName, size: 70 * heightRatio)
-        menuLabel.minimumScaleFactor = 0.3
-        menuLabel.text = "MENU"
-        menuLabel.textAlignment = .left
-        
-        let menuTableView = UITableView(frame: CGRect(x: 40, y: menuLabel.frame.origin.y + menuLabel.frame.height, width: screenWidth - 40, height: screenHeight - statusBarHeight - menuLabel.frame.height - buttonHeight - 20))
+    override func setupUI (){
+        super.setupUI()
+       
+        let menuTableView = UITableView(frame: CGRect(x: 40, y: statusBarHeight + (100 * heightRatio), width: screenWidth - 40, height: screenHeight - statusBarHeight - (100 * heightRatio) - buttonHeight - 20))
         menuTableView.delegate = self
         menuTableView.dataSource = self
         menuTableView.backgroundColor = .clear
@@ -44,18 +33,8 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
         menuTableView.separatorStyle = .none
         menuTableView.isScrollEnabled = false
         
-        let backButton = UIButton(frame: CGRect(x: 10, y: screenHeight - 10 - buttonHeight, width: 40, height: buttonHeight * heightRatio))
-        backButton.setImage(UIImage(named: "back"), for: .normal)
-        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-        
-        let homeButton = UIButton(frame: CGRect(x: screenWidth - 40 - 5, y: screenHeight - 10 - buttonHeight, width: 40, height: buttonHeight * heightRatio))
-        homeButton.setImage(UIImage(named: "home"), for: .normal)
-        homeButton.addTarget(self, action: #selector(homeButtonTapped), for: .touchUpInside)
-        
-        self.view.addSubview(menuLabel)
         self.view.addSubview(menuTableView)
-        self.view.addSubview(backButton)
-        self.view.addSubview(homeButton)
+        
         
     }
     
@@ -70,29 +49,19 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         return cell
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 0 {
+            detailsSelected()
+        }
+    }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100 * heightRatio
     }
     
-    @objc func backButtonTapped (){
-        self.navigationController?.popViewController(animated: true)
-    }
-    @objc func homeButtonTapped() {
-        self.navigationController?.popToRootViewController(animated: true)
-    }
-    
     func detailsSelected () {
-        
+        let detailVC = DetailsViewController()
+        self.navigationController?.pushViewController(detailVC, animated: true)
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

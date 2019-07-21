@@ -8,53 +8,68 @@
 
 import UIKit
 
-class DetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class DetailsViewController: BasicViewController, UITableViewDelegate, UITableViewDataSource {
+   
+    
 
-    var heightRatio : CGFloat = 1
+    var categories :[Category] = []
+    
     
     override func viewDidLoad() {
+        titleOfVC = "DETAILS"
         super.viewDidLoad()
-        heightRatio = screenHeight / 896
-        setupUI()
+        loadSampleCategories()
 
         // Do any additional setup after loading the view.
     }
-    func setupUI(){
-        let buttonHeight : CGFloat = 40
+    override func setupUI(){
+        super.setupUI()
         
-        self.view.backgroundColor = .darkGray
+        self.view.backgroundColor = .lightGray
         
-        let detailsLabel = UILabel(frame: CGRect(x: 10, y: statusBarHeight, width: 300, height: 100 * heightRatio))
-        detailsLabel.textColor = .white
-        detailsLabel.adjustsFontSizeToFitWidth = true
-        detailsLabel.font = UIFont(name: fontName, size: 70 * heightRatio)
-        detailsLabel.minimumScaleFactor = 0.3
-        detailsLabel.text = "DETAILS"
-        detailsLabel.textAlignment = .left
         
-        let detailsTableView = UITableView(frame: CGRect(x: 40, y: detailsLabel.frame.origin.y + detailsLabel.frame.height, width: screenWidth - 40, height: screenHeight - statusBarHeight - detailsLabel.frame.height - buttonHeight - 20))
+        let menuButton = UIButton(frame: CGRect(x: screenWidth - 40 - 5, y: statusBarHeight, width: 40 * heightRatio, height: buttonHeight * heightRatio))
+        
+        menuButton.addTarget(self, action: #selector(menuTapped), for: .touchUpInside)
+        
+        let detailsTableView = UITableView(frame: CGRect(x: 10, y: statusBarHeight + (100 * heightRatio), width: screenWidth - 20, height: screenHeight - statusBarHeight - (100 * heightRatio) - buttonHeight - 20))
         detailsTableView.delegate = self
         detailsTableView.dataSource = self
         detailsTableView.backgroundColor = .clear
         detailsTableView.register(DetailsTableViewCell.self, forCellReuseIdentifier: "detailsCell")
         detailsTableView.separatorStyle = .none
-        detailsTableView.isScrollEnabled = false
+        detailsTableView.allowsSelection = false
         
-        let backButton = UIButton(frame: CGRect(x: 10, y: screenHeight - 10 - buttonHeight, width: 40, height: buttonHeight * heightRatio))
-        backButton.setImage(UIImage(named: "back"), for: .normal)
-        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+       
+        self.view.addSubview(detailsTableView)
         
-        let homeButton = UIButton(frame: CGRect(x: screenWidth - 40 - 5, y: screenHeight - 10 - buttonHeight, width: 40, height: buttonHeight * heightRatio))
-        homeButton.setImage(UIImage(named: "home"), for: .normal)
-        homeButton.addTarget(self, action: #selector(homeButtonTapped), for: .touchUpInside)
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return categories.count
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 70 * heightRatio
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "detailsCell", for: indexPath) as! DetailsTableViewCell
+        let category = categories[indexPath.row]
+        cell.categoryRemaining = category.remainingBudget ?? 0
+        cell.categoryTotal = category.totalBudget ?? 0
+        cell.categoryTitle = category.categoryName ?? ""
+        cell.fontSize = 25 * heightRatio
+        
+        return cell
     }
     
 
-    @objc func backButtonTapped (){
-        self.navigationController?.popViewController(animated: true)
-    }
-    @objc func homeButtonTapped() {
-        self.navigationController?.popToRootViewController(animated: true)
+    
+    func loadSampleCategories(){
+        let cat1 = Category(categoryName: "income", totalBudget: 2000, remainingBudget: 360)
+        let cat2 = Category(categoryName: "food", totalBudget: 400, remainingBudget: 200)
+        let cat3 = Category(categoryName: "HOusing", totalBudget: 800, remainingBudget: 0)
+        categories = [cat1, cat2, cat3]
     }
 
 }

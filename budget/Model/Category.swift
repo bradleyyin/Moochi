@@ -7,15 +7,9 @@
 //
 
 import Foundation
-class Category {
+struct Category {
     var categoryName : String?
     var totalBudget : Double?
     var remainingBudget : Double?
-    
-    init(categoryName: String, totalBudget: Double, remainingBudget : Double) {
-        self.categoryName = categoryName
-        self.totalBudget = totalBudget
-        self.remainingBudget = remainingBudget
-    }
     
 }
