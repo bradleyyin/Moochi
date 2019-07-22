@@ -16,10 +16,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
+        
+        //let mainNav = UINavigationController(rootViewController: mainVC)
+        let tabBarController = UITabBarController()
         let mainVC = MainViewController()
-        let mainNav = UINavigationController(rootViewController: mainVC)
-        mainNav.isNavigationBarHidden = true
-        window?.rootViewController = mainNav
+        let detailsVC = DetailsViewController()
+        let expensesVC = ExpenseViewController()
+        
+        mainVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "home"), tag: 0)
+        detailsVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "details"), tag: 1)
+        expensesVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "calender"), tag: 2)
+        
+        let controllers = [mainVC, detailsVC, expensesVC]
+        tabBarController.viewControllers = controllers
+        tabBarController.tabBar.barTintColor = .red
+        //tabBarController.tabBar.shadowImage = UIImage()
+        //tabBarController.tabBar.backgroundImage = UIImage()
+        tabBarController.tabBar.tintColor = .black
+        tabBarController.tabBar.unselectedItemTintColor = .white
+        
+        //mainNav.isNavigationBarHidden = true
+        window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
         
         #if DEBUG

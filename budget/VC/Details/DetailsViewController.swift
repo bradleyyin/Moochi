@@ -28,9 +28,9 @@ class DetailsViewController: BasicViewController, UITableViewDelegate, UITableVi
         self.view.backgroundColor = .lightGray
         
         
-        let menuButton = UIButton(frame: CGRect(x: screenWidth - 40 - 5, y: statusBarHeight, width: 40 * heightRatio, height: buttonHeight * heightRatio))
-        
-        menuButton.addTarget(self, action: #selector(menuTapped), for: .touchUpInside)
+//        let menuButton = UIButton(frame: CGRect(x: screenWidth - 40 - 5, y: statusBarHeight, width: 40 * heightRatio, height: buttonHeight * heightRatio))
+//        
+//        menuButton.addTarget(self, action: #selector(menuTapped), for: .touchUpInside)
         
         let detailsTableView = UITableView(frame: CGRect(x: 10, y: statusBarHeight + (100 * heightRatio), width: screenWidth - 20, height: screenHeight - statusBarHeight - (100 * heightRatio) - buttonHeight - 20))
         detailsTableView.delegate = self

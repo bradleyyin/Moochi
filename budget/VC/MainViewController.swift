@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainViewController: UIViewController, MenuDelegate {
+class MainViewController: UIViewController {
     
 
     override func viewDidLoad() {
@@ -21,11 +21,11 @@ class MainViewController: UIViewController, MenuDelegate {
         
         self.view.backgroundColor = .darkGray
         
-        let menuButton = UIButton(frame: CGRect(x: screenWidth - buttonWidth - 5, y: statusBarHeight + (100 / 2 - buttonHeight / 2), width: buttonWidth, height: buttonHeight))
-        menuButton.setImage(UIImage(named: "menuButton"), for: .normal)
-        menuButton.addTarget(self, action: #selector(menuTapped), for: .touchUpInside)
+//        let menuButton = UIButton(frame: CGRect(x: screenWidth - buttonWidth - 5, y: statusBarHeight + (100 / 2 - buttonHeight / 2), width: buttonWidth, height: buttonHeight))
+//        menuButton.setImage(UIImage(named: "menuButton"), for: .normal)
+//        menuButton.addTarget(self, action: #selector(menuTapped), for: .touchUpInside)
         
-        let monthLabel = UILabel(frame: CGRect(x: screenWidth / 2 - 150, y: 150 * heightRatio, width: 300, height: 100 * heightRatio))
+        let monthLabel = UILabel(frame: CGRect(x: screenWidth / 2 - 150, y: 100 * heightRatio, width: 300, height: 100 * heightRatio))
         monthLabel.textColor = .white
         monthLabel.backgroundColor = .clear
         monthLabel.adjustsFontSizeToFitWidth = true
@@ -91,37 +91,37 @@ class MainViewController: UIViewController, MenuDelegate {
         self.view.addSubview(moneyCircle)
         self.view.addSubview(dotLabel2)
         self.view.addSubview(button)
-        self.view.addSubview(menuButton)
+        //self.view.addSubview(menuButton)
     }
-    func goFromMenu(to option:MenuOption) {
-        //self.navigationController?.view.layer.add(CATransition().segueFromLeft(), forKey: nil)
-        switch option {
-        case .details:
-            self.navigationController?.pushViewController(DetailsViewController(), animated: false)
-        case .expenses:
-            self.navigationController?.pushViewController(ExpenseViewController(), animated: false)
-        case .addAnEntry:
-            self.navigationController?.pushViewController(AddEntryViewController(), animated: false)
-        case .receiptAlbum:
-            print("receipt album")
-        }
-        
-        
-        
-    }
+//    func goFromMenu(to option:MenuOption) {
+//        //self.navigationController?.view.layer.add(CATransition().segueFromLeft(), forKey: nil)
+//        switch option {
+//        case .details:
+//            self.navigationController?.pushViewController(DetailsViewController(), animated: false)
+//        case .expenses:
+//            self.navigationController?.pushViewController(ExpenseViewController(), animated: false)
+//        case .addAnEntry:
+//            self.navigationController?.pushViewController(AddEntryViewController(), animated: false)
+//        case .receiptAlbum:
+//            print("receipt album")
+//        }
+//
+//
+//
+//    }
     
     @objc func addEntry () {
         print("add")
     }
-    @objc func menuTapped(){
-        print("menu")
-        let menuVC = MenuViewController()
-        menuVC.delegate = self
-        self.navigationController?.view.layer.add(CATransition().segueFromRight(), forKey: nil)
-        self.navigationController?.pushViewController(menuVC, animated: true)
-        
-        
-    }
+//    @objc func menuTapped(){
+//        print("menu")
+//        let menuVC = MenuViewController()
+//        menuVC.delegate = self
+//        self.navigationController?.view.layer.add(CATransition().segueFromRight(), forKey: nil)
+//        self.navigationController?.pushViewController(menuVC, animated: true)
+//        
+//        
+//    }
 
 
 }
