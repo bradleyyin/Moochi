@@ -41,7 +41,7 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         titleLabel.text = "MENU"
         
-        let menuButton = MenuButton(frame: CGRect(x: screenWidth - 40 - 5, y: statusBarHeight, width: 40 * heightRatio, height: buttonHeight * heightRatio))
+        let menuButton = MenuButton(frame: CGRect(x: screenWidth - buttonWidth - 5, y: statusBarHeight + (titleLabel.frame.height / 2 - buttonHeight / 2), width: buttonWidth, height: buttonHeight))
         
         menuButton.addTarget(self, action: #selector(menuTapped), for: .touchUpInside)
        

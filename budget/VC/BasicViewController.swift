@@ -15,6 +15,8 @@ class BasicViewController: UIViewController, MenuDelegate {
     
     var titleOfVC : String = ""
     
+    //auto layout
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,19 +24,33 @@ class BasicViewController: UIViewController, MenuDelegate {
 
         // Do any additional setup after loading the view.
     }
+    func setUpAutoLayout(){
+        
+    }
     func setupUI(){
         
         
         self.view.backgroundColor = .darkGray
         
-        let titleLabel = TitleLabel(frame: CGRect(x: 10, y: statusBarHeight, width: 300, height: 100 * heightRatio))
+        let titleLabel = TitleLabel()
         
         titleLabel.text = titleOfVC.uppercased()
+        self.view.addSubview(titleLabel)
+        //titleLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight).isActive = true
+        titleLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10).isActive = true
+        titleLabel.heightAnchor.constraint(equalToConstant: 100 * heightRatio).isActive=true
         
-        
-        let menuButton = MenuButton(frame: CGRect(x: screenWidth - 40 - 5, y: statusBarHeight, width: buttonWidth, height: buttonHeight))
+        let menuButton = MenuButton()
         
         menuButton.addTarget(self, action: #selector(menuTapped), for: .touchUpInside)
+        self.view.addSubview(menuButton)
+        menuButton.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight).isActive = true
+        menuButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
+        menuButton.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
+        menuButton.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
+        
+        titleLabel.rightAnchor.constraint(lessThanOrEqualTo: menuButton.leftAnchor, constant: 30)
 
         
 //        let backButton = UIButton(frame: CGRect(x: 10, y: screenHeight - 10 - buttonHeight, width: 40, height: buttonHeight * heightRatio))
@@ -45,9 +61,9 @@ class BasicViewController: UIViewController, MenuDelegate {
         homeButton.setImage(UIImage(named: "home"), for: .normal)
         homeButton.addTarget(self, action: #selector(homeButtonTapped), for: .touchUpInside)
         
-        self.view.addSubview(titleLabel)
         
-        self.view.addSubview(menuButton)
+        
+        
         
         
         //self.view.addSubview(backButton)
@@ -105,7 +121,19 @@ class BasicViewController: UIViewController, MenuDelegate {
             }
             
         case .addAnEntry:
-            print("add an entry")
+            if self.navigationController?.topViewController?.isKind(of: AddEntryViewController.self) ?? false{
+                print("already entry")
+                if let viewControllers = self.navigationController?.viewControllers {
+                    for viewController in viewControllers {
+                        if let viewController = viewController as? AddEntryViewController {
+                            self.navigationController?.popToViewController(viewController, animated: true)
+                            break
+                        }
+                    }
+                }
+            }else {
+                self.navigationController?.pushViewController(AddEntryViewController(), animated: false)
+            }
         case .receiptAlbum:
             print("receipt album")
         }

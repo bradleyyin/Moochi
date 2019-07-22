@@ -18,19 +18,14 @@ class MainViewController: UIViewController, MenuDelegate {
         // Do any additional setup after loading the view.
     }
     func setUpUI(){
-        let screenWidth = UIScreen.main.bounds.width
-        let screenHeight = UIScreen.main.bounds.height
-        let statusBarHeight = UIApplication.shared.statusBarFrame.height
-        let heightRatio = screenHeight / 896
-        let buttonWidth : CGFloat = 40
-        let buttonHeight : CGFloat = 40
+        
         self.view.backgroundColor = .darkGray
         
-        let menuButton = UIButton(frame: CGRect(x: screenWidth - buttonWidth - 5, y: statusBarHeight, width: buttonWidth * heightRatio, height: buttonHeight * heightRatio))
+        let menuButton = UIButton(frame: CGRect(x: screenWidth - buttonWidth - 5, y: statusBarHeight + (100 / 2 - buttonHeight / 2), width: buttonWidth, height: buttonHeight))
         menuButton.setImage(UIImage(named: "menuButton"), for: .normal)
         menuButton.addTarget(self, action: #selector(menuTapped), for: .touchUpInside)
         
-        let monthLabel = UILabel(frame: CGRect(x: screenWidth / 2 - 150, y: 50, width: 300, height: 100 * heightRatio))
+        let monthLabel = UILabel(frame: CGRect(x: screenWidth / 2 - 150, y: 150 * heightRatio, width: 300, height: 100 * heightRatio))
         monthLabel.textColor = .white
         monthLabel.backgroundColor = .clear
         monthLabel.adjustsFontSizeToFitWidth = true
@@ -106,7 +101,7 @@ class MainViewController: UIViewController, MenuDelegate {
         case .expenses:
             self.navigationController?.pushViewController(ExpenseViewController(), animated: false)
         case .addAnEntry:
-            print("add an entry")
+            self.navigationController?.pushViewController(AddEntryViewController(), animated: false)
         case .receiptAlbum:
             print("receipt album")
         }

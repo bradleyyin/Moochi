@@ -16,6 +16,8 @@ class TitleLabel : UILabel{
         self.adjustsFontSizeToFitWidth = true
         self.minimumScaleFactor = 0.3
         self.textAlignment = .left
+        self.translatesAutoresizingMaskIntoConstraints = false
+        
         self.font = UIFont(name: fontName, size: 70 * heightRatio)
     }
     
@@ -28,6 +30,7 @@ class MenuButton : UIButton{
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setImage(UIImage(named: "menuButton"), for: .normal)
+        self.translatesAutoresizingMaskIntoConstraints = false
     }
     
     required init?(coder aDecoder: NSCoder) {

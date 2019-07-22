@@ -14,6 +14,9 @@
 		75AEC12022E409DE0006A057 /* WeekdayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC11F22E409DE0006A057 /* WeekdayView.swift */; };
 		75AEC12222E413290006A057 /* ExpenseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC12122E413290006A057 /* ExpenseViewController.swift */; };
 		75AEC12422E446600006A057 /* SegueDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC12322E446600006A057 /* SegueDirection.swift */; };
+		75AEC12622E54E690006A057 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC12522E54E690006A057 /* Entry.swift */; };
+		75AEC12922E54F1B0006A057 /* SingleDayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC12822E54F1B0006A057 /* SingleDayViewController.swift */; };
+		75AEC12B22E577590006A057 /* AddEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC12A22E577590006A057 /* AddEntryViewController.swift */; };
 		75CD180E22C5DD6800E2FB12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CD180D22C5DD6800E2FB12 /* AppDelegate.swift */; };
 		75CD181022C5DD6800E2FB12 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CD180F22C5DD6800E2FB12 /* MainViewController.swift */; };
 		75CD181522C5DD6B00E2FB12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75CD181422C5DD6B00E2FB12 /* Assets.xcassets */; };
@@ -34,6 +37,9 @@
 		75AEC11F22E409DE0006A057 /* WeekdayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayView.swift; sourceTree = "<group>"; };
 		75AEC12122E413290006A057 /* ExpenseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseViewController.swift; sourceTree = "<group>"; };
 		75AEC12322E446600006A057 /* SegueDirection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegueDirection.swift; sourceTree = "<group>"; };
+		75AEC12522E54E690006A057 /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
+		75AEC12822E54F1B0006A057 /* SingleDayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleDayViewController.swift; sourceTree = "<group>"; };
+		75AEC12A22E577590006A057 /* AddEntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEntryViewController.swift; sourceTree = "<group>"; };
 		75CD180A22C5DD6800E2FB12 /* budget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = budget.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75CD180D22C5DD6800E2FB12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		75CD180F22C5DD6800E2FB12 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -73,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				75E0BD6B22CDD2BA00FE0F6C /* Category.swift */,
+				75AEC12522E54E690006A057 /* Entry.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -85,6 +92,16 @@
 				75AEC11F22E409DE0006A057 /* WeekdayView.swift */,
 			);
 			path = Calender;
+			sourceTree = "<group>";
+		};
+		75AEC12722E54EFA0006A057 /* Expenses */ = {
+			isa = PBXGroup;
+			children = (
+				75AEC12122E413290006A057 /* ExpenseViewController.swift */,
+				75AEC12822E54F1B0006A057 /* SingleDayViewController.swift */,
+				75AEC12A22E577590006A057 /* AddEntryViewController.swift */,
+			);
+			path = Expenses;
 			sourceTree = "<group>";
 		};
 		75CD180122C5DD6800E2FB12 = {
@@ -121,12 +138,12 @@
 		75E0BD6522CDC63D00FE0F6C /* VC */ = {
 			isa = PBXGroup;
 			children = (
+				75AEC12722E54EFA0006A057 /* Expenses */,
 				75AEC11822E3DC8A0006A057 /* BasicViewController.swift */,
 				75CD180F22C5DD6800E2FB12 /* MainViewController.swift */,
 				75E0BD5B22CDA7DB00FE0F6C /* MenuViewController.swift */,
 				75E0BD6822CDD23A00FE0F6C /* Details */,
 				75E0BD5F22CDB91600FE0F6C /* MenuTableViewCell.swift */,
-				75AEC12122E413290006A057 /* ExpenseViewController.swift */,
 			);
 			path = VC;
 			sourceTree = "<group>";
@@ -218,11 +235,14 @@
 				75E0BD5C22CDA7DB00FE0F6C /* MenuViewController.swift in Sources */,
 				75E0BD6022CDB91600FE0F6C /* MenuTableViewCell.swift in Sources */,
 				75AEC12222E413290006A057 /* ExpenseViewController.swift in Sources */,
+				75AEC12622E54E690006A057 /* Entry.swift in Sources */,
+				75AEC12922E54F1B0006A057 /* SingleDayViewController.swift in Sources */,
 				75AEC11722E3D7170006A057 /* SharedView.swift in Sources */,
 				75CD180E22C5DD6800E2FB12 /* AppDelegate.swift in Sources */,
 				75E0BD6222CDBCC000FE0F6C /* GlobalStuffs.swift in Sources */,
 				75E0BD6422CDC63500FE0F6C /* DetailsViewController.swift in Sources */,
 				75AEC12422E446600006A057 /* SegueDirection.swift in Sources */,
+				75AEC12B22E577590006A057 /* AddEntryViewController.swift in Sources */,
 				75E0BD6722CDD1BA00FE0F6C /* DetailsTableViewCell.swift in Sources */,
 				75E0BD6C22CDD2BA00FE0F6C /* Category.swift in Sources */,
 			);
