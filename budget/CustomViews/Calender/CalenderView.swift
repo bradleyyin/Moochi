@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol CalenderDelegate {
+    func goToSingleDay(date: Date)
+}
+
 struct Colors {
     static var darkGray = #colorLiteral(red: 0.3764705882, green: 0.3647058824, blue: 0.3647058824, alpha: 1)
     static var darkRed = #colorLiteral(red: 0.5019607843, green: 0.1529411765, blue: 0.1764705882, alpha: 1)
@@ -52,6 +56,8 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
     var presentYear = 0
     var todaysDate = 0
     var firstWeekDayOfMonth = 0   //(Sunday-Saturday 1-7)
+    
+    var delegate : CalenderDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -132,6 +138,12 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         cell?.backgroundColor=Colors.darkRed
         let lbl = cell?.subviews[1] as! UILabel
         lbl.textColor = UIColor.black
+        let day = lbl.text ?? "01"
+        if let date = "\(currentYear)-\(currentMonthIndex)-\(day)".date{
+            delegate?.goToSingleDay(date: date)
+            
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -139,6 +151,7 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         cell?.backgroundColor=UIColor.clear
         let lbl = cell?.subviews[1] as! UILabel
         lbl.textColor = .black
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -273,6 +286,7 @@ extension Date {
     var firstDayOfTheMonth: Date {
         return Calendar.current.date(from: Calendar.current.dateComponents([.year,.month], from: self))!
     }
+    
 }
 
 //get date from string

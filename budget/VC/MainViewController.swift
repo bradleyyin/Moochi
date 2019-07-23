@@ -112,6 +112,7 @@ class MainViewController: UIViewController {
     
     @objc func addEntry () {
         print("add")
+        self.present(AddEntryViewController(), animated: true)
     }
 //    @objc func menuTapped(){
 //        print("menu")

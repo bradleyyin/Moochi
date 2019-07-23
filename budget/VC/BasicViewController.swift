@@ -57,9 +57,9 @@ class BasicViewController: UIViewController {
 //        backButton.setImage(UIImage(named: "back"), for: .normal)
 //        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         
-        let homeButton = UIButton(frame: CGRect(x: screenWidth/2 - 20, y: screenHeight - 10 - buttonHeight, width: buttonWidth, height: buttonHeight))
-        homeButton.setImage(UIImage(named: "home"), for: .normal)
-        homeButton.addTarget(self, action: #selector(homeButtonTapped), for: .touchUpInside)
+//        let homeButton = UIButton(frame: CGRect(x: screenWidth/2 - 20, y: screenHeight - 10 - buttonHeight, width: buttonWidth, height: buttonHeight))
+//        homeButton.setImage(UIImage(named: "home"), for: .normal)
+//        homeButton.addTarget(self, action: #selector(homeButtonTapped), for: .touchUpInside)
         
         
         
@@ -67,7 +67,7 @@ class BasicViewController: UIViewController {
         
         
         //self.view.addSubview(backButton)
-        self.view.addSubview(homeButton)
+        //self.view.addSubview(homeButton)
     }
     
     @objc func backButtonTapped (){

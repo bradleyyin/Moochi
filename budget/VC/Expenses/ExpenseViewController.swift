@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ExpenseViewController: BasicViewController {
+class ExpenseViewController: BasicViewController, CalenderDelegate {
     let calenderView: CalenderView = {
         let v=CalenderView()
         v.translatesAutoresizingMaskIntoConstraints=false
@@ -26,9 +26,15 @@ class ExpenseViewController: BasicViewController {
         calenderView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 12).isActive=true
         calenderView.heightAnchor.constraint(equalToConstant: 600 * heightRatio).isActive=true
         calenderView.backgroundColor = .red
+        calenderView.delegate = self
     }
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         calenderView.myCollectionView.collectionViewLayout.invalidateLayout()
+    }
+    func goToSingleDay(date: Date) {
+        let singleDayVC = SingleDayViewController()
+        singleDayVC.date = date
+        self.navigationController?.pushViewController(singleDayVC, animated: true)
     }
 }

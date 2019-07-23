@@ -9,9 +9,23 @@
 import UIKit
 
 class SingleDayViewController: BasicViewController {
+    
+    var date : Date?
+    
+    var dateString : String = ""
+    
+    weak var titleLabel: TitleLabel!
+    
+
 
     override func viewDidLoad() {
         titleOfVC = "here"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd"
+        if let date = date{
+            dateString = dateFormatter.string(from: date)
+        }
+        
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
@@ -19,10 +33,22 @@ class SingleDayViewController: BasicViewController {
     override func setupUI() {
         super.setupUI()
         
-        let titleLabel = TitleLabel(frame: CGRect(x: screenWidth / 4, y: statusBarHeight + (100 / 2 - buttonHeight / 2) + buttonHeight, width: screenWidth / 2 , height: 100 * heightRatio))
-        titleLabel.text = "06/01"
+        let label = TitleLabel(frame: .zero)
+        self.view.addSubview(label)
+
+
+        //label.heightAnchor.constraint(equalToConstant: 300 * heightRatio).isActive = true
+        //label.widthAnchor.constraint(equalToConstant: 300 * heightRatio).isActive = true
+        label.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        label.topAnchor.constraint(equalTo: self.view.topAnchor, constant: statusBarHeight + 70 * heightRatio).isActive = true
+        //label.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+
+
+        self.titleLabel = label
+        
+        self.titleLabel.text = dateString
         titleLabel.textAlignment = .center
-        titleLabel.backgroundColor = .red
+        titleLabel.backgroundColor = .black
         titleLabel.font = UIFont(name: fontName, size: 80 * heightRatio)
         
         if let title = self.view.subviews[0] as? TitleLabel{
