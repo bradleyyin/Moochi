@@ -11,8 +11,14 @@ import UIKit
 class AddEntryViewController: BasicViewController {
     
     weak var imageView : UIImageView!
+    weak var nameTextField : UITextField!
+    weak var amountTextFeild : UITextField!
+    weak var dateTextField : UITextField!
+    
+    weak var categoryTextFeild : UITextField!
     
     var imagePicker : UIImagePickerController!
+    var datePicker : UIDatePicker!
     
 
     override func viewDidLoad() {
@@ -28,6 +34,10 @@ class AddEntryViewController: BasicViewController {
         self.imagePicker = UIImagePickerController()
         self.imagePicker.delegate = self
         self.imagePicker.allowsEditing = false
+        
+        self.datePicker = UIDatePicker()
+        //TODO: - set up condition for date if coming from single day
+        showDatePicker()
     }
     override func setupUI() {
         super.setupUI()
@@ -45,25 +55,121 @@ class AddEntryViewController: BasicViewController {
         button.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
         button.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 50 * heightRatio - buttonHeight / 2).isActive = true
         button.setImage(UIImage(named: "checkMark"), for: .normal)
+        button.addTarget(self, action: #selector(checkMarkTapped), for: .touchUpInside)
+
+        
+       
+        let nameLabel = UILabel()
+        nameLabel.text = "NAME"
+        nameLabel.font = UIFont(name: fontName, size: 20)
+        nameLabel.adjustsFontSizeToFitWidth = true
+        nameLabel.minimumScaleFactor = 0.3
+        nameLabel.backgroundColor = .red
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        let nameTextField = UITextField()
+        nameTextField.backgroundColor =  .white
+        nameTextField.translatesAutoresizingMaskIntoConstraints = false
+        self.nameTextField = nameTextField
+        
+        let amountLabel = UILabel()
+        amountLabel.text = "AMOUNT"
+        amountLabel.font = UIFont(name: fontName, size: 20)
+        amountLabel.adjustsFontSizeToFitWidth = true
+        amountLabel.minimumScaleFactor = 0.3
+        
+        let amountTextField = UITextField()
+        amountTextField.backgroundColor =  .white
+        self.amountTextFeild = amountTextField
+        
+        let dateLabel = UILabel()
+        dateLabel.text = "DATE"
+        dateLabel.font = UIFont(name: fontName, size: 20)
+        dateLabel.adjustsFontSizeToFitWidth = true
+        dateLabel.minimumScaleFactor = 0.3
+        
+        let dateTextField = UITextField()
+        dateTextField.backgroundColor =  .white
+        self.dateTextField = dateTextField
+        
+
+        
+        let categoryLabel = UILabel()
+        categoryLabel.text = "CATEGORY"
+        categoryLabel.font = UIFont(name: fontName, size: 20)
+        //categoryLabel.adjustsFontSizeToFitWidth = true
+        //categoryLabel.minimumScaleFactor = 0.3
+        categoryLabel.translatesAutoresizingMaskIntoConstraints = false
+        categoryLabel.widthAnchor.constraint(equalToConstant: screenWidth * 3 / 10).isActive = true
+        
+        let categoryTextField = UITextField()
+        categoryTextField.backgroundColor =  .white
+        self.categoryTextFeild = categoryTextField
+        
+        
+        let nameStackView = UIStackView(arrangedSubviews: [nameLabel, nameTextField])
+        nameStackView.axis = .horizontal
+        nameStackView.distribution = .fill
+        nameStackView.alignment = .fill
+        nameStackView.spacing = 16
+        
+        let amountStackView = UIStackView(arrangedSubviews: [amountLabel, amountTextField])
+        amountStackView.axis = .horizontal
+        amountStackView.distribution = .fill
+        amountStackView.alignment = .fill
+        amountStackView.spacing = 16.0
+        
+        let dateStackView = UIStackView(arrangedSubviews: [dateLabel, dateTextField])
+        dateStackView.axis = .horizontal
+        dateStackView.distribution = .fill
+        dateStackView.alignment = .fill
+        dateStackView.spacing = 16.0
+        
+        let categoryStackView = UIStackView(arrangedSubviews: [categoryLabel, categoryTextField])
+        categoryStackView.axis = .horizontal
+        categoryStackView.distribution = .fill
+        categoryStackView.alignment = .fill
+        categoryStackView.spacing = 16.0
+        
+        let totalStackView = UIStackView(arrangedSubviews: [nameStackView, amountStackView, dateStackView, categoryStackView])
+        totalStackView.axis = .vertical
+        totalStackView.distribution = .fillEqually
+        totalStackView.alignment = .fill
+        totalStackView.spacing = 40 * heightRatio
+        totalStackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        amountTextField.leadingAnchor.constraint(equalTo: categoryTextField.leadingAnchor).isActive = true
+        nameTextField.leadingAnchor.constraint(equalTo: categoryTextField.leadingAnchor).isActive = true
+        dateTextField.leadingAnchor.constraint(equalTo: categoryTextField.leadingAnchor).isActive = true
+        
+        self.view.addSubview(totalStackView)
+        
+        totalStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        totalStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        
+        totalStackView.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 20 * heightRatio).isActive = true
+        
         
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(imageView)
-        imageView.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 50 * heightRatio).isActive = true
+        imageView.topAnchor.constraint(equalTo: totalStackView.bottomAnchor, constant: 30 * heightRatio).isActive = true
         imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         imageView.widthAnchor.constraint(equalToConstant: 300 * heightRatio).isActive = true
         imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
+        
+        imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100 * heightRatio).isActive = true
+        
         imageView.isUserInteractionEnabled = true
         imageView.image = UIImage(named: "addImage")
         imageView.contentMode = .scaleAspectFit
-
+        
+        
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
         imageView.addGestureRecognizer(tapGesture)
-
+        
         self.imageView = imageView
-        
-        
-        
         
        
     }
@@ -87,6 +193,37 @@ class AddEntryViewController: BasicViewController {
         self.present(alertController, animated: true)
         
     }
+    @objc func checkMarkTapped(){
+        print(nameTextField.text)
+        print(amountTextFeild.text)
+        print(dateTextField.text)
+        print(categoryTextFeild.text)
+    }
+    
+    func showDatePicker(){
+        //format date
+        datePicker.datePickerMode = .date
+        
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneDatePicker))
+        let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
+        toolbar.setItems([doneButton,space,cancelButton], animated: false)
+        dateTextField.inputAccessoryView = toolbar
+        dateTextField.inputView = datePicker
+    }
+    
+    @objc func doneDatePicker(){
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd/yyyy"
+        dateTextField.text = formatter.string(from: datePicker.date)
+        self.view.endEditing(true)
+    }
+    
+    @objc func cancelDatePicker(){
+        self.view.endEditing(true)
+    }
 
 }
 
@@ -101,3 +238,5 @@ extension AddEntryViewController : UIImagePickerControllerDelegate, UINavigation
         }
     }
 }
+
+

@@ -17,6 +17,7 @@
 		75AEC12622E54E690006A057 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC12522E54E690006A057 /* Entry.swift */; };
 		75AEC12922E54F1B0006A057 /* SingleDayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC12822E54F1B0006A057 /* SingleDayViewController.swift */; };
 		75AEC12B22E577590006A057 /* AddEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC12A22E577590006A057 /* AddEntryViewController.swift */; };
+		75B4D39322E827A400438A7A /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 75B4D39122E827A400438A7A /* Model.xcdatamodeld */; };
 		75CD180E22C5DD6800E2FB12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CD180D22C5DD6800E2FB12 /* AppDelegate.swift */; };
 		75CD181022C5DD6800E2FB12 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CD180F22C5DD6800E2FB12 /* MainViewController.swift */; };
 		75CD181522C5DD6B00E2FB12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75CD181422C5DD6B00E2FB12 /* Assets.xcassets */; };
@@ -40,6 +41,7 @@
 		75AEC12522E54E690006A057 /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
 		75AEC12822E54F1B0006A057 /* SingleDayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleDayViewController.swift; sourceTree = "<group>"; };
 		75AEC12A22E577590006A057 /* AddEntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEntryViewController.swift; sourceTree = "<group>"; };
+		75B4D39222E827A400438A7A /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		75CD180A22C5DD6800E2FB12 /* budget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = budget.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75CD180D22C5DD6800E2FB12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		75CD180F22C5DD6800E2FB12 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 		75AEC11522E3D6110006A057 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				75B4D39122E827A400438A7A /* Model.xcdatamodeld */,
 				75E0BD6B22CDD2BA00FE0F6C /* Category.swift */,
 				75AEC12522E54E690006A057 /* Entry.swift */,
 			);
@@ -244,6 +247,7 @@
 				75AEC12422E446600006A057 /* SegueDirection.swift in Sources */,
 				75AEC12B22E577590006A057 /* AddEntryViewController.swift in Sources */,
 				75E0BD6722CDD1BA00FE0F6C /* DetailsTableViewCell.swift in Sources */,
+				75B4D39322E827A400438A7A /* Model.xcdatamodeld in Sources */,
 				75E0BD6C22CDD2BA00FE0F6C /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -436,6 +440,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		75B4D39122E827A400438A7A /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				75B4D39222E827A400438A7A /* Model.xcdatamodel */,
+			);
+			currentVersion = 75B4D39222E827A400438A7A /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 75CD180222C5DD6800E2FB12 /* Project object */;
 }
