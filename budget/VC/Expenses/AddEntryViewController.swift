@@ -11,7 +11,9 @@ import UIKit
 class AddEntryViewController: BasicViewController {
     
     weak var imageView : UIImageView!
+    
     var imagePicker : UIImagePickerController!
+    
 
     override func viewDidLoad() {
        
@@ -59,10 +61,14 @@ class AddEntryViewController: BasicViewController {
         imageView.addGestureRecognizer(tapGesture)
 
         self.imageView = imageView
+        
+        
+        
+        
        
     }
     @objc func imageTapped(){
-        let alertController = UIAlertController(title: "select source", message: nil, preferredStyle: .alert)
+        let alertController = UIAlertController(title: "select source", message: nil, preferredStyle: .actionSheet)
         
         let choseCam = UIAlertAction(title: "Camera", style: .default) { (action) in
             self.imagePicker.sourceType = .camera
@@ -72,8 +78,12 @@ class AddEntryViewController: BasicViewController {
             self.imagePicker.sourceType = .photoLibrary
             self.present(self.imagePicker, animated: true)
         }
+        let cancelAction = UIAlertAction(title: "cancel", style: .cancel) { (action) in
+            //cancel
+        }
         alertController.addAction(choseCam)
         alertController.addAction(choseLibrary)
+        alertController.addAction(cancelAction)
         self.present(alertController, animated: true)
         
     }
