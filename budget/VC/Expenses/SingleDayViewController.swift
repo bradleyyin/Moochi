@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class SingleDayViewController: BasicViewController {
     
@@ -14,7 +15,12 @@ class SingleDayViewController: BasicViewController {
     
     var dateString : String = ""
     
+    var expenses : [Expense] = []
+    
     weak var titleLabel: TitleLabel!
+    
+    weak var table: UITableView!
+
     
 
 
@@ -27,6 +33,8 @@ class SingleDayViewController: BasicViewController {
         }
         
         super.viewDidLoad()
+        
+        loadItem()
 
         // Do any additional setup after loading the view.
     }
@@ -48,29 +56,64 @@ class SingleDayViewController: BasicViewController {
         
         self.titleLabel.text = dateString
         titleLabel.textAlignment = .center
-        titleLabel.backgroundColor = .black
+        titleLabel.backgroundColor = .red
         titleLabel.font = UIFont(name: fontName, size: 80 * heightRatio)
         
         if let title = self.view.subviews[0] as? TitleLabel{
             title.removeFromSuperview()
         }
         
-        let entryTableView = UITableView(frame: CGRect(x: 20, y: titleLabel.frame.origin.y + titleLabel.frame.height + 20, width: screenWidth - 40, height: screenHeight - (titleLabel.frame.origin.y + titleLabel.frame.height + 20) - 100))
-        entryTableView.dataSource = self
-        entryTableView.delegate = self
-        self.view.addSubview(titleLabel)
+        let expensesTableView = UITableView()
+        expensesTableView.translatesAutoresizingMaskIntoConstraints = false
+        expensesTableView.dataSource = self
+        expensesTableView.delegate = self
+        expensesTableView.register(ExpenseTableViewCell.self, forCellReuseIdentifier: "ExpenseCell")
+        expensesTableView.backgroundColor = .red
+        expensesTableView.separatorStyle = .none
+        
+        self.view.addSubview(expensesTableView)
+        expensesTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        expensesTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        expensesTableView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 20).isActive = true
+        expensesTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
+        self.table = expensesTableView
+        
+        
     }
+    func loadItem(){
+        guard let date = date, let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else{return}
+        let request : NSFetchRequest<Expense> = Expense.fetchRequest()
+        
+        
+        let predicate = NSPredicate(format: "date == %@", date as NSDate)
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        
+
+        request.predicate = predicate
+        request.sortDescriptors = [sortDescriptor]
+        
+        do{
+            expenses = try context.fetch(request)
+        }catch{
+            print("error loading entries: \(error)")
+        }
+        
+        print(expenses[0].name)
+    }
+    
     
 
 }
 
 extension SingleDayViewController : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return expenses.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExpenseCell", for: indexPath) as? ExpenseTableViewCell else {return UITableViewCell()}
+        cell.expense = expenses[indexPath.row]
+        
         return cell
     }
     

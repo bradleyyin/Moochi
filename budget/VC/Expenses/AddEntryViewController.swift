@@ -215,12 +215,13 @@ class AddEntryViewController: BasicViewController {
         print(date)
         print(category)
         createEntry(name: name, amount: amount, date: date, category: category)
+        dismiss(animated: true, completion: nil)
         
         
     }
     func createEntry (name: String, amount: Double, date: Date, category: String){
         guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
-        let newEntry = Entry(context: context)
+        let newEntry = Expense(context: context)
         newEntry.name = name
         newEntry.amount = amount
         newEntry.date = date

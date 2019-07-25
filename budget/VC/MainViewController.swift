@@ -14,6 +14,11 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
+        //check for file
+        //TODO: remove this later
+        let fm = FileManager.default
+        let filePath = fm.urls(for: .documentDirectory, in: .userDomainMask)
+        print(filePath)
         
         // Do any additional setup after loading the view.
     }
