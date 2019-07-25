@@ -6,12 +6,12 @@
 //  Copyright © 2019 bradleyyin. All rights reserved.
 //
 
-import Foundation
-struct Entry {
-    var entryName : String
-    var entryMoney : Double
-    var year : Date
-    var month : Date
-    var day : Date
-    var category : String
-}
+//import Foundation
+//struct Entry {
+//    var entryName : String
+//    var entryMoney : Double
+//    var year : Date
+//    var month : Date
+//    var day : Date
+//    var category : String
+//}

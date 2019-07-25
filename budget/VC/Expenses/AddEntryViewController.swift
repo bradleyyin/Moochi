@@ -19,11 +19,12 @@ class AddEntryViewController: BasicViewController {
     
     var imagePicker : UIImagePickerController!
     var datePicker : UIDatePicker!
+    let formatter = DateFormatter()
     
 
     override func viewDidLoad() {
        
-        
+        formatter.dateFormat = "MM/dd/yyyy"
         titleOfVC = "add an entry"
         super.viewDidLoad()
 
@@ -207,15 +208,36 @@ class AddEntryViewController: BasicViewController {
         
     }
     @objc func checkMarkTapped(){
-        print(nameTextField.text)
-        print(amountTextFeild.text)
-        print(dateTextField.text)
-        print(categoryTextFeild.text)
+        
+        guard let name = nameTextField.text, !name.isEmpty, let amountString = amountTextFeild.text, let amount = Double(amountString), let dateString = dateTextField.text, let date = formatter.date(from: dateString), let category = categoryTextFeild.text else { return }
+        print(name)
+        print(amount)
+        print(date)
+        print(category)
+        createEntry(name: name, amount: amount, date: date, category: category)
+        
+        
+    }
+    func createEntry (name: String, amount: Double, date: Date, category: String){
+        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
+        let newEntry = Entry(context: context)
+        newEntry.name = name
+        newEntry.amount = amount
+        newEntry.date = date
+        newEntry.category = category
+        do{
+            try context.save()
+        }catch{
+            print("error creating entry : \(error)")
+        }
+        
     }
     
     func showDatePicker(){
         //format date
         datePicker.datePickerMode = .date
+        datePicker.minimumDate = Date(timeIntervalSinceReferenceDate: 0)
+    
         
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
@@ -239,8 +261,7 @@ class AddEntryViewController: BasicViewController {
     
     
     @objc func doneDatePicker(){
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MM/dd/yyyy"
+        
         dateTextField.text = formatter.string(from: datePicker.date)
         self.view.endEditing(true)
     }
