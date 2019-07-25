@@ -42,6 +42,7 @@ class AddEntryViewController: BasicViewController {
     override func setupUI() {
         super.setupUI()
         
+        self.view.backgroundColor = .lightGray
         
         if let label = self.view.subviews[0] as? TitleLabel{
             label.widthAnchor.constraint(equalToConstant: screenWidth * 3 / 4).isActive = true
@@ -61,6 +62,7 @@ class AddEntryViewController: BasicViewController {
        
         let nameLabel = UILabel()
         nameLabel.text = "NAME"
+        nameLabel.textColor = .white
         nameLabel.font = UIFont(name: fontName, size: 20)
         nameLabel.adjustsFontSizeToFitWidth = true
         nameLabel.minimumScaleFactor = 0.3
@@ -68,28 +70,37 @@ class AddEntryViewController: BasicViewController {
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let nameTextField = UITextField()
-        nameTextField.backgroundColor =  .white
+        nameTextField.textColor = .white
+        nameTextField.setBottomBorder()
+        nameTextField.autocorrectionType = .no
         nameTextField.translatesAutoresizingMaskIntoConstraints = false
         self.nameTextField = nameTextField
         
         let amountLabel = UILabel()
         amountLabel.text = "AMOUNT"
+        amountLabel.textColor = .white
         amountLabel.font = UIFont(name: fontName, size: 20)
         amountLabel.adjustsFontSizeToFitWidth = true
         amountLabel.minimumScaleFactor = 0.3
         
         let amountTextField = UITextField()
-        amountTextField.backgroundColor =  .white
+        amountTextField.textColor =  .white
+        amountTextField.setBottomBorder()
+        amountTextField.keyboardType = .numberPad
+        
         self.amountTextFeild = amountTextField
+        showNumpad()
         
         let dateLabel = UILabel()
         dateLabel.text = "DATE"
+        dateLabel.textColor = .white
         dateLabel.font = UIFont(name: fontName, size: 20)
         dateLabel.adjustsFontSizeToFitWidth = true
         dateLabel.minimumScaleFactor = 0.3
         
         let dateTextField = UITextField()
-        dateTextField.backgroundColor =  .white
+        dateTextField.textColor =  .white
+        dateTextField.setBottomBorder()
         self.dateTextField = dateTextField
         
 
@@ -97,13 +108,15 @@ class AddEntryViewController: BasicViewController {
         let categoryLabel = UILabel()
         categoryLabel.text = "CATEGORY"
         categoryLabel.font = UIFont(name: fontName, size: 20)
+        categoryLabel.textColor = .white
         //categoryLabel.adjustsFontSizeToFitWidth = true
         //categoryLabel.minimumScaleFactor = 0.3
         categoryLabel.translatesAutoresizingMaskIntoConstraints = false
         categoryLabel.widthAnchor.constraint(equalToConstant: screenWidth * 3 / 10).isActive = true
         
         let categoryTextField = UITextField()
-        categoryTextField.backgroundColor =  .white
+        categoryTextField.textColor =  .white
+        categoryTextField.setBottomBorder()
         self.categoryTextFeild = categoryTextField
         
         
@@ -209,10 +222,21 @@ class AddEntryViewController: BasicViewController {
         let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneDatePicker))
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
-        toolbar.setItems([doneButton,space,cancelButton], animated: false)
+        toolbar.setItems([cancelButton,space,doneButton], animated: false)
         dateTextField.inputAccessoryView = toolbar
         dateTextField.inputView = datePicker
     }
+    func showNumpad(){
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(cancelDatePicker))
+        let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
+        toolbar.setItems([cancelButton,space,doneButton], animated: false)
+        amountTextFeild.inputAccessoryView = toolbar
+    }
+    
+    
     
     @objc func doneDatePicker(){
         let formatter = DateFormatter()
@@ -236,6 +260,28 @@ extension AddEntryViewController : UIImagePickerControllerDelegate, UINavigation
             imageView.image = userPickedImage
             imagePicker.dismiss(animated: true, completion: nil)
         }
+    }
+}
+
+extension UITextField
+{
+    
+    //To add bottom border only
+    func setBottomBorder(withColor color: UIColor = .white)
+    {
+        self.borderStyle = UITextField.BorderStyle.none
+        self.backgroundColor = UIColor.clear
+        let width: CGFloat = 1.0
+        
+        let borderLine = UIView()
+        borderLine.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(borderLine)
+        borderLine.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        borderLine.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        borderLine.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        borderLine.heightAnchor.constraint(equalToConstant: width).isActive = true
+        borderLine.backgroundColor = color
+        
     }
 }
 
