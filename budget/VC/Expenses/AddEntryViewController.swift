@@ -21,6 +21,9 @@ class AddEntryViewController: BasicViewController {
     var datePicker : UIDatePicker!
     let formatter = DateFormatter()
     
+    var date: Date?
+    var amountTypedString = ""
+    
 
     override func viewDidLoad() {
        
@@ -96,6 +99,8 @@ class AddEntryViewController: BasicViewController {
         
         let amountTextField = UITextField()
         amountTextField.textColor =  .white
+        amountTextField.text = "$0.00"
+        amountTextField.delegate = self
         amountTextField.setBottomBorder()
         amountTextField.keyboardType = .numberPad
         
@@ -111,6 +116,9 @@ class AddEntryViewController: BasicViewController {
         
         let dateTextField = UITextField()
         dateTextField.textColor =  .white
+        if let date = date{
+            dateTextField.text = formatter.string(from: date)
+        }
         dateTextField.setBottomBorder()
         self.dateTextField = dateTextField
         
@@ -249,6 +257,9 @@ class AddEntryViewController: BasicViewController {
     
     func showDatePicker(){
         //format date
+        if let date = date{
+            datePicker.date = date
+        }
         datePicker.datePickerMode = .date
         datePicker.minimumDate = Date(timeIntervalSinceReferenceDate: 0)
     
@@ -271,8 +282,6 @@ class AddEntryViewController: BasicViewController {
         toolbar.setItems([cancelButton,space,doneButton], animated: false)
         amountTextFeild.inputAccessoryView = toolbar
     }
-    
-    
     
     @objc func doneDatePicker(){
         
@@ -298,8 +307,7 @@ extension AddEntryViewController : UIImagePickerControllerDelegate, UINavigation
     }
 }
 
-extension UITextField
-{
+extension UITextField{
     
     //To add bottom border only
     func setBottomBorder(withColor color: UIColor = .white)
@@ -318,6 +326,49 @@ extension UITextField
         borderLine.backgroundColor = color
         
     }
+}
+extension AddEntryViewController: UITextFieldDelegate{
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        if textField == amountTextFeild{
+            
+            let formatter = NumberFormatter()
+            formatter.minimumFractionDigits = 2
+            formatter.maximumFractionDigits = 2
+            
+            if string.count > 0 {
+                print ("here")
+                amountTypedString += string
+                let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
+                //let numbString = NSString(format:"%.2f", decNumber) as String
+                let newString = "$" + formatter.string(from: decNumber)!
+                //let newString = "$" + numbString
+                textField.text = newString
+            } else {
+                amountTypedString = String(amountTypedString.dropLast())
+                if amountTypedString.count > 0 {
+                    
+                    let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
+                    
+                    let newString = "$" +  formatter.string(from: decNumber)!
+                    textField.text = newString
+                } else {
+                    textField.text = "$0.00"
+                }
+                
+            }
+        }
+        
+        
+        return false
+        
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        amountTypedString = ""
+        return true
+    }
+    
 }
 
 

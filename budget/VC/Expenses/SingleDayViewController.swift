@@ -156,6 +156,9 @@ extension SingleDayViewController : UITableViewDelegate, UITableViewDataSource{
 }
 extension SingleDayViewController : AddTableViewCellDelegate{
     func showVC(vc: UIViewController) {
+        if let addEntryVC = vc as? AddEntryViewController{
+            addEntryVC.date = date
+        }
         present(vc, animated: true)
     }
 }
