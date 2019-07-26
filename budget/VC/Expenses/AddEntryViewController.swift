@@ -55,9 +55,19 @@ class AddEntryViewController: BasicViewController {
         button.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -10).isActive = true
         button.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
         button.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
-        button.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 50 * heightRatio - buttonHeight / 2).isActive = true
+        button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
         button.setImage(UIImage(named: "checkMark"), for: .normal)
         button.addTarget(self, action: #selector(checkMarkTapped), for: .touchUpInside)
+        
+        let button2 = UIButton()
+        button2.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(button2)
+        button2.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -10).isActive = true
+        button2.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
+        button2.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
+        button2.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 50 * heightRatio - buttonHeight / 2).isActive = true
+        button2.setImage(UIImage(named: "cancel"), for: .normal)
+        button2.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
 
         
        
@@ -161,7 +171,7 @@ class AddEntryViewController: BasicViewController {
         totalStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
         totalStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         
-        totalStackView.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 20 * heightRatio).isActive = true
+        totalStackView.topAnchor.constraint(equalTo: button2.bottomAnchor, constant: 20 * heightRatio).isActive = true
         
         
         let imageView = UIImageView()
@@ -218,6 +228,9 @@ class AddEntryViewController: BasicViewController {
         dismiss(animated: true, completion: nil)
         
         
+    }
+    @objc func cancelTapped() {
+        dismiss(animated: true, completion: nil)
     }
     func createEntry (name: String, amount: Double, date: Date, category: String){
         guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }

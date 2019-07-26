@@ -34,9 +34,15 @@ class SingleDayViewController: BasicViewController {
         
         super.viewDidLoad()
         
-        loadItem()
+        //loadItem()
 
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadItem()
+        table.reloadData()
     }
     override func setupUI() {
         super.setupUI()
@@ -63,11 +69,23 @@ class SingleDayViewController: BasicViewController {
             title.removeFromSuperview()
         }
         
+        
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(button)
+        button.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
+        button.widthAnchor.constraint(equalToConstant: buttonWidth * heightRatio).isActive = true
+        button.heightAnchor.constraint(equalToConstant: buttonHeight * heightRatio).isActive = true
+        button.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 50 * heightRatio - buttonHeight / 2).isActive = true
+        button.setImage(UIImage(named: "back"), for: .normal)
+        button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        
         let expensesTableView = UITableView()
         expensesTableView.translatesAutoresizingMaskIntoConstraints = false
         expensesTableView.dataSource = self
         expensesTableView.delegate = self
         expensesTableView.register(ExpenseTableViewCell.self, forCellReuseIdentifier: "ExpenseCell")
+        expensesTableView.register(AddEntryTableViewCell.self, forCellReuseIdentifier: "AddEntryCell")
         expensesTableView.backgroundColor = .red
         expensesTableView.separatorStyle = .none
         
@@ -98,7 +116,7 @@ class SingleDayViewController: BasicViewController {
             print("error loading entries: \(error)")
         }
         
-        print(expenses[0].name)
+        //print(expenses[0].name)
     }
     
     
@@ -107,15 +125,37 @@ class SingleDayViewController: BasicViewController {
 
 extension SingleDayViewController : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return expenses.count
+        if section == 0 {
+            return expenses.count
+        }else{
+            return 1
+        }
+        
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExpenseCell", for: indexPath) as? ExpenseTableViewCell else {return UITableViewCell()}
-        cell.expense = expenses[indexPath.row]
-        
-        return cell
+        if indexPath.section == 1{
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "AddEntryCell", for: indexPath) as? AddEntryTableViewCell else {return UITableViewCell()}
+            cell.delegate = self
+            cell.selectionStyle = .none
+            return cell
+        }else{
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExpenseCell", for: indexPath) as? ExpenseTableViewCell else {return UITableViewCell()}
+            cell.expense = expenses[indexPath.row]
+            
+            return cell
+        }
+       
     }
     
     
+}
+extension SingleDayViewController : AddTableViewCellDelegate{
+    func showVC(vc: UIViewController) {
+        present(vc, animated: true)
+    }
 }

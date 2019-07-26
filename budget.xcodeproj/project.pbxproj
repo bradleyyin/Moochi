@@ -19,6 +19,7 @@
 		75AEC12B22E577590006A057 /* AddEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC12A22E577590006A057 /* AddEntryViewController.swift */; };
 		75B4D39322E827A400438A7A /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 75B4D39122E827A400438A7A /* Model.xcdatamodeld */; };
 		75B4D3BA22E9854E00438A7A /* ExpenseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B4D3B922E9854E00438A7A /* ExpenseTableViewCell.swift */; };
+		75BB937022EAC77E002C57AF /* AddEntryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BB936F22EAC77E002C57AF /* AddEntryTableViewCell.swift */; };
 		75CD180E22C5DD6800E2FB12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CD180D22C5DD6800E2FB12 /* AppDelegate.swift */; };
 		75CD181022C5DD6800E2FB12 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CD180F22C5DD6800E2FB12 /* MainViewController.swift */; };
 		75CD181522C5DD6B00E2FB12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75CD181422C5DD6B00E2FB12 /* Assets.xcassets */; };
@@ -44,6 +45,7 @@
 		75AEC12A22E577590006A057 /* AddEntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEntryViewController.swift; sourceTree = "<group>"; };
 		75B4D39222E827A400438A7A /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		75B4D3B922E9854E00438A7A /* ExpenseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseTableViewCell.swift; sourceTree = "<group>"; };
+		75BB936F22EAC77E002C57AF /* AddEntryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEntryTableViewCell.swift; sourceTree = "<group>"; };
 		75CD180A22C5DD6800E2FB12 /* budget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = budget.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75CD180D22C5DD6800E2FB12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		75CD180F22C5DD6800E2FB12 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				75AEC12822E54F1B0006A057 /* SingleDayViewController.swift */,
 				75B4D3B922E9854E00438A7A /* ExpenseTableViewCell.swift */,
 				75AEC12A22E577590006A057 /* AddEntryViewController.swift */,
+				75BB936F22EAC77E002C57AF /* AddEntryTableViewCell.swift */,
 			);
 			path = Expenses;
 			sourceTree = "<group>";
@@ -241,6 +244,7 @@
 				75AEC11922E3DC8A0006A057 /* BasicViewController.swift in Sources */,
 				75E0BD5C22CDA7DB00FE0F6C /* MenuViewController.swift in Sources */,
 				75E0BD6022CDB91600FE0F6C /* MenuTableViewCell.swift in Sources */,
+				75BB937022EAC77E002C57AF /* AddEntryTableViewCell.swift in Sources */,
 				75AEC12222E413290006A057 /* ExpenseViewController.swift in Sources */,
 				75AEC12622E54E690006A057 /* Entry.swift in Sources */,
 				75AEC12922E54F1B0006A057 /* SingleDayViewController.swift in Sources */,

@@ -12,40 +12,36 @@ protocol CalenderDelegate {
     func goToSingleDay(date: Date)
 }
 
-struct Colors {
-    static var darkGray = #colorLiteral(red: 0.3764705882, green: 0.3647058824, blue: 0.3647058824, alpha: 1)
-    static var darkRed = #colorLiteral(red: 0.5019607843, green: 0.1529411765, blue: 0.1764705882, alpha: 1)
-}
 
-struct Style {
-    static var bgColor = UIColor.white
-    static var monthViewLblColor = UIColor.white
-    static var monthViewBtnRightColor = UIColor.white
-    static var monthViewBtnLeftColor = UIColor.white
-    static var activeCellLblColor = UIColor.white
-    static var activeCellLblColorHighlighted = UIColor.black
-    static var weekdaysLblColor = UIColor.white
-    
-    static func themeDark(){
-        bgColor = Colors.darkGray
-        monthViewLblColor = UIColor.white
-        monthViewBtnRightColor = UIColor.white
-        monthViewBtnLeftColor = UIColor.white
-        activeCellLblColor = UIColor.white
-        activeCellLblColorHighlighted = UIColor.black
-        weekdaysLblColor = UIColor.white
-    }
-    
-    static func themeLight(){
-        bgColor = UIColor.white
-        monthViewLblColor = UIColor.black
-        monthViewBtnRightColor = UIColor.black
-        monthViewBtnLeftColor = UIColor.black
-        activeCellLblColor = UIColor.black
-        activeCellLblColorHighlighted = UIColor.white
-        weekdaysLblColor = UIColor.black
-    }
-}
+//struct Style {
+//    static var bgColor = UIColor.white
+//    static var monthViewLblColor = UIColor.white
+//    static var monthViewBtnRightColor = UIColor.white
+//    static var monthViewBtnLeftColor = UIColor.white
+//    static var activeCellLblColor = UIColor.white
+//    static var activeCellLblColorHighlighted = UIColor.black
+//    static var weekdaysLblColor = UIColor.white
+//
+//    static func themeDark(){
+//        bgColor = Colors.darkGray
+//        monthViewLblColor = UIColor.white
+//        monthViewBtnRightColor = UIColor.white
+//        monthViewBtnLeftColor = UIColor.white
+//        activeCellLblColor = UIColor.white
+//        activeCellLblColorHighlighted = UIColor.black
+//        weekdaysLblColor = UIColor.white
+//    }
+//
+//    static func themeLight(){
+//        bgColor = UIColor.white
+//        monthViewLblColor = UIColor.black
+//        monthViewBtnRightColor = UIColor.black
+//        monthViewBtnLeftColor = UIColor.black
+//        activeCellLblColor = UIColor.black
+//        activeCellLblColorHighlighted = UIColor.white
+//        weekdaysLblColor = UIColor.black
+//    }
+//}
 
 class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, MonthViewDelegate {
     
@@ -135,9 +131,9 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell=collectionView.cellForItem(at: indexPath)
-        cell?.backgroundColor=Colors.darkRed
+        //cell?.backgroundColor=Colors.darkRed
         let lbl = cell?.subviews[1] as! UILabel
-        lbl.textColor = UIColor.black
+        //lbl.textColor = UIColor.black
         let day = lbl.text ?? "01"
         if let date = "\(currentYear)-\(currentMonthIndex)-\(day)".date{
             delegate?.goToSingleDay(date: date)
@@ -146,17 +142,17 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         
     }
     
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        let cell=collectionView.cellForItem(at: indexPath)
-        cell?.backgroundColor=UIColor.clear
-        let lbl = cell?.subviews[1] as! UILabel
-        lbl.textColor = .black
-        
-    }
+//    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+//        let cell=collectionView.cellForItem(at: indexPath)
+//        cell?.backgroundColor=UIColor.clear
+//        let lbl = cell?.subviews[1] as! UILabel
+//        lbl.textColor = .black
+//
+//    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width/7 - 8
-        let height: CGFloat = 80
+        let height: CGFloat = 80 * heightRatio
         return CGSize(width: width, height: height)
     }
     
@@ -192,7 +188,7 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         
         myCollectionView.reloadData()
         
-        monthView.btnLeft.isEnabled = !(currentMonthIndex == presentMonthIndex && currentYear == presentYear)
+        //monthView.btnLeft.isEnabled = !(currentMonthIndex == presentMonthIndex && currentYear == presentYear)
     }
     
     func setupViews() {
@@ -267,8 +263,8 @@ class dateCVCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "00"
         label.textAlignment = .center
-        label.font=UIFont.systemFont(ofSize: 25)
-        label.textColor=Colors.darkGray
+        label.font = UIFont.systemFont(ofSize: 25)
+        label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints=false
         return label
     }()

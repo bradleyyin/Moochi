@@ -29,7 +29,7 @@ class WeekdaysView: UIView {
             let lbl=UILabel()
             lbl.text=daysArr[i]
             lbl.textAlignment = .center
-            lbl.textColor = Style.weekdaysLblColor
+            lbl.textColor = .black
             myStackView.addArrangedSubview(lbl)
         }
     }
