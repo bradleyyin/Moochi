@@ -123,14 +123,18 @@ class DetailsTableViewCell: UITableViewCell {
         
         print(categoryRemaining)
         
-        let blackRatio = CGFloat((categoryTotal - categoryRemaining) / categoryTotal)
+        var blackRatio = CGFloat((categoryTotal - categoryRemaining) / categoryTotal)
+        if blackRatio >= 1 {
+            blackRatio = 1
+        }
         blackBarView.frame.size.width = self.frame.width * blackRatio
+        print("width", blackBarView.frame.width, titleLabel.text)
         blackBarView.frame.origin.x = self.frame.width * (1.0 - blackRatio)
         blackBarView.backgroundColor = .darkGray
         
        
         remainLabel.text = blackBarView.frame.width >= 100.0 ? NSString(format:"%.2f", categoryRemaining) as String : ""
-        
+        print(remainLabel.text)
         remainLabel.textColor = .white
         remainLabel.font = UIFont(name: fontName, size: fontSize)
         remainLabel.textAlignment = .left

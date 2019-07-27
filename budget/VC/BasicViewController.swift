@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 
 class BasicViewController: UIViewController {
@@ -14,6 +15,7 @@ class BasicViewController: UIViewController {
     
     
     var titleOfVC : String = ""
+    var categories :[Category] = []
     
     //auto layout
     
@@ -68,6 +70,16 @@ class BasicViewController: UIViewController {
         
         //self.view.addSubview(backButton)
         //self.view.addSubview(homeButton)
+    }
+    
+    func loadCategories(){
+        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
+        let request : NSFetchRequest<Category> = Category.fetchRequest()
+        do {
+            categories = try context.fetch(request)
+        }catch{
+            print("error loading categories: \(error)")
+        }
     }
     
     @objc func backButtonTapped (){

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class AddEntryViewController: BasicViewController {
     
@@ -243,6 +244,7 @@ class AddEntryViewController: BasicViewController {
     @objc func cancelTapped() {
         dismiss(animated: true, completion: nil)
     }
+
     func createEntry (name: String, amount: Double, date: Date, category: String){
         guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
         let newEntry = Expense(context: context)
