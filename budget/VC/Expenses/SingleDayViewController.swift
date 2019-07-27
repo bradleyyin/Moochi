@@ -142,6 +142,7 @@ extension SingleDayViewController : UITableViewDelegate, UITableViewDataSource{
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "AddEntryCell", for: indexPath) as? AddEntryTableViewCell else {return UITableViewCell()}
             cell.delegate = self
             cell.selectionStyle = .none
+            cell.cellType = .addEntry
             return cell
         }else{
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExpenseCell", for: indexPath) as? ExpenseTableViewCell else {return UITableViewCell()}
@@ -155,10 +156,11 @@ extension SingleDayViewController : UITableViewDelegate, UITableViewDataSource{
     
 }
 extension SingleDayViewController : AddTableViewCellDelegate{
-    func showVC(vc: UIViewController) {
+    func showVC(vc: UIViewController?) {
         if let addEntryVC = vc as? AddEntryViewController{
             addEntryVC.date = date
+            present(addEntryVC, animated: true)
         }
-        present(vc, animated: true)
+        
     }
 }

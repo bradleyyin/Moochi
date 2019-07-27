@@ -8,8 +8,13 @@
 
 import UIKit
 
+enum CellType {
+    case addEntry
+    case addCategory
+}
+
 protocol AddTableViewCellDelegate{
-    func showVC(vc: UIViewController)
+    func showVC(vc: UIViewController?)
 }
 
 class AddEntryTableViewCell: UITableViewCell {
@@ -17,13 +22,15 @@ class AddEntryTableViewCell: UITableViewCell {
     
     var fontSize : CGFloat = 25 * heightRatio
     
-    weak var addButton : UIButton!
-    
-    var delegate : AddTableViewCellDelegate?{
+    var cellType : CellType = .addEntry{
         didSet{
             updateViews()
         }
     }
+    
+    weak var addButton : UIButton!
+    
+    var delegate : AddTableViewCellDelegate?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -38,7 +45,12 @@ class AddEntryTableViewCell: UITableViewCell {
         
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("+ add an entry", for: .normal)
+        if cellType == .addEntry{
+            button.setTitle("+ add an entry", for: .normal)
+        }else {
+            button.setTitle("+ add a category", for: .normal)
+        }
+        
         
         button.setTitleColor(.white, for: .normal)
         
@@ -50,17 +62,15 @@ class AddEntryTableViewCell: UITableViewCell {
         self.addSubview(button)
         button.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         button.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        
-        
-        
-       
-        
-        
-        
-        
+     
     }
     @objc func addEntryTapped(){
-        delegate?.showVC(vc: AddEntryViewController())
+        if cellType == .addEntry{
+            delegate?.showVC(vc: AddEntryViewController())
+        }else{
+            delegate?.showVC(vc: nil)
+        }
+        
     }
     
     required init?(coder aDecoder: NSCoder) {

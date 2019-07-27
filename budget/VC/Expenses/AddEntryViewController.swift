@@ -227,7 +227,10 @@ class AddEntryViewController: BasicViewController {
     }
     @objc func checkMarkTapped(){
         
-        guard let name = nameTextField.text, !name.isEmpty, let amountString = amountTextFeild.text, let amount = Double(amountString), let dateString = dateTextField.text, let date = formatter.date(from: dateString), let category = categoryTextFeild.text else { return }
+        guard let name = nameTextField.text, !name.isEmpty, let amountString = amountTextFeild.text, let dateString = dateTextField.text, let date = formatter.date(from: dateString), let category = categoryTextFeild.text else { return }
+        var amountStringNoSign = amountString
+        amountStringNoSign.removeFirst()
+        let amount = Double(amountStringNoSign) ?? 00
         print(name)
         print(amount)
         print(date)
@@ -246,7 +249,7 @@ class AddEntryViewController: BasicViewController {
         newEntry.name = name
         newEntry.amount = amount
         newEntry.date = date
-        newEntry.category = category
+        newEntry.category = category.uppercased()
         do{
             try context.save()
         }catch{
