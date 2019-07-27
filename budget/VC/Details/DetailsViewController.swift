@@ -18,6 +18,8 @@ class DetailsViewController: BasicViewController {
     
     weak var tableView : UITableView!
     
+    var amountTypedString = ""
+    
     
     override func viewDidLoad() {
         titleOfVC = "DETAILS"
@@ -110,9 +112,15 @@ extension DetailsViewController : AddTableViewCellDelegate{
         }
         alertController.addTextField { (textField) in
             textField.placeholder = "budget"
+            textField.keyboardType = .numberPad
+            textField.delegate = self
+            textField.tag = 1
+            
         }
         let addAction = UIAlertAction(title: "Add", style: .default) { (action) in
             guard let categoryName = alertController.textFields?[0].text, !categoryName.isEmpty, !self.categories.contains(where: {$0.name == categoryName}), let amountString = alertController.textFields?[1].text, let amount = Double(amountString) else { return }
+            
+            
             self.createCategory(name: categoryName, amount: amount)
         }
         let cancelAction = UIAlertAction(title: "cancel", style: .cancel, handler: nil)
@@ -141,3 +149,49 @@ extension DetailsViewController : AddTableViewCellDelegate{
     
     
 }
+
+extension DetailsViewController: UITextFieldDelegate{
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        
+        if textField.tag == 1 {
+            
+            let formatter = NumberFormatter()
+            formatter.minimumFractionDigits = 2
+            formatter.maximumFractionDigits = 2
+            
+            if string.count > 0 {
+                print ("here")
+                amountTypedString += string
+                let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
+                //let numbString = NSString(format:"%.2f", decNumber) as String
+                let newString = formatter.string(from: decNumber)!
+                //let newString = "$" + numbString
+                textField.text = newString
+            } else {
+                amountTypedString = String(amountTypedString.dropLast())
+                if amountTypedString.count > 0 {
+                    
+                    let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
+                    
+                    let newString = formatter.string(from: decNumber)!
+                    textField.text = newString
+                } else {
+                    textField.text = "0.00"
+                }
+                
+            }
+        }
+        
+        
+        return false
+        
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        amountTypedString = ""
+        return true
+    }
+    
+}
+

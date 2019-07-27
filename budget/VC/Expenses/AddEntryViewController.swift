@@ -20,7 +20,17 @@ class AddEntryViewController: BasicViewController {
     
     var imagePicker : UIImagePickerController!
     var datePicker : UIDatePicker!
+    var categoryPicker : UIPickerView!
     let formatter = DateFormatter()
+    
+    var categorypickerData : [String]{
+        var nameArray : [String] = ["uncategorized"]
+        for category in categories{
+            nameArray.append(category.name!)
+        }
+        return nameArray
+    }
+    var selectedCategory : String = "uncategorized"
     
     var date: Date?
     var amountTypedString = ""
@@ -31,6 +41,8 @@ class AddEntryViewController: BasicViewController {
         formatter.dateFormat = "MM/dd/yyyy"
         titleOfVC = "add an entry"
         super.viewDidLoad()
+        
+        loadCategories()
 
         // Do any additional setup after loading the view.
     }
@@ -41,7 +53,10 @@ class AddEntryViewController: BasicViewController {
         self.imagePicker.allowsEditing = false
         
         self.datePicker = UIDatePicker()
-        //TODO: - set up condition for date if coming from single day
+        self.categoryPicker = UIPickerView()
+        categoryPicker.delegate = self
+        categoryPicker.dataSource = self
+        showCategoryPicker()
         showDatePicker()
     }
     override func setupUI() {
@@ -100,13 +115,13 @@ class AddEntryViewController: BasicViewController {
         
         let amountTextField = UITextField()
         amountTextField.textColor =  .white
-        amountTextField.text = "$0.00"
+        amountTextField.text = "0.00"
         amountTextField.delegate = self
         amountTextField.setBottomBorder()
         amountTextField.keyboardType = .numberPad
         
         self.amountTextFeild = amountTextField
-        showNumpad()
+        addToolBarNameAndAmount()
         
         let dateLabel = UILabel()
         dateLabel.text = "DATE"
@@ -119,6 +134,8 @@ class AddEntryViewController: BasicViewController {
         dateTextField.textColor =  .white
         if let date = date{
             dateTextField.text = formatter.string(from: date)
+        }else{
+            dateTextField.text = formatter.string(from: Date())
         }
         dateTextField.setBottomBorder()
         self.dateTextField = dateTextField
@@ -136,6 +153,7 @@ class AddEntryViewController: BasicViewController {
         
         let categoryTextField = UITextField()
         categoryTextField.textColor =  .white
+        categoryTextField.text = "UNCATEGORIZED"
         categoryTextField.setBottomBorder()
         self.categoryTextFeild = categoryTextField
         
@@ -228,10 +246,8 @@ class AddEntryViewController: BasicViewController {
     }
     @objc func checkMarkTapped(){
         
-        guard let name = nameTextField.text, !name.isEmpty, let amountString = amountTextFeild.text, let dateString = dateTextField.text, let date = formatter.date(from: dateString), let category = categoryTextFeild.text else { return }
-        var amountStringNoSign = amountString
-        amountStringNoSign.removeFirst()
-        let amount = Double(amountStringNoSign) ?? 00
+        guard let name = nameTextField.text, !name.isEmpty, let amountString = amountTextFeild.text, let amount = Double(amountString), let dateString = dateTextField.text, let date = formatter.date(from: dateString), let category = categoryTextFeild.text, !category.isEmpty else { return }
+       
         print(name)
         print(amount)
         print(date)
@@ -251,7 +267,14 @@ class AddEntryViewController: BasicViewController {
         newEntry.name = name
         newEntry.amount = amount
         newEntry.date = date
-        newEntry.category = category.uppercased()
+        if category == "uncaategorized"{
+            newEntry.category = nil
+        }else{
+            newEntry.category = category.uppercased()
+        }
+        
+        
+        
         do{
             try context.save()
         }catch{
@@ -278,7 +301,21 @@ class AddEntryViewController: BasicViewController {
         dateTextField.inputAccessoryView = toolbar
         dateTextField.inputView = datePicker
     }
-    func showNumpad(){
+    func showCategoryPicker(){
+        
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneCategoryPicker))
+        let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
+        toolbar.setItems([cancelButton,space,doneButton], animated: false)
+        categoryTextFeild.inputAccessoryView = toolbar
+        categoryTextFeild.inputView = categoryPicker
+        
+        
+    }
+    
+    func addToolBarNameAndAmount(){
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
         let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(cancelDatePicker))
@@ -286,6 +323,8 @@ class AddEntryViewController: BasicViewController {
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
         toolbar.setItems([cancelButton,space,doneButton], animated: false)
         amountTextFeild.inputAccessoryView = toolbar
+        nameTextField.inputAccessoryView = toolbar
+        
     }
     
     @objc func doneDatePicker(){
@@ -295,6 +334,11 @@ class AddEntryViewController: BasicViewController {
     }
     
     @objc func cancelDatePicker(){
+        self.view.endEditing(true)
+    }
+    
+    @objc func doneCategoryPicker(){
+        categoryTextFeild.text = selectedCategory
         self.view.endEditing(true)
     }
 
@@ -346,7 +390,7 @@ extension AddEntryViewController: UITextFieldDelegate{
                 amountTypedString += string
                 let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
                 //let numbString = NSString(format:"%.2f", decNumber) as String
-                let newString = "$" + formatter.string(from: decNumber)!
+                let newString = formatter.string(from: decNumber)!
                 //let newString = "$" + numbString
                 textField.text = newString
             } else {
@@ -355,10 +399,10 @@ extension AddEntryViewController: UITextFieldDelegate{
                     
                     let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
                     
-                    let newString = "$" +  formatter.string(from: decNumber)!
+                    let newString = formatter.string(from: decNumber)!
                     textField.text = newString
                 } else {
-                    textField.text = "$0.00"
+                    textField.text = "0.00"
                 }
                 
             }
@@ -377,3 +421,26 @@ extension AddEntryViewController: UITextFieldDelegate{
 }
 
 
+extension AddEntryViewController: UIPickerViewDataSource, UIPickerViewDelegate{
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return categorypickerData.count
+    }
+    
+    
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return categorypickerData[row].uppercased()
+    }
+    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+        return 200
+    }
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        selectedCategory = categorypickerData[row]
+    }
+    
+}
