@@ -56,12 +56,14 @@ class SingleDayDetailViewController: BasicViewController {
         nameLabel.text = "NAME"
         nameLabel.setUpLabelForSingleDayDetailVC()
         nameLabel.backgroundColor = .red
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
         
         
         let nameContentLabel = UILabel()
         nameContentLabel.text = expense.name
         nameContentLabel.setUpLabelForSingleDayDetailVC()
         nameContentLabel.textAlignment = .center
+        nameContentLabel.translatesAutoresizingMaskIntoConstraints = false
        
         
         let amountLabel = UILabel()
@@ -89,12 +91,14 @@ class SingleDayDetailViewController: BasicViewController {
         let categoryLabel = UILabel()
         categoryLabel.text = "CATEGORY"
         categoryLabel.setUpLabelForSingleDayDetailVC()
-        categoryLabel.widthAnchor.constraint(equalToConstant: screenWidth * 3 / 10).isActive = true
+        categoryLabel.translatesAutoresizingMaskIntoConstraints = false
+        //categoryLabel.widthAnchor.constraint(equalToConstant: screenWidth * 3 / 10).isActive = true
         
         let categoryContentLabel = UILabel()
         categoryContentLabel.text = expense.name
         categoryContentLabel.setUpLabelForSingleDayDetailVC()
         categoryContentLabel.textAlignment = .center
+        
         
         
         let nameStackView = UIStackView(arrangedSubviews: [nameLabel, nameContentLabel])
@@ -105,19 +109,19 @@ class SingleDayDetailViewController: BasicViewController {
         
         let amountStackView = UIStackView(arrangedSubviews: [amountLabel, amountContentLabel])
         amountStackView.axis = .horizontal
-        amountStackView.distribution = .fill
+        amountStackView.distribution = .fillEqually
         amountStackView.alignment = .fill
         amountStackView.spacing = 16.0
         
         let dateStackView = UIStackView(arrangedSubviews: [dateLabel, dateContentLabel])
         dateStackView.axis = .horizontal
-        dateStackView.distribution = .fill
+        dateStackView.distribution = .fillEqually
         dateStackView.alignment = .fill
         dateStackView.spacing = 16.0
         
         let categoryStackView = UIStackView(arrangedSubviews: [categoryLabel, categoryContentLabel])
         categoryStackView.axis = .horizontal
-        categoryStackView.distribution = .fill
+        categoryStackView.distribution = .fillEqually
         categoryStackView.alignment = .fill
         categoryStackView.spacing = 16.0
         
@@ -127,9 +131,9 @@ class SingleDayDetailViewController: BasicViewController {
         totalStackView.alignment = .fill
         totalStackView.translatesAutoresizingMaskIntoConstraints = false
         
-        amountContentLabel.leadingAnchor.constraint(equalTo: categoryContentLabel.leadingAnchor).isActive = true
-        nameContentLabel.leadingAnchor.constraint(equalTo: categoryContentLabel.leadingAnchor).isActive = true
-        dateContentLabel.leadingAnchor.constraint(equalTo: categoryContentLabel.leadingAnchor).isActive = true
+        //amountContentLabel.leadingAnchor.constraint(equalTo: categoryContentLabel.leadingAnchor).isActive = true
+        //nameContentLabel.leadingAnchor.constraint(equalTo: categoryContentLabel.leadingAnchor).isActive = true
+        //dateContentLabel.leadingAnchor.constraint(equalTo: categoryContentLabel.leadingAnchor).isActive = true
         
         self.view.addSubview(totalStackView)
         
@@ -147,7 +151,7 @@ class SingleDayDetailViewController: BasicViewController {
         imageView.widthAnchor.constraint(equalToConstant: 300 * heightRatio).isActive = true
         imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
         
-        imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100 * heightRatio).isActive = true
+        imageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10 * heightRatio).isActive = true
         
         imageView.isUserInteractionEnabled = true
         
@@ -157,6 +161,7 @@ class SingleDayDetailViewController: BasicViewController {
             imageView.contentMode = .center
         }else{
             imageView.contentMode = .scaleAspectFill
+            imageView.clipsToBounds = true
         }
         
         
@@ -200,8 +205,12 @@ class SingleDayDetailViewController: BasicViewController {
     func loadImage(){
         guard let expense = expense else { return }
     
-        if let filePath = expense.imagePath{
-            print(filePath)
+        if let filePathComponent = expense.imagePath{
+            print(filePathComponent)
+            let fm = FileManager.default
+            guard let dir = fm.urls(for: .documentDirectory, in: .userDomainMask).first else{return}
+            
+            let filePath = dir.appendingPathComponent(filePathComponent).path
             
             if FileManager.default.fileExists(atPath: filePath){
                 
@@ -223,6 +232,8 @@ extension SingleDayDetailViewController : UIImagePickerControllerDelegate, UINav
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let userPickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
             imageView.image = userPickedImage
+            imageView.contentMode = .scaleAspectFill
+            imageView.clipsToBounds = true
             let imagePath = saveImage(image: userPickedImage)
             expense?.imagePath = imagePath
             
@@ -237,6 +248,6 @@ extension UILabel{
         self.font = UIFont(name: fontName, size: 30)
         self.adjustsFontSizeToFitWidth = true
         self.minimumScaleFactor = 0.3
-        self.translatesAutoresizingMaskIntoConstraints = false
+        //self.translatesAutoresizingMaskIntoConstraints = false
     }
 }

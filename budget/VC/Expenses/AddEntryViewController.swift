@@ -252,7 +252,11 @@ class AddEntryViewController: BasicViewController {
         print(amount)
         print(date)
         print(category)
-        createEntry(name: name, amount: amount, date: date, category: category, image: imageView.image)
+        var image : UIImage? = imageView.image
+        if imageView.image == UIImage(named: "addImage"){
+            image = nil
+        }
+        createEntry(name: name, amount: amount, date: date, category: category, image: image)
         dismiss(animated: true, completion: nil)
         
         
