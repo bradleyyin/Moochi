@@ -82,6 +82,35 @@ class BasicViewController: UIViewController {
         }
     }
     
+    func saveImage(image: UIImage) -> String? {
+        let uuid = UUID().uuidString
+        let fm = FileManager.default
+        let dir = fm.urls(for: .documentDirectory, in: .userDomainMask).first
+        guard let filePath = dir?.appendingPathComponent("\(uuid).jpeg") else { return nil}
+        
+        if let imagedata = image.jpegData(compressionQuality: 1.0){
+            do{
+                try imagedata.write(to: filePath, options: .atomic)
+                return filePath.path
+            }catch{
+                print("error saving image : \(error)")
+            }
+            
+        }
+        
+        return nil
+    }
+    
+    func saveExpense(){
+        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
+        
+        do{
+            try context.save()
+        }catch{
+            print("error creating entry : \(error)")
+        }
+    }
+    
     @objc func backButtonTapped (){
         self.navigationController?.popViewController(animated: true)
     }

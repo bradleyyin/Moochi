@@ -252,7 +252,7 @@ class AddEntryViewController: BasicViewController {
         print(amount)
         print(date)
         print(category)
-        createEntry(name: name, amount: amount, date: date, category: category)
+        createEntry(name: name, amount: amount, date: date, category: category, image: imageView.image)
         dismiss(animated: true, completion: nil)
         
         
@@ -261,8 +261,13 @@ class AddEntryViewController: BasicViewController {
         dismiss(animated: true, completion: nil)
     }
 
-    func createEntry (name: String, amount: Double, date: Date, category: String){
+    func createEntry (name: String, amount: Double, date: Date, category: String, image: UIImage?){
         guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
+        var imagePath : String?
+        if let image = image{
+            imagePath = saveImage(image: image)
+        }
+        
         let newEntry = Expense(context: context)
         newEntry.name = name
         newEntry.amount = amount
@@ -272,15 +277,9 @@ class AddEntryViewController: BasicViewController {
         }else{
             newEntry.category = category.uppercased()
         }
+        newEntry.imagePath = imagePath
         
-        
-        
-        do{
-            try context.save()
-        }catch{
-            print("error creating entry : \(error)")
-        }
-        
+        saveExpense()
     }
     
     func showDatePicker(){
@@ -341,6 +340,8 @@ class AddEntryViewController: BasicViewController {
         categoryTextFeild.text = selectedCategory
         self.view.endEditing(true)
     }
+    
+
 
 }
 

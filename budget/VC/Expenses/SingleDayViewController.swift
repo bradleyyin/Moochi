@@ -152,6 +152,13 @@ extension SingleDayViewController : UITableViewDelegate, UITableViewDataSource{
         }
        
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 0{
+            let singleDayDetailVC = SingleDayDetailViewController()
+            singleDayDetailVC.expense = expenses[indexPath.row]
+            navigationController?.pushViewController(singleDayDetailVC, animated: true)
+        }
+    }
     
     
 }
