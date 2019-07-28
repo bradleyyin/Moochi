@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RecieptViewController: UIViewController {
+class ReceiptViewController: UIViewController {
     
     var image: UIImage?
 
@@ -47,3 +47,4 @@ class RecieptViewController: UIViewController {
     }
 
 }
+

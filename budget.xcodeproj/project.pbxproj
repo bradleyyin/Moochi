@@ -8,8 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		75373B4022ECF70500113E81 /* SingleDayDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75373B3F22ECF70500113E81 /* SingleDayDetailViewController.swift */; };
-		75373B4222ED144500113E81 /* RecieptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75373B4122ED144500113E81 /* RecieptViewController.swift */; };
+		75373B4222ED144500113E81 /* ReceiptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75373B4122ED144500113E81 /* ReceiptViewController.swift */; };
 		75373B4522ED747600113E81 /* RecietAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75373B4422ED747600113E81 /* RecietAlbumViewController.swift */; };
+		75373B4722ED792D00113E81 /* ReceiptAlbumTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75373B4622ED792D00113E81 /* ReceiptAlbumTableViewCell.swift */; };
+		75373B4922ED842000113E81 /* ReceiptCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75373B4822ED842000113E81 /* ReceiptCollectionViewCell.swift */; };
 		75AEC11722E3D7170006A057 /* SharedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC11622E3D7170006A057 /* SharedView.swift */; };
 		75AEC11922E3DC8A0006A057 /* BasicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC11822E3DC8A0006A057 /* BasicViewController.swift */; };
 		75AEC11C22E3E2480006A057 /* MonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC11B22E3E2480006A057 /* MonthView.swift */; };
@@ -37,8 +39,10 @@
 
 /* Begin PBXFileReference section */
 		75373B3F22ECF70500113E81 /* SingleDayDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleDayDetailViewController.swift; sourceTree = "<group>"; };
-		75373B4122ED144500113E81 /* RecieptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecieptViewController.swift; sourceTree = "<group>"; };
+		75373B4122ED144500113E81 /* ReceiptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptViewController.swift; sourceTree = "<group>"; };
 		75373B4422ED747600113E81 /* RecietAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecietAlbumViewController.swift; sourceTree = "<group>"; };
+		75373B4622ED792D00113E81 /* ReceiptAlbumTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptAlbumTableViewCell.swift; sourceTree = "<group>"; };
+		75373B4822ED842000113E81 /* ReceiptCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptCollectionViewCell.swift; sourceTree = "<group>"; };
 		75AEC11622E3D7170006A057 /* SharedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedView.swift; sourceTree = "<group>"; };
 		75AEC11822E3DC8A0006A057 /* BasicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicViewController.swift; sourceTree = "<group>"; };
 		75AEC11B22E3E2480006A057 /* MonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthView.swift; sourceTree = "<group>"; };
@@ -81,7 +85,9 @@
 			isa = PBXGroup;
 			children = (
 				75373B4422ED747600113E81 /* RecietAlbumViewController.swift */,
-				75373B4122ED144500113E81 /* RecieptViewController.swift */,
+				75373B4122ED144500113E81 /* ReceiptViewController.swift */,
+				75373B4622ED792D00113E81 /* ReceiptAlbumTableViewCell.swift */,
+				75373B4822ED842000113E81 /* ReceiptCollectionViewCell.swift */,
 			);
 			path = reciept;
 			sourceTree = "<group>";
@@ -254,6 +260,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75B4D3BA22E9854E00438A7A /* ExpenseTableViewCell.swift in Sources */,
+				75373B4922ED842000113E81 /* ReceiptCollectionViewCell.swift in Sources */,
 				75AEC11C22E3E2480006A057 /* MonthView.swift in Sources */,
 				75CD181022C5DD6800E2FB12 /* MainViewController.swift in Sources */,
 				75AEC12022E409DE0006A057 /* WeekdayView.swift in Sources */,
@@ -262,12 +269,13 @@
 				75E0BD5C22CDA7DB00FE0F6C /* MenuViewController.swift in Sources */,
 				75E0BD6022CDB91600FE0F6C /* MenuTableViewCell.swift in Sources */,
 				75BB937022EAC77E002C57AF /* AddEntryTableViewCell.swift in Sources */,
-				75373B4222ED144500113E81 /* RecieptViewController.swift in Sources */,
+				75373B4222ED144500113E81 /* ReceiptViewController.swift in Sources */,
 				75AEC12222E413290006A057 /* ExpenseViewController.swift in Sources */,
 				75AEC12622E54E690006A057 /* Entry.swift in Sources */,
 				75AEC12922E54F1B0006A057 /* SingleDayViewController.swift in Sources */,
 				75AEC11722E3D7170006A057 /* SharedView.swift in Sources */,
 				75373B4522ED747600113E81 /* RecietAlbumViewController.swift in Sources */,
+				75373B4722ED792D00113E81 /* ReceiptAlbumTableViewCell.swift in Sources */,
 				75CD180E22C5DD6800E2FB12 /* AppDelegate.swift in Sources */,
 				75E0BD6222CDBCC000FE0F6C /* GlobalStuffs.swift in Sources */,
 				75E0BD6422CDC63500FE0F6C /* DetailsViewController.swift in Sources */,

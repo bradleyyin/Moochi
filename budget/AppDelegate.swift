@@ -24,15 +24,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let detailsVC = DetailsViewController()
         let expensesVC = ExpenseViewController()
         let expensesNav = UINavigationController(rootViewController: expensesVC)
+        let recieptAlbumVC = ReceiptAlbumViewController()
+        let recieptNav = UINavigationController(rootViewController: recieptAlbumVC)
         expensesNav.isNavigationBarHidden = true
+        recieptNav.isNavigationBarHidden = true
         
         mainVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "home"), tag: 0)
         detailsVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "details"), tag: 1)
         expensesVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "calender"), tag: 2)
+        recieptAlbumVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "album"), tag: 3)
         
-        let controllers = [mainVC, detailsVC, expensesNav]
+        let controllers = [mainVC, detailsVC, expensesNav, recieptNav]
         tabBarController.viewControllers = controllers
-        tabBarController.tabBar.barTintColor = .red
+        tabBarController.tabBar.barTintColor = .clear
         //tabBarController.tabBar.shadowImage = UIImage()
         //tabBarController.tabBar.backgroundImage = UIImage()
         tabBarController.tabBar.tintColor = .black

@@ -55,7 +55,7 @@ class SingleDayDetailViewController: BasicViewController {
         let nameLabel = UILabel()
         nameLabel.text = "NAME"
         nameLabel.setUpLabelForSingleDayDetailVC()
-        nameLabel.backgroundColor = .red
+        nameLabel.backgroundColor = .clear
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         
         
@@ -197,7 +197,7 @@ class SingleDayDetailViewController: BasicViewController {
             self.present(alertController, animated: true)
             
         }else{
-            let recieptVC = RecieptViewController()
+            let recieptVC = ReceiptViewController()
             recieptVC.image = imageView.image
             present(recieptVC, animated: true)
         }
