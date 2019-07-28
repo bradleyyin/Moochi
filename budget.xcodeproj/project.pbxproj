@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		75373B4022ECF70500113E81 /* SingleDayDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75373B3F22ECF70500113E81 /* SingleDayDetailViewController.swift */; };
 		75373B4222ED144500113E81 /* RecieptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75373B4122ED144500113E81 /* RecieptViewController.swift */; };
+		75373B4522ED747600113E81 /* RecietAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75373B4422ED747600113E81 /* RecietAlbumViewController.swift */; };
 		75AEC11722E3D7170006A057 /* SharedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC11622E3D7170006A057 /* SharedView.swift */; };
 		75AEC11922E3DC8A0006A057 /* BasicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC11822E3DC8A0006A057 /* BasicViewController.swift */; };
 		75AEC11C22E3E2480006A057 /* MonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC11B22E3E2480006A057 /* MonthView.swift */; };
@@ -37,6 +38,7 @@
 /* Begin PBXFileReference section */
 		75373B3F22ECF70500113E81 /* SingleDayDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleDayDetailViewController.swift; sourceTree = "<group>"; };
 		75373B4122ED144500113E81 /* RecieptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecieptViewController.swift; sourceTree = "<group>"; };
+		75373B4422ED747600113E81 /* RecietAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecietAlbumViewController.swift; sourceTree = "<group>"; };
 		75AEC11622E3D7170006A057 /* SharedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedView.swift; sourceTree = "<group>"; };
 		75AEC11822E3DC8A0006A057 /* BasicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicViewController.swift; sourceTree = "<group>"; };
 		75AEC11B22E3E2480006A057 /* MonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthView.swift; sourceTree = "<group>"; };
@@ -75,6 +77,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		75373B4322ED740700113E81 /* reciept */ = {
+			isa = PBXGroup;
+			children = (
+				75373B4422ED747600113E81 /* RecietAlbumViewController.swift */,
+				75373B4122ED144500113E81 /* RecieptViewController.swift */,
+			);
+			path = reciept;
+			sourceTree = "<group>";
+		};
 		75AEC11422E3D6010006A057 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -114,7 +125,6 @@
 				75AEC12A22E577590006A057 /* AddEntryViewController.swift */,
 				75BB936F22EAC77E002C57AF /* AddEntryTableViewCell.swift */,
 				75373B3F22ECF70500113E81 /* SingleDayDetailViewController.swift */,
-				75373B4122ED144500113E81 /* RecieptViewController.swift */,
 			);
 			path = Expenses;
 			sourceTree = "<group>";
@@ -153,6 +163,7 @@
 		75E0BD6522CDC63D00FE0F6C /* VC */ = {
 			isa = PBXGroup;
 			children = (
+				75373B4322ED740700113E81 /* reciept */,
 				75AEC12722E54EFA0006A057 /* Expenses */,
 				75AEC11822E3DC8A0006A057 /* BasicViewController.swift */,
 				75CD180F22C5DD6800E2FB12 /* MainViewController.swift */,
@@ -256,6 +267,7 @@
 				75AEC12622E54E690006A057 /* Entry.swift in Sources */,
 				75AEC12922E54F1B0006A057 /* SingleDayViewController.swift in Sources */,
 				75AEC11722E3D7170006A057 /* SharedView.swift in Sources */,
+				75373B4522ED747600113E81 /* RecietAlbumViewController.swift in Sources */,
 				75CD180E22C5DD6800E2FB12 /* AppDelegate.swift in Sources */,
 				75E0BD6222CDBCC000FE0F6C /* GlobalStuffs.swift in Sources */,
 				75E0BD6422CDC63500FE0F6C /* DetailsViewController.swift in Sources */,

@@ -13,8 +13,13 @@
         <attribute name="name" attributeType="String" syncable="YES"/>
         <relationship name="parentCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="expenses" inverseEntity="Category" syncable="YES"/>
     </entity>
+    <entity name="Income" representedClassName="Income" syncable="YES" codeGenerationType="class">
+        <attribute name="amount" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="monthYear" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
         <element name="Category" positionX="110.6640625" positionY="-110.4140625" width="128" height="90"/>
         <element name="Expense" positionX="356.4921875" positionY="-168.06640625" width="128" height="135"/>
+        <element name="Income" positionX="243" positionY="-99" width="128" height="75"/>
     </elements>
 </model>

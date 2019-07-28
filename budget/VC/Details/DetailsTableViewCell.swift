@@ -13,7 +13,7 @@ class DetailsTableViewCell: UITableViewCell {
 
     var category: Category?{
         didSet{
-            //updateViews()
+            updateViews()
         }
     }
     var categoryTotal : Double {
@@ -25,8 +25,8 @@ class DetailsTableViewCell: UITableViewCell {
         let currentDate = Date()
         let startOfMonth = currentDate.getThisMonthStart()
         let endOfMonth = currentDate.getThisMonthEnd()
-        print ("start, end", startOfMonth, endOfMonth)
-        let calender = Calendar.current
+        //print ("start, end", startOfMonth, endOfMonth)
+        //let calender = Calendar.current
         var expenses : [Expense] = []
         
         func loadItem(){
@@ -43,7 +43,7 @@ class DetailsTableViewCell: UITableViewCell {
             }
         }
         loadItem()
-        print(expenses)
+        //print(expenses)
         var totalExpenses = 0.0
         for expense in expenses{
             totalExpenses += expense.amount
@@ -61,44 +61,79 @@ class DetailsTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        //setUpViews()
+        setUpViews()
 
     }
     override func layoutSubviews() {
         super.layoutSubviews()
-        setUpViews()
-        updateViews()
+        //setUpViews()
+        //updateViews()
     }
     func setUpViews(){
         
-//        let label1 = UILabel()
-//        label1.translatesAutoresizingMaskIntoConstraints = false
-//        self.addSubview(label1)
-//        label1.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-//        label1.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
-        self.backgroundColor = .red
-        let titleLabel = UILabel(frame: CGRect(x: 0, y: 10, width: self.frame.width / 2, height: self.frame.height / 2 - 10))
-        self.addSubview(titleLabel)
-        self.titleLabel = titleLabel
+        let label1 = UILabel()
+        label1.textAlignment = .left
+        let label2 = UILabel()
+        label2.textAlignment = .right
         
-        let totalLabel = UILabel(frame: CGRect(x: self.frame.width / 2, y: 10, width: self.frame.width / 2, height: self.frame.height / 2 - 10))
-        self.addSubview(totalLabel)
-        self.totalLabel = totalLabel
+        let topStackView = UIStackView(arrangedSubviews: [label1, label2])
+        topStackView.axis = .horizontal
+        topStackView.distribution = .fillEqually
+        topStackView.alignment = .fill
         
-        let whiteBarView = UIView(frame: CGRect(x: 0, y: self.frame.height / 2, width: self.frame.width, height: self.frame.height / 2))
-        
-        
-        let blackBarView = UIView(frame: CGRect(x: self.frame.width , y: 0, width: self.frame.width, height: self.frame.height / 2))
-        
-        
-         let remainLabel = UILabel(frame: CGRect(x: 5, y: 0, width: 100, height: blackBarView.frame.height))
-        blackBarView.addSubview(remainLabel)
-        self.remainLabel = remainLabel
-        
+        let whiteBarView = UIView()
+        let blackBarView = UIView()
+        blackBarView.translatesAutoresizingMaskIntoConstraints = false
         whiteBarView.addSubview(blackBarView)
-        self.blackBarView = blackBarView
+        blackBarView.topAnchor.constraint(equalTo: whiteBarView.topAnchor).isActive = true
+        blackBarView.bottomAnchor.constraint(equalTo: whiteBarView.bottomAnchor).isActive = true
+        blackBarView.trailingAnchor.constraint(equalTo: whiteBarView.trailingAnchor).isActive = true
+        //blackBarView.widthAnchor.constraint(equalToConstant: 100).isActive = true
         
-        self.addSubview(whiteBarView)
+        let remainLabel = UILabel()
+        blackBarView.addSubview(remainLabel)
+        remainLabel.translatesAutoresizingMaskIntoConstraints = false
+        remainLabel.topAnchor.constraint(equalTo: blackBarView.topAnchor).isActive = true
+        remainLabel.bottomAnchor.constraint(equalTo: blackBarView.bottomAnchor).isActive = true
+        remainLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        remainLabel.leadingAnchor.constraint(equalTo: blackBarView.leadingAnchor, constant: 5)
+        
+        let totalStackView = UIStackView(arrangedSubviews: [topStackView, whiteBarView])
+        totalStackView.axis = .vertical
+        totalStackView.alignment = .fill
+        totalStackView.distribution = .fillEqually
+        
+        totalStackView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(totalStackView)
+        totalStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5).isActive = true
+        totalStackView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        totalStackView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        totalStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5).isActive = true
+        //label1.translatesAutoresizingMaskIntoConstraints = false
+        //self.addSubview(label1)
+        //label1.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        //label1.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
+        
+        
+        self.backgroundColor = .clear
+//        let titleLabel = UILabel(frame: CGRect(x: 0, y: 10, width: self.frame.width / 2, height: self.frame.height / 2 - 10))
+//        self.addSubview(titleLabel)
+        self.titleLabel = label1
+        
+//        let totalLabel = UILabel(frame: CGRect(x: self.frame.width / 2, y: 10, width: self.frame.width / 2, height: self.frame.height / 2 - 10))
+//        self.addSubview(totalLabel)
+        self.totalLabel = label2
+        
+        //let whiteBarView = UIView(frame: CGRect(x: 0, y: self.frame.height / 2, width: self.frame.width, height: self.frame.height / 2))
+        
+        
+        //let blackBarView = UIView(frame: CGRect(x: self.frame.width , y: 0, width: self.frame.width, height: self.frame.height / 2))
+        
+        
+        
+        
+        self.remainLabel = remainLabel
+        self.blackBarView = blackBarView
         self.whiteBarView = whiteBarView
         
         
@@ -128,22 +163,24 @@ class DetailsTableViewCell: UITableViewCell {
         if blackRatio >= 1 {
             blackRatio = 1
         }
-        blackBarView.frame.size.width = self.frame.width * blackRatio
-        print("width", blackBarView.frame.width, titleLabel.text)
-        blackBarView.frame.origin.x = self.frame.width * (1.0 - blackRatio)
+        print (titleLabel.text, blackRatio)
+        blackBarView.widthAnchor.constraint(equalToConstant: self.frame.width * blackRatio).isActive = true
+        blackBarView.layoutIfNeeded()
+        //print("width", blackBarView.frame.width, titleLabel.text)
+        //blackBarView.frame.origin.x = self.frame.width * (1.0 - blackRatio)
         blackBarView.backgroundColor = .darkGray
-        if blackBarView.frame.width >= 100.0{
+        if blackBarView.frame.width >= 100.0 {
             remainLabel.textColor = .white
-            remainLabel.frame.origin.x = 5
+            remainLabel.leadingAnchor.constraint(equalTo: blackBarView.leadingAnchor, constant: 5).isActive = true
             remainLabel.textAlignment = .left
         }else{
             remainLabel.textColor = .black
-            remainLabel.frame.origin.x = -105
+            remainLabel.trailingAnchor.constraint(equalTo: blackBarView.leadingAnchor, constant: -5).isActive = true
             remainLabel.textAlignment = .right
         }
         
         remainLabel.text = NSString(format:"%.2f", categoryRemaining) as String
-        print(remainLabel.text)
+        //print(remainLabel.text)
         remainLabel.font = UIFont(name: fontName, size: fontSize)
         
     }

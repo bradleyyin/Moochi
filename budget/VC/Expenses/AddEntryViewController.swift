@@ -341,7 +341,7 @@ class AddEntryViewController: BasicViewController {
     }
     
     @objc func doneCategoryPicker(){
-        categoryTextFeild.text = selectedCategory
+        categoryTextFeild.text = selectedCategory.uppercased()
         self.view.endEditing(true)
     }
     
