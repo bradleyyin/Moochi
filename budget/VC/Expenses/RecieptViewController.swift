@@ -31,6 +31,16 @@ class RecieptViewController: UIViewController {
         button.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 20 * heightRatio - buttonHeight / 2).isActive = true
         button.setImage(UIImage(named: "cancel"), for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(imageView)
+        imageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        imageView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        imageView.topAnchor.constraint(equalTo: button.bottomAnchor).isActive = true
+        imageView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        imageView.image = image
+        imageView.contentMode = .scaleAspectFit
     }
     @objc func cancelButtonTapped(){
         self.dismiss(animated: true, completion: nil)

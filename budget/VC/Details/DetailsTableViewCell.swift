@@ -61,6 +61,7 @@ class DetailsTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        //setUpViews()
 
     }
     override func layoutSubviews() {
@@ -131,13 +132,20 @@ class DetailsTableViewCell: UITableViewCell {
         print("width", blackBarView.frame.width, titleLabel.text)
         blackBarView.frame.origin.x = self.frame.width * (1.0 - blackRatio)
         blackBarView.backgroundColor = .darkGray
+        if blackBarView.frame.width >= 100.0{
+            remainLabel.textColor = .white
+            remainLabel.frame.origin.x = 5
+            remainLabel.textAlignment = .left
+        }else{
+            remainLabel.textColor = .black
+            remainLabel.frame.origin.x = -105
+            remainLabel.textAlignment = .right
+        }
         
-       
-        remainLabel.text = blackBarView.frame.width >= 100.0 ? NSString(format:"%.2f", categoryRemaining) as String : ""
+        remainLabel.text = NSString(format:"%.2f", categoryRemaining) as String
         print(remainLabel.text)
-        remainLabel.textColor = .white
         remainLabel.font = UIFont(name: fontName, size: fontSize)
-        remainLabel.textAlignment = .left
+        
     }
     
     required init?(coder aDecoder: NSCoder) {

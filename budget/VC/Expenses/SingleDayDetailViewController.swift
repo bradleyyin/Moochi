@@ -95,7 +95,7 @@ class SingleDayDetailViewController: BasicViewController {
         //categoryLabel.widthAnchor.constraint(equalToConstant: screenWidth * 3 / 10).isActive = true
         
         let categoryContentLabel = UILabel()
-        categoryContentLabel.text = expense.name
+        categoryContentLabel.text = expense.category?.uppercased()
         categoryContentLabel.setUpLabelForSingleDayDetailVC()
         categoryContentLabel.textAlignment = .center
         

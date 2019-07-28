@@ -160,6 +160,23 @@ extension SingleDayViewController : UITableViewDelegate, UITableViewDataSource{
         }
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
+        if indexPath.section == 0{
+            context.delete(expenses[indexPath.row])
+            expenses.remove(at: indexPath.row)
+            
+            saveExpense()
+            tableView.reloadData()
+        }
+    }
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        if indexPath.section == 0 {
+            return .delete
+        }
+        return .none
+    }
+    
     
 }
 extension SingleDayViewController : AddTableViewCellDelegate{
