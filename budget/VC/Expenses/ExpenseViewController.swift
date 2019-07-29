@@ -25,7 +25,7 @@ class ExpenseViewController: BasicViewController, CalenderDelegate {
         calenderView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -12).isActive=true
         calenderView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 12).isActive=true
         calenderView.heightAnchor.constraint(equalToConstant: 600 * heightRatio).isActive=true
-        calenderView.backgroundColor = .red
+        calenderView.backgroundColor = .clear
         calenderView.delegate = self
     }
     override func viewWillLayoutSubviews() {

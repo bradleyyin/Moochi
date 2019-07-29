@@ -52,6 +52,7 @@ class ReceiptAlbumViewController : BasicViewController {
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         tableView.register(ReceiptAlbumTableViewCell.self, forCellReuseIdentifier: "AlbumCell")
+        tableView.separatorStyle = .none
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .clear

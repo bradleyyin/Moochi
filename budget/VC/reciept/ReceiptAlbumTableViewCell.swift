@@ -58,7 +58,7 @@ class ReceiptAlbumTableViewCell: UITableViewCell {
         collectionView.register(ReceiptCollectionViewCell.self, forCellWithReuseIdentifier: "ReceiptCell")
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = .blue
+        collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = true
         
 

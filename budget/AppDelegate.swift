@@ -37,8 +37,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let controllers = [mainVC, detailsVC, expensesNav, recieptNav]
         tabBarController.viewControllers = controllers
         tabBarController.tabBar.barTintColor = .clear
-        //tabBarController.tabBar.shadowImage = UIImage()
-        //tabBarController.tabBar.backgroundImage = UIImage()
+        tabBarController.tabBar.shadowImage = UIImage()
+        tabBarController.tabBar.backgroundImage = UIImage()
         tabBarController.tabBar.tintColor = .black
         tabBarController.tabBar.unselectedItemTintColor = .white
         

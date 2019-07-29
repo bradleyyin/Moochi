@@ -62,7 +62,7 @@ class SingleDayViewController: BasicViewController {
         
         self.titleLabel.text = dateString
         titleLabel.textAlignment = .center
-        titleLabel.backgroundColor = .red
+        titleLabel.backgroundColor = .clear
         titleLabel.font = UIFont(name: fontName, size: 80 * heightRatio)
         
         if let title = self.view.subviews[0] as? TitleLabel{
@@ -86,7 +86,7 @@ class SingleDayViewController: BasicViewController {
         expensesTableView.delegate = self
         expensesTableView.register(ExpenseTableViewCell.self, forCellReuseIdentifier: "ExpenseCell")
         expensesTableView.register(AddEntryTableViewCell.self, forCellReuseIdentifier: "AddEntryCell")
-        expensesTableView.backgroundColor = .red
+        expensesTableView.backgroundColor = .clear
         expensesTableView.separatorStyle = .none
         
         self.view.addSubview(expensesTableView)

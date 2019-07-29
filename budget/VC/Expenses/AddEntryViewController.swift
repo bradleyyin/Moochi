@@ -96,7 +96,7 @@ class AddEntryViewController: BasicViewController {
         nameLabel.font = UIFont(name: fontName, size: 20)
         nameLabel.adjustsFontSizeToFitWidth = true
         nameLabel.minimumScaleFactor = 0.3
-        nameLabel.backgroundColor = .red
+        nameLabel.backgroundColor = .clear
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let nameTextField = UITextField()
