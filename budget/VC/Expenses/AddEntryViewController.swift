@@ -62,7 +62,7 @@ class AddEntryViewController: BasicViewController {
     override func setupUI() {
         super.setupUI()
         
-        self.view.backgroundColor = .lightGray
+        self.view.backgroundColor = .white
         
         if let label = self.view.subviews[0] as? TitleLabel{
             label.widthAnchor.constraint(equalToConstant: screenWidth * 3 / 4).isActive = true
@@ -92,7 +92,7 @@ class AddEntryViewController: BasicViewController {
        
         let nameLabel = UILabel()
         nameLabel.text = "NAME"
-        nameLabel.textColor = .white
+        nameLabel.textColor = .black
         nameLabel.font = UIFont(name: fontName, size: 20)
         nameLabel.adjustsFontSizeToFitWidth = true
         nameLabel.minimumScaleFactor = 0.3
@@ -100,7 +100,7 @@ class AddEntryViewController: BasicViewController {
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let nameTextField = UITextField()
-        nameTextField.textColor = .white
+        nameTextField.textColor = .black
         nameTextField.setBottomBorder()
         nameTextField.autocorrectionType = .no
         nameTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -108,13 +108,13 @@ class AddEntryViewController: BasicViewController {
         
         let amountLabel = UILabel()
         amountLabel.text = "AMOUNT"
-        amountLabel.textColor = .white
+        amountLabel.textColor = .black
         amountLabel.font = UIFont(name: fontName, size: 20)
         amountLabel.adjustsFontSizeToFitWidth = true
         amountLabel.minimumScaleFactor = 0.3
         
         let amountTextField = UITextField()
-        amountTextField.textColor =  .white
+        amountTextField.textColor =  .black
         amountTextField.text = "0.00"
         amountTextField.delegate = self
         amountTextField.setBottomBorder()
@@ -125,13 +125,13 @@ class AddEntryViewController: BasicViewController {
         
         let dateLabel = UILabel()
         dateLabel.text = "DATE"
-        dateLabel.textColor = .white
+        dateLabel.textColor = .black
         dateLabel.font = UIFont(name: fontName, size: 20)
         dateLabel.adjustsFontSizeToFitWidth = true
         dateLabel.minimumScaleFactor = 0.3
         
         let dateTextField = UITextField()
-        dateTextField.textColor =  .white
+        dateTextField.textColor =  .black
         if let date = date{
             dateTextField.text = formatter.string(from: date)
         }else{
@@ -145,14 +145,14 @@ class AddEntryViewController: BasicViewController {
         let categoryLabel = UILabel()
         categoryLabel.text = "CATEGORY"
         categoryLabel.font = UIFont(name: fontName, size: 20)
-        categoryLabel.textColor = .white
+        categoryLabel.textColor = .black
         //categoryLabel.adjustsFontSizeToFitWidth = true
         //categoryLabel.minimumScaleFactor = 0.3
         categoryLabel.translatesAutoresizingMaskIntoConstraints = false
         categoryLabel.widthAnchor.constraint(equalToConstant: screenWidth * 3 / 10).isActive = true
         
         let categoryTextField = UITextField()
-        categoryTextField.textColor =  .white
+        categoryTextField.textColor =  .black
         categoryTextField.text = "UNCATEGORIZED"
         categoryTextField.setBottomBorder()
         self.categoryTextFeild = categoryTextField
@@ -213,7 +213,8 @@ class AddEntryViewController: BasicViewController {
         
         imageView.isUserInteractionEnabled = true
         imageView.image = UIImage(named: "addImage")
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .center
+        imageView.backgroundColor = superLightGray
         
         
         
@@ -356,6 +357,8 @@ extension AddEntryViewController : UIImagePickerControllerDelegate, UINavigation
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let userPickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
             imageView.image = userPickedImage
+            imageView.contentMode = .scaleAspectFill
+            imageView.clipsToBounds = true
             imagePicker.dismiss(animated: true, completion: nil)
         }
     }
@@ -364,7 +367,7 @@ extension AddEntryViewController : UIImagePickerControllerDelegate, UINavigation
 extension UITextField{
     
     //To add bottom border only
-    func setBottomBorder(withColor color: UIColor = .white)
+    func setBottomBorder(withColor color: UIColor = .black)
     {
         self.borderStyle = UITextField.BorderStyle.none
         self.backgroundColor = UIColor.clear

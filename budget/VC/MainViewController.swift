@@ -11,16 +11,13 @@ import CoreData
 
 class MainViewController: UIViewController {
     
-    var income : Income?
-    var expenses : [Expense] = []
-    var remainFund : Double?{
-        guard let income = income else {return nil}
-        var remain = income.amount
-        for expense in expenses{
-            remain -= expense.amount
+    var income : Income?{
+        didSet{
+            calcRemainFund()
         }
-        return remain
     }
+    var expenses : [Expense] = []
+    var remainFund : Double?
     
     var monthsArr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     
@@ -36,11 +33,17 @@ class MainViewController: UIViewController {
         let calendar = Calendar.current
         return calendar.component(.year, from: date)
     }
+    
+    var currentDate : Int{
+        let date = Date()
+        let calendar = Calendar.current
+        return calendar.component(.day, from: date)
+    }
     var monthYear = ""
     var amountTypedString = ""
     
     weak var monthLabel : UILabel!
-    weak var monthNumberLabel : UILabel!
+    weak var dateNumberLabel : UILabel!
     weak var moneyLabel : UILabel!
     weak var moneyCircle : UIView!
     
@@ -65,7 +68,7 @@ class MainViewController: UIViewController {
     }
     func setUpUI(){
         
-        self.view.backgroundColor = .darkGray
+        self.view.backgroundColor = .white
         
         let monthLabel = UILabel()
         self.view.addSubview(monthLabel)
@@ -74,22 +77,22 @@ class MainViewController: UIViewController {
         monthLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
         self.monthLabel = monthLabel
         
-        let monthNumberLabel = UILabel()
-        self.view.addSubview(monthNumberLabel)
-        monthNumberLabel.mainScreenLabel(fontSize: 50)
-        monthNumberLabel.topAnchor.constraint(equalTo: monthLabel.bottomAnchor, constant: 20).isActive = true
-        monthNumberLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        self.monthNumberLabel = monthNumberLabel
+        let dateNumberLabel = UILabel()
+        self.view.addSubview(dateNumberLabel)
+        dateNumberLabel.mainScreenLabel(fontSize: 50)
+        dateNumberLabel.topAnchor.constraint(equalTo: monthLabel.bottomAnchor, constant: 20).isActive = true
+        dateNumberLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        self.dateNumberLabel = dateNumberLabel
         
         
         let dotLabel1 = UILabel()
         dotLabel1.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(dotLabel1)
-        dotLabel1.topAnchor.constraint(equalTo: monthNumberLabel.bottomAnchor, constant: 10).isActive = true
+        dotLabel1.topAnchor.constraint(equalTo: dateNumberLabel.bottomAnchor, constant: 10).isActive = true
         dotLabel1.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 10).isActive = true
         dotLabel1.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
-        dotLabel1.textColor = .lightGray
-        dotLabel1.font = monthNumberLabel.font.withSize(50)
+        dotLabel1.textColor = .black
+        dotLabel1.font = dateNumberLabel.font.withSize(50)
         dotLabel1.text = "•  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •"
         dotLabel1.lineBreakMode = .byClipping
         
@@ -101,7 +104,7 @@ class MainViewController: UIViewController {
         moneyCircle.widthAnchor.constraint(equalTo: moneyCircle.heightAnchor).isActive = true
         moneyCircle.topAnchor.constraint(equalTo: dotLabel1.bottomAnchor, constant: 10).isActive = true
         
-        moneyCircle.backgroundColor = .lightGray
+        moneyCircle.backgroundColor = superLightGray
         moneyCircle.layer.masksToBounds = true
         moneyCircle.layer.cornerRadius = 150 * heightRatio
         moneyCircle.isUserInteractionEnabled = true
@@ -132,8 +135,8 @@ class MainViewController: UIViewController {
         dotLabel2.topAnchor.constraint(equalTo: moneyCircle.bottomAnchor, constant: 10).isActive = true
         dotLabel2.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 10).isActive = true
         dotLabel2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
-        dotLabel2.textColor = .lightGray
-        dotLabel2.font = monthNumberLabel.font.withSize(50)
+        dotLabel2.textColor = .black
+        dotLabel2.font = dateNumberLabel.font.withSize(50)
         dotLabel2.text = "•  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •"
         dotLabel2.lineBreakMode = .byClipping
         
@@ -146,14 +149,16 @@ class MainViewController: UIViewController {
         button.topAnchor.constraint(equalTo: dotLabel2.bottomAnchor).isActive = true
         
         button.setTitle("+ add an entry", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.setTitleColor(.lightGray, for: .highlighted)
+        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(superLightGray, for: .highlighted)
         button.addTarget(self, action: #selector(addEntry), for: .touchUpInside)
     }
     func updateView(){
         monthLabel.text = monthsArr[currentMonth - 1]
         
-        monthNumberLabel.text = String(format: "%02d", currentMonth)
+        dateNumberLabel.text = String(format: "%02d", currentDate)
+        
+        print(remainFund)
         
         if let remain = remainFund{
             moneyLabel.text = "\(String(format: "%.2f", remain))"
@@ -161,6 +166,14 @@ class MainViewController: UIViewController {
             moneyLabel.text = "Tap to add income"
         }
         
+    }
+    func calcRemainFund(){
+        guard let income = income else {return}
+        var remain = income.amount
+        for expense in expenses{
+            remain -= expense.amount
+        }
+        remainFund = remain
     }
 
     
@@ -230,6 +243,7 @@ class MainViewController: UIViewController {
             let newIncome = Income(context: context)
             newIncome.amount = amount
             newIncome.monthYear = monthYear
+            income = newIncome
         }
         
         
@@ -292,7 +306,7 @@ extension MainViewController: UITextFieldDelegate{
 
 extension UILabel{
     func mainScreenLabel(fontSize: CGFloat){
-        self.textColor = .white
+        self.textColor = .black
         self.backgroundColor = .clear
         self.adjustsFontSizeToFitWidth = true
         self.textAlignment = .center

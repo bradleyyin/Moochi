@@ -26,13 +26,20 @@ class ReceiptAlbumViewController : BasicViewController {
     override func viewDidLoad() {
         titleOfVC = "RECEIPT ALBUM"
         super.viewDidLoad()
+        
+        
+        
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         loadExpenses()
         sortExpenses()
         print(sortedExpenses)
+        recieptTableView.reloadData()
         
     }
     override func setupUI() {
-        self.view.backgroundColor = .lightGray
+        self.view.backgroundColor = .white
         
         let titleLabel = TitleLabel()
         
@@ -56,6 +63,7 @@ class ReceiptAlbumViewController : BasicViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .clear
+        self.recieptTableView = tableView
     }
     func updateViews(){
         

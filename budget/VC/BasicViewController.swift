@@ -32,7 +32,7 @@ class BasicViewController: UIViewController {
     func setupUI(){
         
         
-        self.view.backgroundColor = .darkGray
+        self.view.backgroundColor = .white
         
         let titleLabel = TitleLabel()
         

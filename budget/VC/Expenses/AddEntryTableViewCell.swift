@@ -52,7 +52,7 @@ class AddEntryTableViewCell: UITableViewCell {
         }
         
         
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.black, for: .normal)
         
         button.titleLabel?.font = UIFont(name: fontName, size: fontSize)
         

@@ -20,7 +20,7 @@ class ReceiptViewController: UIViewController {
     }
     func setUpView(){
         
-        self.view.backgroundColor = .lightGray
+        self.view.backgroundColor = .white
         
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false

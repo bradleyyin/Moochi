@@ -16,5 +16,6 @@ let statusBarHeight = UIApplication.shared.statusBarFrame.height
 let heightRatio = screenHeight/896
 let buttonHeight : CGFloat = 60 * heightRatio
 let buttonWidth : CGFloat = 60 * heightRatio
+let superLightGray = UIColor.lightGray.withAlphaComponent(0.3)
 
 

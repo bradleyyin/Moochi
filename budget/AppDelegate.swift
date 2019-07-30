@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tabBarController.tabBar.shadowImage = UIImage()
         tabBarController.tabBar.backgroundImage = UIImage()
         tabBarController.tabBar.tintColor = .black
-        tabBarController.tabBar.unselectedItemTintColor = .white
+        tabBarController.tabBar.unselectedItemTintColor = superLightGray
         
         
         window?.rootViewController = tabBarController

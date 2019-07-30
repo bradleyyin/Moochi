@@ -12,7 +12,7 @@ import UIKit
 class TitleLabel : UILabel{
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.textColor = .white
+        self.textColor = .black
         self.adjustsFontSizeToFitWidth = true
         self.minimumScaleFactor = 0.3
         self.textAlignment = .left

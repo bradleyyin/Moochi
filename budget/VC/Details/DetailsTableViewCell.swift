@@ -51,7 +51,7 @@ class DetailsTableViewCell: UITableViewCell {
         
         return categoryTotal - totalExpenses
     }
-    var fontSize : CGFloat = 30
+    var fontSize : CGFloat = 0
     
     weak var titleLabel : UILabel!
     weak var totalLabel : UILabel!
@@ -150,12 +150,12 @@ class DetailsTableViewCell: UITableViewCell {
         
         
         totalLabel.textAlignment = .right
-        totalLabel.textColor = .darkGray
+        totalLabel.textColor = .black
         totalLabel.text = NSString(format:"%.2f", categoryTotal) as String
         totalLabel.font = UIFont(name: fontName, size: fontSize)
         
         
-        whiteBarView.backgroundColor = .white
+        whiteBarView.backgroundColor = UIColor.gray
         
         print(categoryRemaining)
         
@@ -164,13 +164,15 @@ class DetailsTableViewCell: UITableViewCell {
             blackRatio = 1
         }
         print (titleLabel.text, blackRatio)
+        blackBarView.constraints.first(where: {$0.firstAttribute == .width})?.isActive = false
         blackBarView.widthAnchor.constraint(equalToConstant: self.frame.width * blackRatio).isActive = true
+        
         blackBarView.layoutIfNeeded()
         //print("width", blackBarView.frame.width, titleLabel.text)
         //blackBarView.frame.origin.x = self.frame.width * (1.0 - blackRatio)
-        blackBarView.backgroundColor = .darkGray
+        blackBarView.backgroundColor = .lightText
         if blackBarView.frame.width >= 100.0 {
-            remainLabel.textColor = .white
+            remainLabel.textColor = .black
             remainLabel.leadingAnchor.constraint(equalTo: blackBarView.leadingAnchor, constant: 5).isActive = true
             remainLabel.textAlignment = .left
         }else{

@@ -37,7 +37,7 @@ class DetailsViewController: BasicViewController {
     override func setupUI(){
         super.setupUI()
         
-        self.view.backgroundColor = .lightGray
+        self.view.backgroundColor = .white
         
         
 //        let menuButton = UIButton(frame: CGRect(x: screenWidth - 40 - 5, y: statusBarHeight, width: 40 * heightRatio, height: buttonHeight * heightRatio))
@@ -50,7 +50,7 @@ class DetailsViewController: BasicViewController {
         detailsTableView.backgroundColor = .clear
         detailsTableView.register(DetailsTableViewCell.self, forCellReuseIdentifier: "detailsCell")
         detailsTableView.register(AddEntryTableViewCell.self, forCellReuseIdentifier: "AddEntryCell")
-        detailsTableView.separatorStyle = .none
+        detailsTableView.separatorStyle = .singleLine
         detailsTableView.allowsSelection = false
         
        
@@ -100,14 +100,17 @@ extension DetailsViewController : UITableViewDelegate, UITableViewDataSource{
             cell.selectionStyle = .none
             cell.cellType = .addCategory
             return cell
-        }else{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "detailsCell", for: indexPath) as! DetailsTableViewCell
-            let category = categories[indexPath.row]
-            cell.category = category
-            cell.fontSize = 25 * heightRatio
-            
-            return cell
         }
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "detailsCell", for: indexPath) as! DetailsTableViewCell
+        let category = categories[indexPath.row]
+        cell.fontSize = 25 * heightRatio
+        cell.category = category
+        
+        
+        return cell
+        
+        
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
@@ -138,6 +141,8 @@ extension DetailsViewController : AddTableViewCellDelegate{
             
             
             self.createCategory(name: categoryName, amount: amount)
+            alertController.textFields?[1].text = ""
+            self.amountTypedString = ""
         }
         let cancelAction = UIAlertAction(title: "cancel", style: .cancel, handler: nil)
         

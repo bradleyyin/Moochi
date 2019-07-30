@@ -38,7 +38,7 @@ class SingleDayDetailViewController: BasicViewController {
         
         loadImage()
         
-        self.view.backgroundColor = .lightGray
+        self.view.backgroundColor = .white
         
         guard let expense = expense else {return}
         
@@ -166,7 +166,7 @@ class SingleDayDetailViewController: BasicViewController {
         
         
         
-        imageView.backgroundColor = .darkGray
+        imageView.backgroundColor = superLightGray
         
         
         
@@ -244,7 +244,7 @@ extension SingleDayDetailViewController : UIImagePickerControllerDelegate, UINav
 }
 extension UILabel{
     func setUpLabelForSingleDayDetailVC() {
-        self.textColor = .white
+        self.textColor = .black
         self.font = UIFont(name: fontName, size: 30)
         self.adjustsFontSizeToFitWidth = true
         self.minimumScaleFactor = 0.3
