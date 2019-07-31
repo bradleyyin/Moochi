@@ -88,7 +88,7 @@ class DetailsTableViewCell: UITableViewCell {
         blackBarView.topAnchor.constraint(equalTo: whiteBarView.topAnchor).isActive = true
         blackBarView.bottomAnchor.constraint(equalTo: whiteBarView.bottomAnchor).isActive = true
         blackBarView.trailingAnchor.constraint(equalTo: whiteBarView.trailingAnchor).isActive = true
-        //blackBarView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        blackBarView.widthAnchor.constraint(equalToConstant: 100).isActive = true
         
         let remainLabel = UILabel()
         blackBarView.addSubview(remainLabel)
@@ -163,15 +163,16 @@ class DetailsTableViewCell: UITableViewCell {
         if blackRatio >= 1 {
             blackRatio = 1
         }
-        print (titleLabel.text, blackRatio)
-        blackBarView.constraints.first(where: {$0.firstAttribute == .width})?.isActive = false
-        blackBarView.widthAnchor.constraint(equalToConstant: self.frame.width * blackRatio).isActive = true
+        //print (titleLabel.text, blackRatio)
+        guard let blackWidthAnchor = blackBarView.constraints.first(where: {$0.firstAttribute == .width}) else {return}
+        blackWidthAnchor.constant = self.frame.width * blackRatio
         
         blackBarView.layoutIfNeeded()
         //print("width", blackBarView.frame.width, titleLabel.text)
         //blackBarView.frame.origin.x = self.frame.width * (1.0 - blackRatio)
+        print("black bar width", blackWidthAnchor.constant)
         blackBarView.backgroundColor = .lightText
-        if blackBarView.frame.width >= 100.0 {
+        if blackWidthAnchor.constant >= 100 {
             remainLabel.textColor = .black
             remainLabel.leadingAnchor.constraint(equalTo: blackBarView.leadingAnchor, constant: 5).isActive = true
             remainLabel.textAlignment = .left

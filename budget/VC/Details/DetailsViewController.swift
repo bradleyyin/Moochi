@@ -50,7 +50,7 @@ class DetailsViewController: BasicViewController {
         detailsTableView.backgroundColor = .clear
         detailsTableView.register(DetailsTableViewCell.self, forCellReuseIdentifier: "detailsCell")
         detailsTableView.register(AddEntryTableViewCell.self, forCellReuseIdentifier: "AddEntryCell")
-        detailsTableView.separatorStyle = .singleLine
+        detailsTableView.separatorStyle = .none
         detailsTableView.allowsSelection = false
         
        
