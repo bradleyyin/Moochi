@@ -11,11 +11,7 @@ import CoreData
 
 class MainViewController: UIViewController {
     
-    var income : Income?{
-        didSet{
-            calcRemainFund()
-        }
-    }
+    var income : Income?
     var expenses : [Expense] = []
     var remainFund : Double?
     
@@ -64,6 +60,7 @@ class MainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         print(income, remainFund)
         loadExpenses()
+        calcRemainFund()
         updateView()
     }
     func setUpUI(){
