@@ -174,6 +174,11 @@ class SingleDayDetailViewController: BasicViewController {
         imageView.addGestureRecognizer(tapGesture)
         
         self.imageView = imageView
+        
+        
+        let swipeFromLeftGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(swipeFromLeft))
+        swipeFromLeftGesture.edges = .left
+        self.view.addGestureRecognizer(swipeFromLeftGesture)
     }
     
     @objc func imageTapped(){
@@ -221,6 +226,9 @@ class SingleDayDetailViewController: BasicViewController {
         }
         
         
+    }
+    @objc func swipeFromLeft(){
+        backButtonTapped()
     }
 
 }

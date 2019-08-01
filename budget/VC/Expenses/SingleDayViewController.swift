@@ -96,6 +96,10 @@ class SingleDayViewController: BasicViewController {
         expensesTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
         self.table = expensesTableView
         
+        let swipeFromLeftGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(swipeFromLeft))
+        swipeFromLeftGesture.edges = .left
+        self.view.addGestureRecognizer(swipeFromLeftGesture)
+        
         
     }
     func loadItem(){
@@ -117,6 +121,9 @@ class SingleDayViewController: BasicViewController {
         }
         
         //print(expenses[0].name)
+    }
+    @objc func swipeFromLeft(){
+        backButtonTapped()
     }
     
     
