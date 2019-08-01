@@ -210,6 +210,20 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         myCollectionView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0).isActive=true
         myCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0).isActive=true
         myCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive=true
+        
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(goToLastMonth))
+        swipeRight.direction = .right
+        self.addGestureRecognizer(swipeRight)
+        
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(goToNextMonth))
+        swipeLeft.direction = .left
+        self.addGestureRecognizer(swipeLeft)
+    }
+    @objc func goToLastMonth(){
+        monthView.goToLastMonth()
+    }
+    @objc func goToNextMonth(){
+        monthView.goToNextMonth()
     }
     
     let monthView: MonthView = {

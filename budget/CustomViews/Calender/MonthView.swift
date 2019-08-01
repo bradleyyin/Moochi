@@ -30,19 +30,20 @@ class MonthView: UIView {
         //btnLeft.isEnabled=false
     }
     
-    @objc func btnLeftRightAction(sender: UIButton) {
-        if sender == btnRight {
-            currentMonthIndex += 1
-            if currentMonthIndex > 11 {
-                currentMonthIndex = 0
-                currentYear += 1
-            }
-        } else {
-            currentMonthIndex -= 1
-            if currentMonthIndex < 0 {
-                currentMonthIndex = 11
-                currentYear -= 1
-            }
+    @objc func goToNextMonth(){
+        currentMonthIndex += 1
+        if currentMonthIndex > 11 {
+            currentMonthIndex = 0
+            currentYear += 1
+        }
+        lblName.text="\(monthsArr[currentMonthIndex]) \(currentYear)"
+        delegate?.didChangeMonth(monthIndex: currentMonthIndex, year: currentYear)
+    }
+    @objc func goToLastMonth(){
+        currentMonthIndex -= 1
+        if currentMonthIndex < 0 {
+            currentMonthIndex = 11
+            currentYear -= 1
         }
         lblName.text="\(monthsArr[currentMonthIndex]) \(currentYear)"
         delegate?.didChangeMonth(monthIndex: currentMonthIndex, year: currentYear)
@@ -84,7 +85,7 @@ class MonthView: UIView {
         btn.setTitle(">", for: .normal)
         btn.setTitleColor(.black, for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints=false
-        btn.addTarget(self, action: #selector(btnLeftRightAction(sender:)), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(goToNextMonth), for: .touchUpInside)
         return btn
     }()
     
@@ -93,7 +94,7 @@ class MonthView: UIView {
         btn.setTitle("<", for: .normal)
         btn.setTitleColor(.black, for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints=false
-        btn.addTarget(self, action: #selector(btnLeftRightAction(sender:)), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(goToLastMonth), for: .touchUpInside)
         btn.setTitleColor(UIColor.lightGray, for: .disabled)
         return btn
     }()
