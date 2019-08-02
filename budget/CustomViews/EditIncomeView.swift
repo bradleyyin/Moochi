@@ -9,6 +9,7 @@
 import UIKit
 protocol EditIncomeDelegate {
     func enterIncome(amount: Double)
+    func dismissView()
 }
 
 class EditIncomeView: UIView {
@@ -136,7 +137,7 @@ class EditIncomeView: UIView {
     }
     
     @objc func dissmissView(){
-        self.removeFromSuperview()
+        delegate?.dismissView()
     }
     
     @objc func updateIncome(){

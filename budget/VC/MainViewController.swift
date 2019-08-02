@@ -231,8 +231,16 @@ class MainViewController: UIViewController {
 //        alertController.addAction(cancelAction)
 //
 //        present(alertController, animated: true)
+        let backGroundView = UIView()
+        self.view.addSubview(backGroundView)
+        backGroundView.translatesAutoresizingMaskIntoConstraints = false
+        backGroundView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        backGroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        backGroundView.backgroundColor = UIColor.gray.withAlphaComponent(0.5)
         let editIncomeView = EditIncomeView()
-        self.view.addSubview(editIncomeView)
+        backGroundView.addSubview(editIncomeView)
         editIncomeView.delegate = self
         editIncomeView.translatesAutoresizingMaskIntoConstraints = false
         editIncomeView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
@@ -316,7 +324,12 @@ extension MainViewController: EditIncomeDelegate{
         }catch{
             print("error adding income")
         }
-        
+        dismissView()
+    }
+    func dismissView(){
+        let totalViewsNumber = self.view.subviews.count
+        self.view.subviews[totalViewsNumber - 1].removeFromSuperview()
+       //self.view.subviews[totalViewsNumber - 1].removeFromSuperview()
     }
 }
 
