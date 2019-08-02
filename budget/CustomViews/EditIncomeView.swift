@@ -144,6 +144,8 @@ class EditIncomeView: UIView {
         print("update income")
         if hasIncome{
             guard let addString = addTextField.text, let addAmount = Double(addString), let subtractString = subtractTextField.text, let subtractAmount = Double(subtractString) else {return}
+            let total = addAmount - subtractAmount
+            delegate?.enterIncome(amount: total)
             
         }else{
             guard let amountString = incomeTextField.text, let amount = Double(amountString) else {return}

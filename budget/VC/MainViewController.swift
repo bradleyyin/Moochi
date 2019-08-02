@@ -309,7 +309,7 @@ extension MainViewController: EditIncomeDelegate{
     func enterIncome(amount: Double){
         guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
         if let income = income{
-            income.amount -= amount
+            income.amount += amount
         }else{
             let newIncome = Income(context: context)
             newIncome.amount = amount
@@ -325,6 +325,8 @@ extension MainViewController: EditIncomeDelegate{
             print("error adding income")
         }
         dismissView()
+        calcRemainFund()
+        updateView()
     }
     func dismissView(){
         let totalViewsNumber = self.view.subviews.count
