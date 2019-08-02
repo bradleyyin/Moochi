@@ -49,6 +49,7 @@ class MainViewController: UIViewController {
         monthYear = "\(currentYear)\(currentMonth)"
         loadIncome()
         setUpUI()
+        
         //check for file
         //TODO: remove this later
         let fm = FileManager.default
@@ -210,32 +211,97 @@ class MainViewController: UIViewController {
     }
     
     @objc func moneyCircleTapped(){
-        let alertController = UIAlertController(title: "Enter Income", message: "enter your income to track your budget", preferredStyle: .alert)
-        alertController.addTextField { (textField) in
-            textField.placeholder = "income"
-            textField.keyboardType = .numberPad
-            textField.delegate = self
-            textField.tag = 1
+//        let alertController = UIAlertController(title: "Enter Income", message: "enter your income to track your budget", preferredStyle: .alert)
+//        alertController.addTextField { (textField) in
+//            textField.placeholder = "income"
+//            textField.keyboardType = .numberPad
+//            textField.delegate = self
+//            textField.tag = 1
+//
+//        }
+//        let addAction = UIAlertAction(title: "Enter", style: .default) { (action) in
+//            guard let amountString = alertController.textFields?[0].text, let amount = Double(amountString) else { return }
+//            self.enterIncome(amount: amount)
+//            self.updateView()
+//
+//        }
+//        let cancelAction = UIAlertAction(title: "cancel", style: .cancel, handler: nil)
+//
+//        alertController.addAction(addAction)
+//        alertController.addAction(cancelAction)
+//
+//        present(alertController, animated: true)
+        let editIncomeView = EditIncomeView()
+        self.view.addSubview(editIncomeView)
+        editIncomeView.delegate = self
+        editIncomeView.translatesAutoresizingMaskIntoConstraints = false
+        editIncomeView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        editIncomeView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
+        editIncomeView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
+        editIncomeView.heightAnchor.constraint(equalToConstant: 300 * heightRatio).isActive = true
+        if let income = income{
+            editIncomeView.lblName.text = "Current Income: \(String(format: "%.2f", income.amount))"
+            editIncomeView.hasIncome = true
+        }else{
+            editIncomeView.lblName.text = "Add your income for this month"
+            editIncomeView.hasIncome = false
             
         }
-        let addAction = UIAlertAction(title: "Enter", style: .default) { (action) in
-            guard let amountString = alertController.textFields?[0].text, let amount = Double(amountString) else { return }
-            self.enterIncome(amount: amount)
-            self.updateView()
-            
-        }
-        let cancelAction = UIAlertAction(title: "cancel", style: .cancel, handler: nil)
         
-        alertController.addAction(addAction)
-        alertController.addAction(cancelAction)
-        
-        present(alertController, animated: true)
     
     }
+ 
+
+}
+//extension MainViewController: UITextFieldDelegate{
+//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//
+//
+//        if textField.tag == 0 {
+//
+//            let formatter = NumberFormatter()
+//            formatter.minimumFractionDigits = 2
+//            formatter.maximumFractionDigits = 2
+//
+//            if string.count > 0 {
+//                print ("here")
+//                amountTypedString += string
+//                let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
+//                //let numbString = NSString(format:"%.2f", decNumber) as String
+//                let newString = formatter.string(from: decNumber)!
+//                //let newString = "$" + numbString
+//                textField.text = newString
+//            } else {
+//                amountTypedString = String(amountTypedString.dropLast())
+//                if amountTypedString.count > 0 {
+//
+//                    let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
+//
+//                    let newString = formatter.string(from: decNumber)!
+//                    textField.text = newString
+//                } else {
+//                    textField.text = "0.00"
+//                }
+//
+//            }
+//        }
+//
+//
+//        return false
+//
+//    }
+//
+//    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+//        amountTypedString = ""
+//        return true
+//    }
+//
+//}
+extension MainViewController: EditIncomeDelegate{
     func enterIncome(amount: Double){
         guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
         if let income = income{
-            income.amount = amount
+            income.amount -= amount
         }else{
             let newIncome = Income(context: context)
             newIncome.amount = amount
@@ -250,53 +316,8 @@ class MainViewController: UIViewController {
         }catch{
             print("error adding income")
         }
-    
-    }
-
-}
-extension MainViewController: UITextFieldDelegate{
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        
-        if textField.tag == 1 {
-            
-            let formatter = NumberFormatter()
-            formatter.minimumFractionDigits = 2
-            formatter.maximumFractionDigits = 2
-            
-            if string.count > 0 {
-                print ("here")
-                amountTypedString += string
-                let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
-                //let numbString = NSString(format:"%.2f", decNumber) as String
-                let newString = formatter.string(from: decNumber)!
-                //let newString = "$" + numbString
-                textField.text = newString
-            } else {
-                amountTypedString = String(amountTypedString.dropLast())
-                if amountTypedString.count > 0 {
-                    
-                    let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
-                    
-                    let newString = formatter.string(from: decNumber)!
-                    textField.text = newString
-                } else {
-                    textField.text = "0.00"
-                }
-                
-            }
-        }
-        
-        
-        return false
         
     }
-    
-    func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        amountTypedString = ""
-        return true
-    }
-    
 }
 
 

@@ -80,6 +80,8 @@ class SingleDayViewController: BasicViewController {
         button.setImage(UIImage(named: "back"), for: .normal)
         button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         
+       
+        
         let expensesTableView = UITableView()
         expensesTableView.translatesAutoresizingMaskIntoConstraints = false
         expensesTableView.dataSource = self
@@ -93,12 +95,23 @@ class SingleDayViewController: BasicViewController {
         expensesTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
         expensesTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         expensesTableView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 20).isActive = true
-        expensesTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
+//        expensesTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
         self.table = expensesTableView
         
         let swipeFromLeftGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(swipeFromLeft))
         swipeFromLeftGesture.edges = .left
         self.view.addGestureRecognizer(swipeFromLeftGesture)
+        
+        let button2 = UIButton()
+        button2.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(button2)
+        button2.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        button2.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
+        button2.topAnchor.constraint(equalTo: expensesTableView.bottomAnchor , constant: 40).isActive = true
+        button2.setTitle("+ add an entry", for: .normal)
+        button2.titleLabel?.font = UIFont(name: fontName, size: 30)
+        button2.setTitleColor(.black, for: .normal)
+        button2.addTarget(self, action: #selector(showVC), for: .touchUpInside)
         
         
     }
@@ -125,6 +138,11 @@ class SingleDayViewController: BasicViewController {
     @objc func swipeFromLeft(){
         backButtonTapped()
     }
+    @objc func showVC() {
+        let addEntryVC = AddEntryViewController()
+        addEntryVC.date = date
+        present(addEntryVC, animated: true)
+    }
     
     
 
@@ -132,31 +150,31 @@ class SingleDayViewController: BasicViewController {
 
 extension SingleDayViewController : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return expenses.count
-        }else{
-            return 1
-        }
+//        if section == 0 {
+        return expenses.count
+//        }else{
+//            return 1
+//        }
         
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 1{
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "AddEntryCell", for: indexPath) as? AddEntryTableViewCell else {return UITableViewCell()}
-            cell.delegate = self
-            cell.selectionStyle = .none
-            cell.cellType = .addEntry
-            return cell
-        }else{
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExpenseCell", for: indexPath) as? ExpenseTableViewCell else {return UITableViewCell()}
-            cell.expense = expenses[indexPath.row]
-            
-            return cell
-        }
+//        if indexPath.section == 1{
+//            guard let cell = tableView.dequeueReusableCell(withIdentifier: "AddEntryCell", for: indexPath) as? AddEntryTableViewCell else {return UITableViewCell()}
+//            cell.delegate = self
+//            cell.selectionStyle = .none
+//            cell.cellType = .addEntry
+//            return cell
+//        }else{
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExpenseCell", for: indexPath) as? ExpenseTableViewCell else {return UITableViewCell()}
+        cell.expense = expenses[indexPath.row]
+        
+        return cell
+       // }
        
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -186,12 +204,4 @@ extension SingleDayViewController : UITableViewDelegate, UITableViewDataSource{
     
     
 }
-extension SingleDayViewController : AddTableViewCellDelegate{
-    func showVC(vc: UIViewController?) {
-        if let addEntryVC = vc as? AddEntryViewController{
-            addEntryVC.date = date
-            present(addEntryVC, animated: true)
-        }
-        
-    }
-}
+
