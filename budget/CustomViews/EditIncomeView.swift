@@ -27,7 +27,7 @@ class EditIncomeView: UIView {
         lbl.text="current income"
         lbl.textColor = .black
         lbl.textAlignment = .center
-        lbl.font=UIFont.boldSystemFont(ofSize: 16)
+        lbl.font = UIFont(name: fontName, size: 30)
         lbl.translatesAutoresizingMaskIntoConstraints=false
         return lbl
     }()
@@ -52,6 +52,15 @@ class EditIncomeView: UIView {
         return btn
     }()
     
+    let addLabel: UILabel = {
+        let label = UILabel()
+        label.text = "add"
+        label.textColor = .black
+        label.font = UIFont(name: fontName, size: 20)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     let addTextField: UITextField = {
         let textField = UITextField()
         textField.keyboardType = .numberPad
@@ -60,6 +69,16 @@ class EditIncomeView: UIView {
         textField.textAlignment = .center
         return textField
     }()
+    
+    let subtractLabel :UILabel = {
+        let label = UILabel()
+        label.text = "subtract"
+        label.textColor = .black
+        label.font = UIFont(name: fontName, size: 20)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     let subtractTextField: UITextField = {
         let textField = UITextField()
         textField.keyboardType = .numberPad
@@ -80,7 +99,7 @@ class EditIncomeView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor=UIColor.red
+        self.backgroundColor=UIColor.white
         
         //setupViews()
     }
@@ -88,8 +107,8 @@ class EditIncomeView: UIView {
     
     func setupViews() {
         self.addSubview(cancelButton)
-        cancelButton.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        cancelButton.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        cancelButton.topAnchor.constraint(equalTo: self.topAnchor, constant:  10).isActive = true
+        cancelButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10).isActive = true
         
         self.addSubview(lblName)
         lblName.topAnchor.constraint(equalTo: topAnchor).isActive=true
@@ -99,7 +118,24 @@ class EditIncomeView: UIView {
         subtractTextField.delegate = self
         incomeTextField.delegate = self
         
-        var textFields = UIStackView(arrangedSubviews: [addTextField,subtractTextField])
+        addTextField.addSubview(addLabel)
+        addLabel.topAnchor.constraint(equalTo: addTextField.topAnchor).isActive = true
+        addLabel.bottomAnchor.constraint(equalTo: addTextField.bottomAnchor).isActive = true
+        addLabel.leadingAnchor.constraint(equalTo: addTextField.leadingAnchor).isActive = true
+        
+        subtractTextField.addSubview(subtractLabel)
+        subtractLabel.topAnchor.constraint(equalTo: subtractTextField.topAnchor).isActive = true
+        subtractLabel.bottomAnchor.constraint(equalTo: subtractTextField.bottomAnchor).isActive = true
+        subtractLabel.leadingAnchor.constraint(equalTo: subtractTextField.leadingAnchor).isActive = true
+        
+//        let addSection = UIStackView(arrangedSubviews: [addLabel, addTextField])
+//        addSection.axis = .horizontal
+//        addSection.distribution = .fillProportionally
+//        addSection.alignment = .fill
+//
+//        let subtractSection = UIStackView(arrangedSubviews: [subtactLabel, subtractTextField])
+        
+        var textFields = UIStackView(arrangedSubviews: [addTextField, subtractTextField])
         if !hasIncome{
             textFields = UIStackView(arrangedSubviews: [incomeTextField])
         }
@@ -108,8 +144,8 @@ class EditIncomeView: UIView {
         textFields.distribution = .fillEqually
         textFields.alignment = .fill
         textFields.translatesAutoresizingMaskIntoConstraints = false
-        textFields.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        textFields.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        textFields.leadingAnchor.constraint(equalTo: self.leadingAnchor,constant: 40).isActive = true
+        textFields.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40).isActive = true
         textFields.topAnchor.constraint(equalTo: lblName.bottomAnchor, constant: 10).isActive = true
         
         self.addSubview(updateButton)

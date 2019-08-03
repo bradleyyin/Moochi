@@ -42,6 +42,7 @@ class MainViewController: UIViewController {
     weak var dateNumberLabel : UILabel!
     weak var moneyLabel : UILabel!
     weak var moneyCircle : UIView!
+    weak var backgroundView : UIView!
     
 
     override func viewDidLoad() {
@@ -147,6 +148,7 @@ class MainViewController: UIViewController {
         button.topAnchor.constraint(equalTo: dotLabel2.bottomAnchor).isActive = true
         
         button.setTitle("+ add an entry", for: .normal)
+        button.titleLabel?.font = UIFont(name: fontName, size: 30)
         button.setTitleColor(.black, for: .normal)
         button.setTitleColor(superLightGray, for: .highlighted)
         button.addTarget(self, action: #selector(addEntry), for: .touchUpInside)
@@ -238,7 +240,9 @@ class MainViewController: UIViewController {
         backGroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        backGroundView.backgroundColor = UIColor.gray.withAlphaComponent(0.5)
+        backGroundView.backgroundColor = UIColor.gray.withAlphaComponent(0.8)
+        self.backgroundView = backGroundView
+        
         let editIncomeView = EditIncomeView()
         backGroundView.addSubview(editIncomeView)
         editIncomeView.delegate = self
@@ -255,9 +259,11 @@ class MainViewController: UIViewController {
             editIncomeView.hasIncome = false
             
         }
-        
+        backGroundView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(touchToDismiss)))
+        backGroundView.gestureRecognizers?[0].delegate = self
     
     }
+
  
 
 }
@@ -333,8 +339,18 @@ extension MainViewController: EditIncomeDelegate{
         self.view.subviews[totalViewsNumber - 1].removeFromSuperview()
        //self.view.subviews[totalViewsNumber - 1].removeFromSuperview()
     }
+    @objc func touchToDismiss(){
+        dismissView()
+    }
 }
-
+extension MainViewController: UIGestureRecognizerDelegate{
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view != backgroundView {
+            return false
+        }
+        return true
+    }
+}
 
 
 extension UILabel{
