@@ -28,6 +28,8 @@ class EditIncomeView: UIView {
         lbl.textColor = .black
         lbl.textAlignment = .center
         lbl.font = UIFont(name: fontName, size: 30)
+        lbl.adjustsFontSizeToFitWidth = true
+        lbl.minimumScaleFactor = 0.3
         lbl.translatesAutoresizingMaskIntoConstraints=false
         return lbl
     }()
@@ -66,6 +68,7 @@ class EditIncomeView: UIView {
         textField.keyboardType = .numberPad
         textField.tag = 1
         textField.text = "0.00"
+        textField.font = UIFont(name: fontName, size: 25)
         textField.textAlignment = .center
         return textField
     }()
@@ -85,13 +88,15 @@ class EditIncomeView: UIView {
         textField.tag = 2
         textField.text = "0.00"
         textField.textAlignment = .center
+        textField.font = UIFont(name: fontName, size: 25)
         return textField
     }()
     let incomeTextField: UITextField = {
         let textField = UITextField()
         textField.keyboardType = .numberPad
         textField.tag = 0
-        textField.text = "0.00"
+        textField.placeholder = "enter income here"
+        textField.font = UIFont(name: fontName, size: 25)
         textField.textAlignment = .center
         return textField
     }()
@@ -112,8 +117,8 @@ class EditIncomeView: UIView {
         
         self.addSubview(lblName)
         lblName.topAnchor.constraint(equalTo: topAnchor).isActive=true
-        lblName.trailingAnchor.constraint(equalTo: trailingAnchor).isActive=true
-        lblName.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        lblName.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive=true
+        lblName.leadingAnchor.constraint(equalTo: leadingAnchor, constant:  20).isActive = true
         addTextField.delegate = self
         subtractTextField.delegate = self
         incomeTextField.delegate = self
