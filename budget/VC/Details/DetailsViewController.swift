@@ -44,7 +44,12 @@ class DetailsViewController: BasicViewController {
 //        
 //        menuButton.addTarget(self, action: #selector(menuTapped), for: .touchUpInside)
         
-        let detailsTableView = UITableView(frame: CGRect(x: 10, y: statusBarHeight + (100 * heightRatio), width: screenWidth - 20, height: screenHeight - statusBarHeight - (100 * heightRatio) - buttonHeight - 20))
+        let detailsTableView = UITableView()
+        detailsTableView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(detailsTableView)
+        NSLayoutConstraint.activate([detailsTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 100*heightRatio),
+            detailsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            detailsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)])
         detailsTableView.delegate = self
         detailsTableView.dataSource = self
         detailsTableView.backgroundColor = .clear
@@ -54,53 +59,46 @@ class DetailsViewController: BasicViewController {
         detailsTableView.allowsSelection = false
         
        
-        self.view.addSubview(detailsTableView)
+        
         self.tableView = detailsTableView
         
+        let button2 = UIButton()
+        button2.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(button2)
+        button2.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        button2.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
+        button2.topAnchor.constraint(equalTo: detailsTableView.bottomAnchor , constant: 40).isActive = true
+        button2.setTitle("+ add a category", for: .normal)
+        button2.titleLabel?.font = UIFont(name: fontName, size: 30)
+        button2.setTitleColor(.black, for: .normal)
+        button2.addTarget(self, action: #selector(showVC), for: .touchUpInside)
+        
+        
     }
-    
-
-    
-
-
 }
 
 extension DetailsViewController : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 1{
-            return 1
-        }else{
-           return categories.count
-        }
+       return categories.count
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
-        if indexPath.section == 0{
-            context.delete(categories[indexPath.row])
-            categories.remove(at: indexPath.row)
-            
-            saveExpense()
-            tableView.reloadData()
-        }
+        
+        context.delete(categories[indexPath.row])
+        categories.remove(at: indexPath.row)
+        
+        saveExpense()
+        tableView.reloadData()
+        
     }
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        if indexPath.section == 0 {
-            return .delete
-        }
-        return .none
+       return .delete
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70 * heightRatio
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 1{
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "AddEntryCell", for: indexPath) as? AddEntryTableViewCell else {return UITableViewCell()}
-            cell.delegate = self
-            cell.selectionStyle = .none
-            cell.cellType = .addCategory
-            return cell
-        }
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "detailsCell", for: indexPath) as! DetailsTableViewCell
         let category = categories[indexPath.row]
@@ -113,16 +111,18 @@ extension DetailsViewController : UITableViewDelegate, UITableViewDataSource{
         
     }
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
 }
 
-extension DetailsViewController : AddTableViewCellDelegate{
-    func showVC(vc: UIViewController?) {
-        if vc == nil{
-            print("here")
-            showAddCategory()
-        }
+extension DetailsViewController {
+    //add category
+    
+   @objc func showVC() {
+    
+        print("here")
+        showAddCategory()
+        
     }
     func showAddCategory(){
         let alertController = UIAlertController(title: "Add a Category", message: nil, preferredStyle: .alert)

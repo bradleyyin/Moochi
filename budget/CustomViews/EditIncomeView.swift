@@ -155,8 +155,8 @@ class EditIncomeView: UIView {
         
         self.addSubview(updateButton)
         updateButton.topAnchor.constraint(equalTo: textFields.bottomAnchor, constant: 20).isActive = true
-        updateButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 30).isActive = true
-        updateButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30).isActive = true
+        updateButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 40).isActive = true
+        updateButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40).isActive = true
         updateButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20).isActive = true
         updateButton.heightAnchor.constraint(equalToConstant: 70 * heightRatio).isActive = true
 
