@@ -12,25 +12,45 @@ import CoreData
 
 class DetailsViewController: BasicViewController {
    
+    var currentMonth  : Int {
+        let date = Date()
+        let calendar = Calendar.current
+        let currentMonth = calendar.component(.month, from: date)
+        return currentMonth
+    }
     
+    var currentYear : Int{
+        let date = Date()
+        let calendar = Calendar.current
+        return calendar.component(.year, from: date)
+    }
+    var monthYear = ""
+    var income : Income?
 
     
     
     weak var tableView : UITableView!
+    weak var incomeNotBudgetLabel : UILabel!
     
     var amountTypedString = ""
+    var incomeNotBuget : Double?
     
     
     override func viewDidLoad() {
         titleOfVC = "DETAILS"
         super.viewDidLoad()
-        loadCategories()
+        monthYear = "\(currentYear)\(currentMonth)"
+        
+        
 
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadCategories()
+        loadIncome()
+        calcRemainingBudget()
+        updateViews()
         tableView.reloadData()
         
     }
@@ -39,22 +59,29 @@ class DetailsViewController: BasicViewController {
         
         self.view.backgroundColor = .white
         
+        let unbudgetIncomeLabel = UILabel()
+        unbudgetIncomeLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(unbudgetIncomeLabel)
+        unbudgetIncomeLabel.font = UIFont(name: fontName, size: 20)
+        NSLayoutConstraint.activate([unbudgetIncomeLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 100*heightRatio),
+                                     unbudgetIncomeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+                                     unbudgetIncomeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+                                     ])
         
-//        let menuButton = UIButton(frame: CGRect(x: screenWidth - 40 - 5, y: statusBarHeight, width: 40 * heightRatio, height: buttonHeight * heightRatio))
-//        
-//        menuButton.addTarget(self, action: #selector(menuTapped), for: .touchUpInside)
+        self.incomeNotBudgetLabel = unbudgetIncomeLabel
+        
         
         let detailsTableView = UITableView()
         detailsTableView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(detailsTableView)
-        NSLayoutConstraint.activate([detailsTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 100*heightRatio),
-            detailsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            detailsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)])
+        NSLayoutConstraint.activate([detailsTableView.topAnchor.constraint(equalTo: unbudgetIncomeLabel.bottomAnchor, constant: 20),
+                                     detailsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+                                     detailsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)])
+            
         detailsTableView.delegate = self
         detailsTableView.dataSource = self
         detailsTableView.backgroundColor = .clear
         detailsTableView.register(DetailsTableViewCell.self, forCellReuseIdentifier: "detailsCell")
-        detailsTableView.register(AddEntryTableViewCell.self, forCellReuseIdentifier: "AddEntryCell")
         detailsTableView.separatorStyle = .none
         detailsTableView.allowsSelection = false
         
@@ -74,6 +101,40 @@ class DetailsViewController: BasicViewController {
         button2.addTarget(self, action: #selector(showVC), for: .touchUpInside)
         
         
+    }
+    func updateViews(){
+        if let incomeNotBudget = incomeNotBuget{
+            incomeNotBudgetLabel.text = "Income not budgeted: \(String(format: "%.2f", incomeNotBudget))"
+        }else{
+            incomeNotBudgetLabel.text = "No income information."
+        }
+    }
+    
+    func loadIncome(){
+        
+        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else {return}
+        let request : NSFetchRequest<Income> = Income.fetchRequest()
+        let predicate = NSPredicate(format: "monthYear == %@", monthYear)
+        request.predicate = predicate
+        
+        do{
+            income = try context.fetch(request).first
+        }catch{
+            print("error loading income")
+        }
+        
+    }
+    
+    func calcRemainingBudget(){
+        var totalBudget = 0.0
+        for category in categories{
+            totalBudget += category.totalAmount
+        }
+        if let income = income{
+            incomeNotBuget = income.amount - totalBudget
+        }else{
+            incomeNotBuget = nil
+        }
     }
 }
 
@@ -159,6 +220,8 @@ extension DetailsViewController {
         newCategory.totalAmount = amount
         
         categories.append(newCategory)
+        calcRemainingBudget()
+        updateViews()
         tableView.reloadData()
         
         do {

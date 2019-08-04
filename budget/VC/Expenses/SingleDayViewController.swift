@@ -87,7 +87,6 @@ class SingleDayViewController: BasicViewController {
         expensesTableView.dataSource = self
         expensesTableView.delegate = self
         expensesTableView.register(ExpenseTableViewCell.self, forCellReuseIdentifier: "ExpenseCell")
-        expensesTableView.register(AddEntryTableViewCell.self, forCellReuseIdentifier: "AddEntryCell")
         expensesTableView.backgroundColor = .clear
         expensesTableView.separatorStyle = .none
         
