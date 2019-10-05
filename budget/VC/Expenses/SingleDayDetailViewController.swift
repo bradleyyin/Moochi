@@ -242,10 +242,12 @@ extension SingleDayDetailViewController : UIImagePickerControllerDelegate, UINav
             imageView.image = userPickedImage
             imageView.contentMode = .scaleAspectFill
             imageView.clipsToBounds = true
-            let imagePath = saveImage(image: userPickedImage)
-            expense?.imagePath = imagePath
+//            let imagePath = saveImage(image: userPickedImage)
+//            expense?.imagePath = imagePath
+//
+//            saveExpense()
+            //TODO: use helper to do this
             
-            saveExpense()
             imagePicker.dismiss(animated: true, completion: nil)
         }
     }

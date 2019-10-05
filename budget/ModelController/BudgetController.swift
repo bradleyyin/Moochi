@@ -20,8 +20,9 @@ class BudgetController {
         }
         Expense(name: name, imagePath: imagePath, date: date, category: category.uppercased(), amount: amount)
         saveToPersistentData()
-        
     }
+    
+    
     func saveToPersistentData(context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         context.performAndWait {
             do {

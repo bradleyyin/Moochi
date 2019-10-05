@@ -189,8 +189,7 @@ extension SingleDayViewController : UITableViewDelegate, UITableViewDataSource{
         if indexPath.section == 0{
             context.delete(expenses[indexPath.row])
             expenses.remove(at: indexPath.row)
-            
-            saveExpense()
+            //TODO: run this in controller
             tableView.reloadData()
         }
     }

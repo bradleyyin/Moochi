@@ -148,7 +148,8 @@ extension DetailsViewController : UITableViewDelegate, UITableViewDataSource{
         context.delete(categories[indexPath.row])
         categories.remove(at: indexPath.row)
         
-        saveExpense()
+        //TODO: run delete in controller
+        
         tableView.reloadData()
         
     }
