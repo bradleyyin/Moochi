@@ -253,38 +253,17 @@ class AddEntryViewController: BasicViewController {
         print(amount)
         print(date)
         print(category)
-        var image : UIImage? = imageView.image
+        var image: UIImage? = imageView.image
         if imageView.image == UIImage(named: "addImage"){
             image = nil
         }
-        createEntry(name: name, amount: amount, date: date, category: category, image: image)
+        budgetController.createNewExpense(name: name, amount: amount, date: date, category: category, image: image)
         dismiss(animated: true, completion: nil)
         
         
     }
     @objc func cancelTapped() {
         dismiss(animated: true, completion: nil)
-    }
-
-    func createEntry (name: String, amount: Double, date: Date, category: String, image: UIImage?){
-        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
-        var imagePath : String?
-        if let image = image{
-            imagePath = saveImage(image: image)
-        }
-        
-        let newEntry = Expense(context: context)
-        newEntry.name = name
-        newEntry.amount = amount
-        newEntry.date = date
-        if category == "uncaategorized"{
-            newEntry.category = nil
-        }else{
-            newEntry.category = category.uppercased()
-        }
-        newEntry.imagePath = imagePath
-        
-        saveExpense()
     }
     
     func showDatePicker(){
@@ -367,8 +346,7 @@ extension AddEntryViewController : UIImagePickerControllerDelegate, UINavigation
 extension UITextField{
     
     //To add bottom border only
-    func setBottomBorder(withColor color: UIColor = .black)
-    {
+    func setBottomBorder(withColor color: UIColor = .black) {
         self.borderStyle = UITextField.BorderStyle.none
         self.backgroundColor = UIColor.clear
         let width: CGFloat = 1.0
