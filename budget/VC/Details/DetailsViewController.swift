@@ -162,7 +162,7 @@ extension DetailsViewController : UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "detailsCell", for: indexPath) as! DetailsTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "detailsCell", for: indexPath) as? DetailsTableViewCell else { fatalError("cant make DetailTableViewCell") }
         let category = categories[indexPath.row]
         cell.fontSize = 25 * heightRatio
         cell.category = category
@@ -199,7 +199,11 @@ extension DetailsViewController {
             
         }
         let addAction = UIAlertAction(title: "Add", style: .default) { (action) in
-            guard let categoryName = alertController.textFields?[0].text, !categoryName.isEmpty, !self.categories.contains(where: {$0.name == categoryName}), let amountString = alertController.textFields?[1].text, let amount = Double(amountString) else { return }
+            guard let categoryName = alertController.textFields?[0].text,
+                !categoryName.isEmpty,
+                !self.categories.contains(where: {$0.name == categoryName}),
+                let amountString = alertController.textFields?[1].text,
+                let amount = Double(amountString) else { return }
             
             
             self.createCategory(name: categoryName, amount: amount)
@@ -245,7 +249,7 @@ extension DetailsViewController: UITextFieldDelegate{
             formatter.minimumFractionDigits = 2
             formatter.maximumFractionDigits = 2
             
-            if string.count > 0 {
+            if !string.isEmpty {
                 print ("here")
                 amountTypedString += string
                 let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
@@ -255,7 +259,7 @@ extension DetailsViewController: UITextFieldDelegate{
                 textField.text = newString
             } else {
                 amountTypedString = String(amountTypedString.dropLast())
-                if amountTypedString.count > 0 {
+                if !amountTypedString.isEmpty {
                     
                     let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
                     

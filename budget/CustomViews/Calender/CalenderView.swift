@@ -104,7 +104,7 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         
         myCollectionView.delegate=self
         myCollectionView.dataSource=self
-        myCollectionView.register(dateCVCell.self, forCellWithReuseIdentifier: "Cell")
+        myCollectionView.register(DateCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -112,7 +112,7 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell=collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! dateCVCell
+        guard let cell=collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? DateCollectionViewCell else { fatalError("cant make DateCollectionViewCell")}
         cell.backgroundColor = .clear
         if indexPath.item <= firstWeekDayOfMonth - 2 {
             cell.isHidden=true
@@ -130,14 +130,12 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell=collectionView.cellForItem(at: indexPath)
+        let cell = collectionView.cellForItem(at: indexPath)
         //cell?.backgroundColor=Colors.darkRed
-        let lbl = cell?.subviews[1] as! UILabel
-        //lbl.textColor = UIColor.black
+        guard let lbl = cell?.subviews[1] as? UILabel else { return }
         let day = lbl.text ?? "01"
-        if let date = "\(currentYear)-\(currentMonthIndex)-\(day)".date{
+        if let date = "\(currentYear)-\(currentMonthIndex)-\(day)".date {
             delegate?.goToSingleDay(date: date)
-            
         }
         
     }
@@ -255,7 +253,7 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
     }
 }
 
-class dateCVCell: UICollectionViewCell {
+class DateCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor=UIColor.clear

@@ -206,33 +206,33 @@ extension EditIncomeView: UITextFieldDelegate{
         
         
         //if textField.tag == 0 {
-            
-            let formatter = NumberFormatter()
-            formatter.minimumFractionDigits = 2
-            formatter.maximumFractionDigits = 2
-            
-            if string.count > 0 {
-                print ("here")
-                amountTypedString += string
+        
+        let formatter = NumberFormatter()
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 2
+        
+        if !string.isEmpty {
+            print ("here")
+            amountTypedString += string
+            let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
+            //let numbString = NSString(format:"%.2f", decNumber) as String
+            let newString = formatter.string(from: decNumber)!
+            //let newString = "$" + numbString
+            textField.text = newString
+        } else {
+            amountTypedString = String(amountTypedString.dropLast())
+            if !amountTypedString.isEmpty {
+                
                 let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
-                //let numbString = NSString(format:"%.2f", decNumber) as String
+                
                 let newString = formatter.string(from: decNumber)!
-                //let newString = "$" + numbString
                 textField.text = newString
             } else {
-                amountTypedString = String(amountTypedString.dropLast())
-                if amountTypedString.count > 0 {
-                    
-                    let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
-                    
-                    let newString = formatter.string(from: decNumber)!
-                    textField.text = newString
-                } else {
-                    textField.text = "0.00"
-                }
-                
+                textField.text = "0.00"
             }
-   //     }
+            
+        }
+        //     }
         
         
         return false

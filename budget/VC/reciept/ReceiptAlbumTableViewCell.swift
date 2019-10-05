@@ -83,7 +83,7 @@ extension ReceiptAlbumTableViewCell : UICollectionViewDelegate, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ReceiptCell", for: indexPath) as! ReceiptCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ReceiptCell", for: indexPath) as? ReceiptCollectionViewCell else { fatalError("cant make ReceiptCollectionViewCell")}
         cell.backgroundColor = .clear
         cell.imagePath = expenses[indexPath.row].imagePath
         cell.delegate = delegate

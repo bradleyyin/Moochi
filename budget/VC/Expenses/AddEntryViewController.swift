@@ -6,6 +6,8 @@
 //  Copyright © 2019 bradleyyin. All rights reserved.
 //
 
+//swiftlint:disable function_body_length
+
 import UIKit
 import CoreData
 
@@ -247,7 +249,11 @@ class AddEntryViewController: BasicViewController {
     }
     @objc func checkMarkTapped(){
         
-        guard let name = nameTextField.text, !name.isEmpty, let amountString = amountTextFeild.text, let amount = Double(amountString), let dateString = dateTextField.text, let date = formatter.date(from: dateString), let category = categoryTextFeild.text, !category.isEmpty else { return }
+        guard let name = nameTextField.text, !name.isEmpty,
+            let amountString = amountTextFeild.text, let amount = Double(amountString),
+            let dateString = dateTextField.text,
+            let date = formatter.date(from: dateString),
+            let category = categoryTextFeild.text, !category.isEmpty else { return }
        
         print(name)
         print(amount)
@@ -371,7 +377,7 @@ extension AddEntryViewController: UITextFieldDelegate{
             formatter.minimumFractionDigits = 2
             formatter.maximumFractionDigits = 2
             
-            if string.count > 0 {
+            if !string.isEmpty {
                 print ("here")
                 amountTypedString += string
                 let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
@@ -381,7 +387,7 @@ extension AddEntryViewController: UITextFieldDelegate{
                 textField.text = newString
             } else {
                 amountTypedString = String(amountTypedString.dropLast())
-                if amountTypedString.count > 0 {
+                if !amountTypedString.isEmpty {
                     
                     let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
                     
