@@ -5,6 +5,9 @@
 # certificate
 signingcert.p12
 
+# product
+Produts/
+
 ### Carthage ###
 # Carthage
 #
