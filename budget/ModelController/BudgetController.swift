@@ -43,6 +43,20 @@ class BudgetController {
         }
     }
     
+    func createCategory(name: String, totalAmount: Double, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+        context.performAndWait {
+            Category(name: name, totalAmount: totalAmount)
+            saveToPersistentData()
+        }
+    }
+    
+    func deleteCategory(category: Category, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+        context.performAndWait {
+            context.delete(category)
+            saveToPersistentData()
+        }
+    }
+    
     func saveToPersistentData(context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         context.performAndWait {
             do {
