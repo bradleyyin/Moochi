@@ -97,6 +97,13 @@ class BudgetController {
         return income
     }
     
+    func updateIncome(income: Income, amount: Double, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+        context.performAndWait {
+            income.amount = amount
+            saveToPersistentData()
+        }
+    }
+    
     func saveToPersistentData(context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         context.performAndWait {
             do {

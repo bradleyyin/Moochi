@@ -193,21 +193,15 @@ class MainViewController: UIViewController {
 }
 extension MainViewController: EditIncomeDelegate {
     func enterIncome(amount: Double) {
-        let context = CoreDataStack.shared.mainContext
         if let income = income {
-            income.amount += amount
+            let newamount = income.amount + amount
+            budgetController.updateIncome(income: income, amount: newamount)
         } else {
-            let newIncome = Income(context: context)
-            newIncome.amount = amount
-            newIncome.monthYear = monthCalculator.monthYear
-            income = newIncome
+            let monthYear = monthCalculator.monthYear
+            budgetController.createIncome(amount: amount, monthYear: monthYear)
+            income = budgetController.readIncome(monthYear: monthYear)
         }
         
-        do {
-            try context.save()
-        } catch {
-            print("error adding income")
-        }
         dismissView()
         getRemainingFunds()
         updateView()
