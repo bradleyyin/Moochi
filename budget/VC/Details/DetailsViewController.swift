@@ -12,7 +12,7 @@ import CoreData
 
 class DetailsViewController: BasicViewController {
    
-    var currentMonth : Int {
+    var currentMonth: Int {
         let date = Date()
         let calendar = Calendar.current
         let currentMonth = calendar.component(.month, from: date)
@@ -25,13 +25,30 @@ class DetailsViewController: BasicViewController {
         return calendar.component(.year, from: date)
     }
     var monthYear = ""
-    var income : Income?
+    var income: Income?
 
     weak var tableView: UITableView!
     weak var incomeNotBudgetLabel: UILabel!
     
     var amountTypedString = ""
     var incomeNotBuget: Double?
+    
+   lazy var fetchedResultsController: NSFetchedResultsController<Category> = {
+       let fetchRequest: NSFetchRequest<Category> = Category.fetchRequest()
+       fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+       
+       let moc = CoreDataStack.shared.mainContext
+       let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+       
+       frc.delegate = self
+       
+    do {
+        try frc.performFetch()
+    } catch {
+        fatalError("cant fetch category")
+    }
+       return frc
+   }()
     
     
     override func viewDidLoad() {
@@ -41,7 +58,7 @@ class DetailsViewController: BasicViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadCategories()
+        //loadCategories()
         loadIncome()
         calcRemainingBudget()
         updateViews()
@@ -132,7 +149,7 @@ class DetailsViewController: BasicViewController {
 
 extension DetailsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-       return categories.count
+        return fetchedResultsController.fetchedObjects?.count ?? 0
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         let context = CoreDataStack.shared.mainContext
@@ -157,14 +174,10 @@ extension DetailsViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "DetailsCell", for: indexPath) as? DetailsTableViewCell else {
             fatalError("cant make DetailTableViewCell")
         }
-        let category = categories[indexPath.row]
+        let category = fetchedResultsController.object(at: indexPath)
         cell.fontSize = 25 * heightRatio
         cell.category = category
-        
-        
         return cell
-        
-        
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -175,8 +188,6 @@ extension DetailsViewController {
     //add category
     
    @objc func showVC() {
-    
-        print("here")
         showAddCategory()
         
     }
@@ -213,21 +224,10 @@ extension DetailsViewController {
         
     }
     func createCategory(name: String, amount: Double) {
-        let context = CoreDataStack.shared.mainContext
-        let newCategory = Category(context: context)
-        newCategory.name = name.uppercased()
-        newCategory.totalAmount = amount
-        
-        categories.append(newCategory)
+        budgetController.createCategory(name: name, totalAmount: amount)
         calcRemainingBudget()
         updateViews()
         tableView.reloadData()
-        
-        do {
-            try context.save()
-        } catch {
-            print("error creating category: \(error)")
-        }
     }
     
     
@@ -264,8 +264,7 @@ extension DetailsViewController: UITextFieldDelegate {
                 
             }
         }
-        
-        
+
         return false
         
     }
@@ -275,4 +274,51 @@ extension DetailsViewController: UITextFieldDelegate {
         return true
     }
     
+}
+
+extension DetailsViewController: NSFetchedResultsControllerDelegate {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            guard let newIndexPath = newIndexPath else { return }
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+        case .delete:
+            guard let indexPath = indexPath else { return }
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        case .move:
+            guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
+            tableView.moveRow(at: indexPath, to: newIndexPath)
+        case .update:
+            guard let indexPath = indexPath else { return }
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        @unknown default:
+            fatalError("new cases for fetch result controller type")
+        }
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange sectionInfo: NSFetchedResultsSectionInfo,
+                    atSectionIndex sectionIndex: Int,
+                    for type: NSFetchedResultsChangeType) {
+        
+        let sectionsIndexSet = IndexSet(integer: sectionIndex)
+        
+        
+        switch type {
+        case .insert:
+            tableView.insertSections(sectionsIndexSet, with: .automatic)
+        case .delete:
+            tableView.deleteSections(sectionsIndexSet, with: .automatic)
+        default:
+            break
+        }
+    }
 }

@@ -12,7 +12,7 @@ import CoreData
 extension Category {
     @discardableResult convenience init(name: String, totalAmount: Double, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         self.init(context: context)
-        self.name = name
+        self.name = name.uppercased()
         self.totalAmount = totalAmount
     }
 }
