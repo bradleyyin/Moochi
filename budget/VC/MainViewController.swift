@@ -40,7 +40,7 @@ class MainViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadExpenses()
+        
         calcRemainFund()
         updateView()
     }
