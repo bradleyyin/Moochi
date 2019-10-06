@@ -9,5 +9,11 @@
 import Foundation
 
 class BudgetCalculator {
-    
+    func calculateRemainingFunds(income: Income, expenses: [Expense]) -> Double {
+        var remain = income.amount
+        for expense in expenses{
+            remain -= expense.amount
+        }
+        return remain
+    }
 }

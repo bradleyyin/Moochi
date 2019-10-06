@@ -11,11 +11,11 @@ import CoreData
 
 class MainViewController: UIViewController {
     var income: Income?
-    var expenses: [Expense] = []
     var remainFund: Double?
     
     let monthCalculator = MonthCalculator()
     let budgetController = BudgetController()
+    let budgetCalculator = BudgetCalculator()
     
     var amountTypedString = ""
     
@@ -41,7 +41,7 @@ class MainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        calcRemainFund()
+        getRemainingFunds()
         updateView()
     }
     func setUpUI(){
@@ -146,13 +146,10 @@ class MainViewController: UIViewController {
         }
         
     }
-    func calcRemainFund(){
-        guard let income = income else {return}
-        var remain = income.amount
-        for expense in expenses{
-            remain -= expense.amount
-        }
-        remainFund = remain
+    func getRemainingFunds(){
+        guard let income = income else { return }
+        let expenses = budgetController.readMonthlyExpense()
+        remainFund = budgetCalculator.calculateRemainingFunds(income: income, expenses: expenses)
     }
 
     
@@ -161,44 +158,7 @@ class MainViewController: UIViewController {
         self.present(AddEntryViewController(), animated: true)
     }
     
-    func loadExpenses(){
-        let context = CoreDataStack.shared.mainContext
-        let currentDate = Date()
-        let startOfMonth = currentDate.getThisMonthStart()
-        let endOfMonth = currentDate.getThisMonthEnd()
-        //let calender = Calendar.current
-        
-        let request : NSFetchRequest<Expense> = Expense.fetchRequest()
-        request.predicate = NSPredicate(format: "(date => %@) AND (date <= %@)", startOfMonth as NSDate, endOfMonth as NSDate)
-        
-        do{
-            expenses = try context.fetch(request)
-        }catch{
-            print("error loading income")
-        }
-    }
-    
     @objc func moneyCircleTapped(){
-//        let alertController = UIAlertController(title: "Enter Income", message: "enter your income to track your budget", preferredStyle: .alert)
-//        alertController.addTextField { (textField) in
-//            textField.placeholder = "income"
-//            textField.keyboardType = .numberPad
-//            textField.delegate = self
-//            textField.tag = 1
-//
-//        }
-//        let addAction = UIAlertAction(title: "Enter", style: .default) { (action) in
-//            guard let amountString = alertController.textFields?[0].text, let amount = Double(amountString) else { return }
-//            self.enterIncome(amount: amount)
-//            self.updateView()
-//
-//        }
-//        let cancelAction = UIAlertAction(title: "cancel", style: .cancel, handler: nil)
-//
-//        alertController.addAction(addAction)
-//        alertController.addAction(cancelAction)
-//
-//        present(alertController, animated: true)
         let backGroundView = UIView()
         self.view.addSubview(backGroundView)
         backGroundView.translatesAutoresizingMaskIntoConstraints = false
@@ -230,50 +190,6 @@ class MainViewController: UIViewController {
     
     }
 }
-//extension MainViewController: UITextFieldDelegate{
-//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//
-//
-//        if textField.tag == 0 {
-//
-//            let formatter = NumberFormatter()
-//            formatter.minimumFractionDigits = 2
-//            formatter.maximumFractionDigits = 2
-//
-//            if string.count > 0 {
-//                print ("here")
-//                amountTypedString += string
-//                let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
-//                //let numbString = NSString(format:"%.2f", decNumber) as String
-//                let newString = formatter.string(from: decNumber)!
-//                //let newString = "$" + numbString
-//                textField.text = newString
-//            } else {
-//                amountTypedString = String(amountTypedString.dropLast())
-//                if amountTypedString.count > 0 {
-//
-//                    let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
-//
-//                    let newString = formatter.string(from: decNumber)!
-//                    textField.text = newString
-//                } else {
-//                    textField.text = "0.00"
-//                }
-//
-//            }
-//        }
-//
-//
-//        return false
-//
-//    }
-//
-//    func textFieldShouldClear(_ textField: UITextField) -> Bool {
-//        amountTypedString = ""
-//        return true
-//    }
-//
-//}
 extension MainViewController: EditIncomeDelegate{
     func enterIncome(amount: Double){
         let context = CoreDataStack.shared.mainContext
@@ -286,15 +202,13 @@ extension MainViewController: EditIncomeDelegate{
             income = newIncome
         }
         
-        
-        
         do{
             try context.save()
         }catch{
             print("error adding income")
         }
         dismissView()
-        calcRemainFund()
+        getRemainingFunds()
         updateView()
     }
     func dismissView(){
@@ -317,7 +231,7 @@ extension MainViewController: UIGestureRecognizerDelegate{
 
 
 extension UILabel{
-    func mainScreenLabel(fontSize: CGFloat){
+    func mainScreenLabel(fontSize: CGFloat) {
         self.textColor = .black
         self.backgroundColor = .clear
         self.adjustsFontSizeToFitWidth = true
