@@ -29,6 +29,23 @@ class BudgetController {
         }
     }
     
+    func readMonthlyExpense(context: NSManagedObjectContext = CoreDataStack.shared.mainContext) -> [Expense] {
+        let currentDate = Date()
+        let startOfMonth = currentDate.getThisMonthStart()
+        let endOfMonth = currentDate.getThisMonthEnd()
+        var expenses: [Expense] = []
+        let request : NSFetchRequest<Expense> = Expense.fetchRequest()
+        request.predicate = NSPredicate(format: "(date => %@) AND (date <= %@)", startOfMonth as NSDate, endOfMonth as NSDate)
+        context.performAndWait {
+            do{
+                expenses = try context.fetch(request)
+            }catch{
+                print("error loading income")
+            }
+        }
+        return expenses
+    }
+    
     func updateExpense(expense: Expense, imagePath: String, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         context.performAndWait {
             expense.imagePath = imagePath
@@ -58,18 +75,19 @@ class BudgetController {
     }
     
     func readIncome(monthYear: String, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) -> Income? {
+        var income: Income?
         context.performAndWait {
-            let request : NSFetchRequest<Income> = Income.fetchRequest()
+            let request: NSFetchRequest<Income> = Income.fetchRequest()
             let predicate = NSPredicate(format: "monthYear == %@", monthYear)
             request.predicate = predicate
             
-            do{
-                let income = try context.fetch(request).first
-                return income
-            }catch{
+            do {
+                income = try context.fetch(request).first
+            } catch {
                 fatalError("Error loading income: \(error)")
             }
         }
+        return income
     }
     
     func saveToPersistentData(context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {

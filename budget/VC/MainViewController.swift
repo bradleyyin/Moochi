@@ -15,6 +15,7 @@ class MainViewController: UIViewController {
     var remainFund: Double?
     
     let monthCalculator = MonthCalculator()
+    let budgetController = BudgetController()
     
     var amountTypedString = ""
     
@@ -27,7 +28,8 @@ class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadIncome()
+        income = budgetController.readIncome(monthYear: monthCalculator.monthYear)
+        
         setUpUI()
         
         //check for file
@@ -38,7 +40,6 @@ class MainViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print(income, remainFund)
         loadExpenses()
         calcRemainFund()
         updateView()
@@ -159,20 +160,7 @@ class MainViewController: UIViewController {
         print("add")
         self.present(AddEntryViewController(), animated: true)
     }
-    func loadIncome(){
-        
-        let context = CoreDataStack.shared.mainContext
-        let request : NSFetchRequest<Income> = Income.fetchRequest()
-        let predicate = NSPredicate(format: "monthYear == %@", monthCalculator.monthYear)
-        request.predicate = predicate
-        
-        do{
-            income = try context.fetch(request).first
-        }catch{
-            print("error loading income")
-        }
-        
-    }
+    
     func loadExpenses(){
         let context = CoreDataStack.shared.mainContext
         let currentDate = Date()
