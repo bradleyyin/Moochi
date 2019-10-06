@@ -32,15 +32,13 @@ class SingleDayDetailViewController: BasicViewController {
         imagePicker.allowsEditing = false
     }
 
-    
-
-    override func setupUI(){
+    override func setupUI() {
         
         loadImage()
         
         self.view.backgroundColor = .white
         
-        guard let expense = expense else {return}
+        guard let expense = expense else { return }
         
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -71,7 +69,7 @@ class SingleDayDetailViewController: BasicViewController {
         amountLabel.setUpLabelForSingleDayDetailVC()
         
         let amountContentLabel = UILabel()
-        amountContentLabel.text = NSString(format:"%.2f", expense.amount) as String
+        amountContentLabel.text = NSString(format: "%.2f", expense.amount) as String
         amountContentLabel.setUpLabelForSingleDayDetailVC()
         amountContentLabel.textAlignment = .center
         
@@ -86,8 +84,6 @@ class SingleDayDetailViewController: BasicViewController {
         dateContentLabel.setUpLabelForSingleDayDetailVC()
         dateContentLabel.textAlignment = .center
         
-        
-        
         let categoryLabel = UILabel()
         categoryLabel.text = "CATEGORY"
         categoryLabel.setUpLabelForSingleDayDetailVC()
@@ -98,9 +94,7 @@ class SingleDayDetailViewController: BasicViewController {
         categoryContentLabel.text = expense.category?.uppercased()
         categoryContentLabel.setUpLabelForSingleDayDetailVC()
         categoryContentLabel.textAlignment = .center
-        
-        
-        
+    
         let nameStackView = UIStackView(arrangedSubviews: [nameLabel, nameContentLabel])
         nameStackView.axis = .horizontal
         nameStackView.distribution = .fillEqually
@@ -157,18 +151,14 @@ class SingleDayDetailViewController: BasicViewController {
         
         
         imageView.image = image
-        if imageView.image == UIImage(named: "addImage"){
+        if imageView.image == UIImage(named: "addImage") {
             imageView.contentMode = .center
-        }else{
+        } else {
             imageView.contentMode = .scaleAspectFill
             imageView.clipsToBounds = true
         }
         
-        
-        
         imageView.backgroundColor = superLightGray
-        
-        
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
         imageView.addGestureRecognizer(tapGesture)
@@ -181,78 +171,76 @@ class SingleDayDetailViewController: BasicViewController {
         self.view.addGestureRecognizer(swipeFromLeftGesture)
     }
     
-    @objc func imageTapped(){
-        if imageView.image == UIImage(named: "addImage"){
+    @objc func imageTapped() {
+        if imageView.image == UIImage(named: "addImage") {
             let alertController = UIAlertController(title: "select source", message: nil, preferredStyle: .actionSheet)
             
-            let choseCam = UIAlertAction(title: "Camera", style: .default) { (action) in
+            let choseCam = UIAlertAction(title: "Camera", style: .default) { _ in
                 self.imagePicker.sourceType = .camera
                 self.present(self.imagePicker, animated: true)
             }
-            let choseLibrary = UIAlertAction(title: "Photo", style: .default) { (action) in
+            let choseLibrary = UIAlertAction(title: "Photo", style: .default) { _ in
                 self.imagePicker.sourceType = .photoLibrary
                 self.present(self.imagePicker, animated: true)
             }
-            let cancelAction = UIAlertAction(title: "cancel", style: .cancel) { (action) in
-                //cancel
-            }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             alertController.addAction(choseCam)
             alertController.addAction(choseLibrary)
             alertController.addAction(cancelAction)
             self.present(alertController, animated: true)
             
-        }else{
+        } else {
             let recieptVC = ReceiptViewController()
             recieptVC.image = imageView.image
             present(recieptVC, animated: true)
         }
     }
-    func loadImage(){
+    func loadImage() {
         guard let expense = expense else { return }
     
-        if let filePathComponent = expense.imagePath{
+        if let filePathComponent = expense.imagePath {
             print(filePathComponent)
             let fm = FileManager.default
-            guard let dir = fm.urls(for: .documentDirectory, in: .userDomainMask).first else{return}
+            guard let dir = fm.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
             
             let filePath = dir.appendingPathComponent(filePathComponent).path
             
-            if FileManager.default.fileExists(atPath: filePath){
+            if FileManager.default.fileExists(atPath: filePath) {
                 
                 image = UIImage(contentsOfFile: filePath)
             }
-        }else{
+        } else {
             image = UIImage(named: "addImage")
         }
         
         
     }
-    @objc func swipeFromLeft(){
+    @objc func swipeFromLeft() {
         backButtonTapped()
     }
 
 }
 
-extension SingleDayDetailViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+extension SingleDayDetailViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let userPickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        if let userPickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage,
+            let expense = expense,
+            let imagePath = imageSaver.saveImage(image: userPickedImage) {
             imageView.image = userPickedImage
             imageView.contentMode = .scaleAspectFill
             imageView.clipsToBounds = true
-//            let imagePath = saveImage(image: userPickedImage)
-//            expense?.imagePath = imagePath
-//
-//            saveExpense()
-            //TODO: use helper to do this
+            
+            budgetController.updateExpense(expense: expense, imagePath: imagePath)
             
             imagePicker.dismiss(animated: true, completion: nil)
         }
     }
 }
-extension UILabel{
+extension UILabel {
     func setUpLabelForSingleDayDetailVC() {
         self.textColor = .black
         self.font = UIFont(name: fontName, size: 30)

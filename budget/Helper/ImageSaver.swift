@@ -14,13 +14,13 @@ class ImageSaver {
         let uuid = UUID().uuidString
         let fm = FileManager.default
         let dir = fm.urls(for: .documentDirectory, in: .userDomainMask).first
-        guard let filePath = dir?.appendingPathComponent("\(uuid).jpeg") else { return nil}
+        guard let filePath = dir?.appendingPathComponent("\(uuid).jpeg") else { return nil }
         
         if let imagedata = image.jpegData(compressionQuality: 1.0){
             do{
                 try imagedata.write(to: filePath, options: .atomic)
                 return "\(uuid).jpeg"
-            }catch{
+            } catch {
                 print("error saving image : \(error)")
             }
             

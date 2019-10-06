@@ -29,7 +29,12 @@ class BudgetController {
         }
     }
     
-    
+    func updateExpense(expense: Expense, imagePath: String, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+        context.performAndWait {
+            expense.imagePath = imagePath
+            saveToPersistentData()
+        }
+    }
     
     func deleteExpense(expense: Expense, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         context.performAndWait {
