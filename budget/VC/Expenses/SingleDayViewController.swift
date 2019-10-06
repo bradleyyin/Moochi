@@ -20,11 +20,6 @@ class SingleDayViewController: BasicViewController {
     weak var titleLabel: TitleLabel!
     
     weak var table: UITableView!
-    
-    var budgetController: BudgetController!
-
-    
-
 
     override func viewDidLoad() {
         titleOfVC = "here"
@@ -115,7 +110,7 @@ class SingleDayViewController: BasicViewController {
         
     }
     func loadItem() {
-        guard let date = date, let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
+        guard let date = date, let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
         let request: NSFetchRequest<Expense> = Expense.fetchRequest()
         
         
@@ -169,7 +164,9 @@ extension SingleDayViewController : UITableViewDelegate, UITableViewDataSource {
 //            cell.cellType = .addEntry
 //            return cell
 //        }else{
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExpenseCell", for: indexPath) as? ExpenseTableViewCell else { fatalError("cant make ExpenseTableViewCell") }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExpenseCell", for: indexPath) as? ExpenseTableViewCell else {
+            fatalError("cant make ExpenseTableViewCell")
+        }
         cell.expense = expenses[indexPath.row]
         
         return cell
@@ -185,12 +182,10 @@ extension SingleDayViewController : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
         if indexPath.section == 0 {
-            //budgetController.deleteExpense
-            context.delete(expenses[indexPath.row])
+            let expense = expenses[indexPath.row]
+            budgetController.deleteExpense(expense: expense)
             expenses.remove(at: indexPath.row)
-            //TODO: run this in controller
             tableView.reloadData()
         }
     }
@@ -200,7 +195,4 @@ extension SingleDayViewController : UITableViewDelegate, UITableViewDataSource {
         }
         return .none
     }
-    
-    
 }
-

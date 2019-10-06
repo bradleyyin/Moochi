@@ -15,7 +15,8 @@ class BudgetController {
     
     func createNewExpense(name: String,
                           amount: Double,
-                          date: Date, category: String,
+                          date: Date,
+                          category: String,
                           image: UIImage?,
                           context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         var imagePath: String?
@@ -27,6 +28,8 @@ class BudgetController {
             saveToPersistentData()
         }
     }
+    
+    
     
     func deleteExpense(expense: Expense, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         context.performAndWait {

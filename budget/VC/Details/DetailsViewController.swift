@@ -12,14 +12,14 @@ import CoreData
 
 class DetailsViewController: BasicViewController {
    
-    var currentMonth  : Int {
+    var currentMonth : Int {
         let date = Date()
         let calendar = Calendar.current
         let currentMonth = calendar.component(.month, from: date)
         return currentMonth
     }
     
-    var currentYear : Int{
+    var currentYear: Int {
         let date = Date()
         let calendar = Calendar.current
         return calendar.component(.year, from: date)
@@ -27,23 +27,17 @@ class DetailsViewController: BasicViewController {
     var monthYear = ""
     var income : Income?
 
-    
-    
-    weak var tableView : UITableView!
-    weak var incomeNotBudgetLabel : UILabel!
+    weak var tableView: UITableView!
+    weak var incomeNotBudgetLabel: UILabel!
     
     var amountTypedString = ""
-    var incomeNotBuget : Double?
+    var incomeNotBuget: Double?
     
     
     override func viewDidLoad() {
         titleOfVC = "DETAILS"
         super.viewDidLoad()
         monthYear = "\(currentYear)\(currentMonth)"
-        
-        
-
-        // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -54,7 +48,7 @@ class DetailsViewController: BasicViewController {
         tableView.reloadData()
         
     }
-    override func setupUI(){
+    override func setupUI() {
         super.setupUI()
         
         self.view.backgroundColor = .white
@@ -63,7 +57,7 @@ class DetailsViewController: BasicViewController {
         unbudgetIncomeLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(unbudgetIncomeLabel)
         unbudgetIncomeLabel.font = UIFont(name: fontName, size: 20)
-        NSLayoutConstraint.activate([unbudgetIncomeLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 100*heightRatio),
+        NSLayoutConstraint.activate([unbudgetIncomeLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 100 * heightRatio),
                                      unbudgetIncomeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
                                      unbudgetIncomeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
                                      ])
@@ -81,11 +75,9 @@ class DetailsViewController: BasicViewController {
         detailsTableView.delegate = self
         detailsTableView.dataSource = self
         detailsTableView.backgroundColor = .clear
-        detailsTableView.register(DetailsTableViewCell.self, forCellReuseIdentifier: "detailsCell")
+        detailsTableView.register(DetailsTableViewCell.self, forCellReuseIdentifier: "DetailsCell")
         detailsTableView.separatorStyle = .none
         detailsTableView.allowsSelection = false
-        
-       
         
         self.tableView = detailsTableView
         
@@ -94,7 +86,7 @@ class DetailsViewController: BasicViewController {
         self.view.addSubview(button2)
         button2.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         button2.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
-        button2.topAnchor.constraint(equalTo: detailsTableView.bottomAnchor , constant: 40).isActive = true
+        button2.topAnchor.constraint(equalTo: detailsTableView.bottomAnchor, constant: 40).isActive = true
         button2.setTitle("+ add a category", for: .normal)
         button2.titleLabel?.font = UIFont(name: fontName, size: 30)
         button2.setTitleColor(.black, for: .normal)
@@ -102,43 +94,43 @@ class DetailsViewController: BasicViewController {
         
         
     }
-    func updateViews(){
-        if let incomeNotBudget = incomeNotBuget{
+    func updateViews() {
+        if let incomeNotBudget = incomeNotBuget {
             incomeNotBudgetLabel.text = "Income not budgeted: \(String(format: "%.2f", incomeNotBudget))"
-        }else{
+        } else {
             incomeNotBudgetLabel.text = "No income information."
         }
     }
     
-    func loadIncome(){
+    func loadIncome() {
         
-        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else {return}
-        let request : NSFetchRequest<Income> = Income.fetchRequest()
+        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
+        let request: NSFetchRequest<Income> = Income.fetchRequest()
         let predicate = NSPredicate(format: "monthYear == %@", monthYear)
         request.predicate = predicate
         
-        do{
+        do {
             income = try context.fetch(request).first
-        }catch{
+        } catch {
             print("error loading income")
         }
         
     }
     
-    func calcRemainingBudget(){
+    func calcRemainingBudget() {
         var totalBudget = 0.0
-        for category in categories{
+        for category in categories {
             totalBudget += category.totalAmount
         }
-        if let income = income{
+        if let income = income {
             incomeNotBuget = income.amount - totalBudget
-        }else{
+        } else {
             incomeNotBuget = nil
         }
     }
 }
 
-extension DetailsViewController : UITableViewDelegate, UITableViewDataSource{
+extension DetailsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        return categories.count
     }
@@ -162,7 +154,9 @@ extension DetailsViewController : UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "detailsCell", for: indexPath) as? DetailsTableViewCell else { fatalError("cant make DetailTableViewCell") }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "DetailsCell", for: indexPath) as? DetailsTableViewCell else {
+            fatalError("cant make DetailTableViewCell")
+        }
         let category = categories[indexPath.row]
         cell.fontSize = 25 * heightRatio
         cell.category = category
@@ -186,22 +180,22 @@ extension DetailsViewController {
         showAddCategory()
         
     }
-    func showAddCategory(){
+    func showAddCategory() {
         let alertController = UIAlertController(title: "Add a Category", message: nil, preferredStyle: .alert)
-        alertController.addTextField { (textField) in
+        alertController.addTextField { textField in
             textField.placeholder = "category name"
         }
-        alertController.addTextField { (textField) in
+        alertController.addTextField { textField in
             textField.placeholder = "budget"
             textField.keyboardType = .numberPad
             textField.delegate = self
             textField.tag = 1
             
         }
-        let addAction = UIAlertAction(title: "Add", style: .default) { (action) in
+        let addAction = UIAlertAction(title: "Add", style: .default) { _ in
             guard let categoryName = alertController.textFields?[0].text,
                 !categoryName.isEmpty,
-                !self.categories.contains(where: {$0.name == categoryName}),
+                !self.categories.contains(where: { $0.name == categoryName }),
                 let amountString = alertController.textFields?[1].text,
                 let amount = Double(amountString) else { return }
             
@@ -218,7 +212,7 @@ extension DetailsViewController {
         present(alertController, animated: true)
         
     }
-    func createCategory(name: String, amount: Double){
+    func createCategory(name: String, amount: Double) {
         guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
         let newCategory = Category(context: context)
         newCategory.name = name.uppercased()
@@ -231,7 +225,7 @@ extension DetailsViewController {
         
         do {
             try context.save()
-        } catch  {
+        } catch {
             print("error creating category: \(error)")
         }
     }
@@ -239,7 +233,7 @@ extension DetailsViewController {
     
 }
 
-extension DetailsViewController: UITextFieldDelegate{
+extension DetailsViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         
@@ -250,7 +244,6 @@ extension DetailsViewController: UITextFieldDelegate{
             formatter.maximumFractionDigits = 2
             
             if !string.isEmpty {
-                print ("here")
                 amountTypedString += string
                 let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
                 //let numbString = NSString(format:"%.2f", decNumber) as String
@@ -283,4 +276,3 @@ extension DetailsViewController: UITextFieldDelegate{
     }
     
 }
-

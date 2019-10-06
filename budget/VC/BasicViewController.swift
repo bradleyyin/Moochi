@@ -55,18 +55,6 @@ class BasicViewController: UIViewController {
         }
     }
     
-
-    
-//    func saveExpense(){
-//        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
-//
-//        do{
-//            try context.save()
-//        }catch{
-//            print("error creating entry : \(error)")
-//        }
-//    }
-    
     @objc func backButtonTapped (){
         self.navigationController?.popViewController(animated: true)
     }
