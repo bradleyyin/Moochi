@@ -102,6 +102,7 @@ class MainViewController: UIViewController {
         moneyLabel.font = moneyLabel.font.withSize(80 * heightRatio)
         moneyLabel.adjustsFontSizeToFitWidth = true
         moneyLabel.minimumScaleFactor = 0.3
+        moneyLabel.baselineAdjustment = .alignCenters
         
         
         self.moneyLabel = moneyLabel

@@ -20,7 +20,9 @@ class EditIncomeView: UIView {
             setupViews()
         }
     }
-    var amountTypedString = ""
+    var amountTypeString = ""
+    var amountAddTypedString = ""
+    var amountSubtractTypedString = ""
     
     let lblName: UILabel = {
         let lbl=UILabel()
@@ -162,7 +164,11 @@ class EditIncomeView: UIView {
     @objc func updateIncome() {
         print("update income")
         if hasIncome {
-            guard let addString = addTextField.text, let addAmount = Double(addString), let subtractString = subtractTextField.text, let subtractAmount = Double(subtractString) else {return}
+            guard let addString = addTextField.text,
+                let addAmount = Double(addString),
+                let subtractString = subtractTextField.text,
+                let subtractAmount = Double(subtractString) else { return }
+            
             let total = addAmount - subtractAmount
             delegate?.enterIncome(amount: total)
             
@@ -178,24 +184,24 @@ class EditIncomeView: UIView {
 
 }
 extension EditIncomeView: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
+    
+    func autoDecimal(string: String, textField: UITextField, stringToStore: inout String) {
         let formatter = NumberFormatter()
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 2
         
         if !string.isEmpty {
-            amountTypedString += string
-            let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
+            stringToStore += string
+            let decNumber = NSDecimalNumber(string: stringToStore).multiplying(by: 0.01)
             //let numbString = NSString(format:"%.2f", decNumber) as String
             let newString = formatter.string(from: decNumber)!
             //let newString = "$" + numbString
             textField.text = newString
         } else {
-            amountTypedString = String(amountTypedString.dropLast())
-            if !amountTypedString.isEmpty {
+            stringToStore = String(stringToStore.dropLast())
+            if !stringToStore.isEmpty {
                 
-                let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
+                let decNumber = NSDecimalNumber(string: stringToStore).multiplying(by: 0.01)
                 
                 let newString = formatter.string(from: decNumber)!
                 textField.text = newString
@@ -204,13 +210,30 @@ extension EditIncomeView: UITextFieldDelegate {
             }
             
         }
+    }
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
+        
+        
+        if textField.tag == 1 {
+            autoDecimal(string: string, textField: textField, stringToStore: &amountAddTypedString)
+        } else if textField.tag == 2 {
+            autoDecimal(string: string, textField: textField, stringToStore: &amountSubtractTypedString)
+        } else {
+            autoDecimal(string: string, textField: textField, stringToStore: &amountTypeString)
+        }
         return false
         
     }
     
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        amountTypedString = ""
+        if textField.tag == 1 {
+            amountAddTypedString = ""
+        } else if textField.tag == 2 {
+            amountSubtractTypedString = ""
+        } else {
+            amountTypeString = ""
+        }
         return true
     }
     
