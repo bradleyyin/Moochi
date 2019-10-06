@@ -30,7 +30,7 @@ class MainViewController: UIViewController {
         return calendar.component(.year, from: date)
     }
     
-    var currentDate : Int{
+    var currentDate: Int {
         let date = Date()
         let calendar = Calendar.current
         return calendar.component(.day, from: date)
@@ -38,11 +38,11 @@ class MainViewController: UIViewController {
     var monthYear = ""
     var amountTypedString = ""
     
-    weak var monthLabel : UILabel!
-    weak var dateNumberLabel : UILabel!
-    weak var moneyLabel : UILabel!
-    weak var moneyCircle : UIView!
-    weak var backgroundView : UIView!
+    weak var monthLabel: UILabel!
+    weak var dateNumberLabel: UILabel!
+    weak var moneyLabel: UILabel!
+    weak var moneyCircle: UIView!
+    weak var backgroundView: UIView!
     
 
     override func viewDidLoad() {
@@ -60,6 +60,7 @@ class MainViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         print(income, remainFund)
         loadExpenses()
         calcRemainFund()
@@ -88,7 +89,7 @@ class MainViewController: UIViewController {
         dotLabel1.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(dotLabel1)
         dotLabel1.topAnchor.constraint(equalTo: dateNumberLabel.bottomAnchor, constant: 10).isActive = true
-        dotLabel1.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 10).isActive = true
+        dotLabel1.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
         dotLabel1.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         dotLabel1.textColor = .black
         dotLabel1.font = dateNumberLabel.font.withSize(50)
@@ -251,10 +252,10 @@ class MainViewController: UIViewController {
         editIncomeView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
         editIncomeView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
         editIncomeView.heightAnchor.constraint(equalToConstant: 300 * heightRatio).isActive = true
-        if let income = income{
+        if let income = income {
             editIncomeView.lblName.text = "Current Income: \(String(format: "%.2f", income.amount))"
             editIncomeView.hasIncome = true
-        }else{
+        } else {
             editIncomeView.lblName.text = "Add your income for this month"
             editIncomeView.hasIncome = false
             
@@ -263,9 +264,6 @@ class MainViewController: UIViewController {
         backGroundView.gestureRecognizers?[0].delegate = self
     
     }
-
- 
-
 }
 //extension MainViewController: UITextFieldDelegate{
 //    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

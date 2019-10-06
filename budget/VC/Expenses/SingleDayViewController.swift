@@ -11,15 +11,17 @@ import CoreData
 
 class SingleDayViewController: BasicViewController {
     
-    var date : Date?
+    var date: Date?
     
-    var dateString : String = ""
+    var dateString: String = ""
     
-    var expenses : [Expense] = []
+    var expenses: [Expense] = []
     
     weak var titleLabel: TitleLabel!
     
     weak var table: UITableView!
+    
+    var budgetController: BudgetController!
 
     
 
@@ -28,7 +30,7 @@ class SingleDayViewController: BasicViewController {
         titleOfVC = "here"
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM/dd"
-        if let date = date{
+        if let date = date {
             dateString = dateFormatter.string(from: date)
         }
         
@@ -65,7 +67,7 @@ class SingleDayViewController: BasicViewController {
         titleLabel.backgroundColor = .clear
         titleLabel.font = UIFont(name: fontName, size: 80 * heightRatio)
         
-        if let title = self.view.subviews[0] as? TitleLabel{
+        if let title = self.view.subviews[0] as? TitleLabel {
             title.removeFromSuperview()
         }
         
@@ -79,8 +81,6 @@ class SingleDayViewController: BasicViewController {
         button.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 50 * heightRatio - buttonHeight / 2).isActive = true
         button.setImage(UIImage(named: "back"), for: .normal)
         button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-        
-       
         
         let expensesTableView = UITableView()
         expensesTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -106,7 +106,7 @@ class SingleDayViewController: BasicViewController {
         self.view.addSubview(button2)
         button2.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         button2.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
-        button2.topAnchor.constraint(equalTo: expensesTableView.bottomAnchor , constant: 40).isActive = true
+        button2.topAnchor.constraint(equalTo: expensesTableView.bottomAnchor, constant: 40).isActive = true
         button2.setTitle("+ add an entry", for: .normal)
         button2.titleLabel?.font = UIFont(name: fontName, size: 30)
         button2.setTitleColor(.black, for: .normal)
@@ -114,9 +114,9 @@ class SingleDayViewController: BasicViewController {
         
         
     }
-    func loadItem(){
-        guard let date = date, let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else{return}
-        let request : NSFetchRequest<Expense> = Expense.fetchRequest()
+    func loadItem() {
+        guard let date = date, let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
+        let request: NSFetchRequest<Expense> = Expense.fetchRequest()
         
         
         let predicate = NSPredicate(format: "date == %@", date as NSDate)
@@ -126,15 +126,15 @@ class SingleDayViewController: BasicViewController {
         request.predicate = predicate
         request.sortDescriptors = [sortDescriptor]
         
-        do{
+        do {
             expenses = try context.fetch(request)
-        }catch{
+        } catch {
             print("error loading entries: \(error)")
         }
         
         //print(expenses[0].name)
     }
-    @objc func swipeFromLeft(){
+    @objc func swipeFromLeft() {
         backButtonTapped()
     }
     @objc func showVC() {
@@ -147,7 +147,7 @@ class SingleDayViewController: BasicViewController {
 
 }
 
-extension SingleDayViewController : UITableViewDelegate, UITableViewDataSource{
+extension SingleDayViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 //        if section == 0 {
         return expenses.count
@@ -169,7 +169,7 @@ extension SingleDayViewController : UITableViewDelegate, UITableViewDataSource{
 //            cell.cellType = .addEntry
 //            return cell
 //        }else{
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExpenseCell", for: indexPath) as? ExpenseTableViewCell else {return UITableViewCell()}
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExpenseCell", for: indexPath) as? ExpenseTableViewCell else { fatalError("cant make ExpenseTableViewCell") }
         cell.expense = expenses[indexPath.row]
         
         return cell
@@ -177,7 +177,7 @@ extension SingleDayViewController : UITableViewDelegate, UITableViewDataSource{
        
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 0{
+        if indexPath.section == 0 {
             let singleDayDetailVC = SingleDayDetailViewController()
             singleDayDetailVC.expense = expenses[indexPath.row]
             navigationController?.pushViewController(singleDayDetailVC, animated: true)
@@ -186,7 +186,8 @@ extension SingleDayViewController : UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
-        if indexPath.section == 0{
+        if indexPath.section == 0 {
+            //budgetController.deleteExpense
             context.delete(expenses[indexPath.row])
             expenses.remove(at: indexPath.row)
             //TODO: run this in controller

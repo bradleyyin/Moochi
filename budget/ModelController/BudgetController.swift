@@ -13,15 +13,27 @@ import UIKit
 class BudgetController {
     let imageSaver = ImageSaver()
     
-    func createNewExpense(name: String, amount: Double, date: Date, category: String, image: UIImage?) {
-        var imagePath : String?
-        if let image = image{
+    func createNewExpense(name: String,
+                          amount: Double,
+                          date: Date, category: String,
+                          image: UIImage?,
+                          context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+        var imagePath: String?
+        if let image = image {
             imagePath = imageSaver.saveImage(image: image)
         }
-        Expense(name: name, imagePath: imagePath, date: date, category: category.uppercased(), amount: amount)
-        saveToPersistentData()
+        context.performAndWait {
+            Expense(name: name, imagePath: imagePath, date: date, category: category.uppercased(), amount: amount)
+            saveToPersistentData()
+        }
     }
     
+    func deleteExpense(expense: Expense, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+        context.performAndWait {
+            context.delete(expense)
+            saveToPersistentData()
+        }
+    }
     
     func saveToPersistentData(context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         context.performAndWait {
