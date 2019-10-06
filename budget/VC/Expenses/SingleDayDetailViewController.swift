@@ -229,7 +229,7 @@ extension SingleDayDetailViewController: UIImagePickerControllerDelegate, UINavi
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         if let userPickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage,
             let expense = expense,
-            let imagePath = imageSaver.saveImage(image: userPickedImage) {
+            let imagePath = budgetController.imageSaver.saveImage(image: userPickedImage) {
             imageView.image = userPickedImage
             imageView.contentMode = .scaleAspectFill
             imageView.clipsToBounds = true

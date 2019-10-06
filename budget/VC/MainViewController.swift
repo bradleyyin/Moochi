@@ -10,32 +10,12 @@ import UIKit
 import CoreData
 
 class MainViewController: UIViewController {
+    var income: Income?
+    var expenses: [Expense] = []
+    var remainFund: Double?
     
-    var income : Income?
-    var expenses : [Expense] = []
-    var remainFund : Double?
+    let monthCalculator = MonthCalculator()
     
-    var monthsArr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    
-    var currentMonth  : Int {
-        let date = Date()
-        let calendar = Calendar.current
-        let currentMonth = calendar.component(.month, from: date)
-        return currentMonth
-    }
-    
-    var currentYear : Int{
-        let date = Date()
-        let calendar = Calendar.current
-        return calendar.component(.year, from: date)
-    }
-    
-    var currentDate: Int {
-        let date = Date()
-        let calendar = Calendar.current
-        return calendar.component(.day, from: date)
-    }
-    var monthYear = ""
     var amountTypedString = ""
     
     weak var monthLabel: UILabel!
@@ -47,7 +27,6 @@ class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        monthYear = "\(currentYear)\(currentMonth)"
         loadIncome()
         setUpUI()
         
@@ -56,8 +35,6 @@ class MainViewController: UIViewController {
         let fm = FileManager.default
         let filePath = fm.urls(for: .documentDirectory, in: .userDomainMask)
         print(filePath)
-        
-        // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -155,9 +132,9 @@ class MainViewController: UIViewController {
         button.addTarget(self, action: #selector(addEntry), for: .touchUpInside)
     }
     func updateView(){
-        monthLabel.text = monthsArr[currentMonth - 1]
+        monthLabel.text = monthCalculator.currentMonthString
         
-        dateNumberLabel.text = String(format: "%02d", currentDate)
+        dateNumberLabel.text = String(format: "%02d", monthCalculator.currentDate)
         
         print(remainFund)
         
@@ -186,7 +163,7 @@ class MainViewController: UIViewController {
         
         let context = CoreDataStack.shared.mainContext
         let request : NSFetchRequest<Income> = Income.fetchRequest()
-        let predicate = NSPredicate(format: "monthYear == %@", monthYear)
+        let predicate = NSPredicate(format: "monthYear == %@", monthCalculator.monthYear)
         request.predicate = predicate
         
         do{
@@ -317,7 +294,7 @@ extension MainViewController: EditIncomeDelegate{
         }else{
             let newIncome = Income(context: context)
             newIncome.amount = amount
-            newIncome.monthYear = monthYear
+            newIncome.monthYear = monthCalculator.monthYear
             income = newIncome
         }
         

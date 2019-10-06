@@ -57,6 +57,21 @@ class BudgetController {
         }
     }
     
+    func readIncome(monthYear: String, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) -> Income? {
+        context.performAndWait {
+            let request : NSFetchRequest<Income> = Income.fetchRequest()
+            let predicate = NSPredicate(format: "monthYear == %@", monthYear)
+            request.predicate = predicate
+            
+            do{
+                let income = try context.fetch(request).first
+                return income
+            }catch{
+                fatalError("Error loading income: \(error)")
+            }
+        }
+    }
+    
     func saveToPersistentData(context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         context.performAndWait {
             do {

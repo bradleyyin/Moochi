@@ -14,6 +14,7 @@
 		75373B4722ED792D00113E81 /* ReceiptAlbumTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75373B4622ED792D00113E81 /* ReceiptAlbumTableViewCell.swift */; };
 		75373B4922ED842000113E81 /* ReceiptCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75373B4822ED842000113E81 /* ReceiptCollectionViewCell.swift */; };
 		75373B7D22F4085500113E81 /* EditIncomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75373B7C22F4085500113E81 /* EditIncomeView.swift */; };
+		754248BF234A8A55004B6ECF /* MonthCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754248BE234A8A55004B6ECF /* MonthCalculator.swift */; };
 		7550A3FA23493D730063FE3E /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 7550A3F923493D730063FE3E /* .gitignore */; };
 		7550A3FD23493FA40063FE3E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 7550A3FC23493FA40063FE3E /* .swiftlint.yml */; };
 		755FFBDE2345AA040085C5E5 /* CoreDataStacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755FFBDD2345AA040085C5E5 /* CoreDataStacks.swift */; };
@@ -55,6 +56,7 @@
 		75373B4822ED842000113E81 /* ReceiptCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptCollectionViewCell.swift; sourceTree = "<group>"; };
 		75373B7C22F4085500113E81 /* EditIncomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditIncomeView.swift; sourceTree = "<group>"; };
 		754248BC234949A0004B6ECF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		754248BE234A8A55004B6ECF /* MonthCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthCalculator.swift; sourceTree = "<group>"; };
 		7550A3F923493D730063FE3E /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		7550A3FC23493FA40063FE3E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		755FFBDD2345AA040085C5E5 /* CoreDataStacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStacks.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 			children = (
 				75E0BD6122CDBCC000FE0F6C /* GlobalStuffs.swift */,
 				755FFBEA2345BCCB0085C5E5 /* ImageSaver.swift */,
+				754248BE234A8A55004B6ECF /* MonthCalculator.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -395,6 +398,7 @@
 				75373B4522ED747600113E81 /* RecietAlbumViewController.swift in Sources */,
 				75373B4722ED792D00113E81 /* ReceiptAlbumTableViewCell.swift in Sources */,
 				75CD180E22C5DD6800E2FB12 /* AppDelegate.swift in Sources */,
+				754248BF234A8A55004B6ECF /* MonthCalculator.swift in Sources */,
 				75E0BD6222CDBCC000FE0F6C /* GlobalStuffs.swift in Sources */,
 				75E0BD6422CDC63500FE0F6C /* DetailsViewController.swift in Sources */,
 				75AEC12422E446600006A057 /* SegueDirection.swift in Sources */,
