@@ -34,12 +34,12 @@ class BudgetController {
         let startOfMonth = currentDate.getThisMonthStart()
         let endOfMonth = currentDate.getThisMonthEnd()
         var expenses: [Expense] = []
-        let request : NSFetchRequest<Expense> = Expense.fetchRequest()
+        let request: NSFetchRequest<Expense> = Expense.fetchRequest()
         request.predicate = NSPredicate(format: "(date => %@) AND (date <= %@)", startOfMonth as NSDate, endOfMonth as NSDate)
         context.performAndWait {
-            do{
+            do {
                 expenses = try context.fetch(request)
-            }catch{
+            } catch {
                 print("error loading income")
             }
         }
@@ -70,6 +70,13 @@ class BudgetController {
     func deleteCategory(category: Category, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         context.performAndWait {
             context.delete(category)
+            saveToPersistentData()
+        }
+    }
+    
+    func createIncome(amount: Double, monthYear: String, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+        context.performAndWait {
+            Income(monthYear: monthYear, amount: amount)
             saveToPersistentData()
         }
     }

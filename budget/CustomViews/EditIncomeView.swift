@@ -14,8 +14,8 @@ protocol EditIncomeDelegate {
 
 class EditIncomeView: UIView {
     var delegate: EditIncomeDelegate?
-    var parenController : MainViewController?
-    var hasIncome = false{
+    var parenController: MainViewController?
+    var hasIncome = false {
         didSet{
             setupViews()
         }
@@ -30,7 +30,7 @@ class EditIncomeView: UIView {
         lbl.font = UIFont(name: fontName, size: 30)
         lbl.adjustsFontSizeToFitWidth = true
         lbl.minimumScaleFactor = 0.3
-        lbl.translatesAutoresizingMaskIntoConstraints=false
+        lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
     
@@ -43,11 +43,11 @@ class EditIncomeView: UIView {
     }()
     
     let updateButton: UIButton = {
-        let btn=UIButton()
+        let btn = UIButton()
         btn.setTitle("Update", for: .normal)
         btn.setTitleColor(.white, for: .normal)
         btn.backgroundColor = .black
-        btn.translatesAutoresizingMaskIntoConstraints=false
+        btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(updateIncome), for: .touchUpInside)
         btn.setTitleColor(UIColor.lightGray, for: .disabled)
         btn.layer.cornerRadius = 30
@@ -73,7 +73,7 @@ class EditIncomeView: UIView {
         return textField
     }()
     
-    let subtractLabel :UILabel = {
+    let subtractLabel: UILabel = {
         let label = UILabel()
         label.text = "subtract"
         label.textColor = .black
@@ -104,7 +104,7 @@ class EditIncomeView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor=UIColor.white
+        self.backgroundColor = UIColor.white
         
         //setupViews()
     }
@@ -112,13 +112,13 @@ class EditIncomeView: UIView {
     
     func setupViews() {
         self.addSubview(cancelButton)
-        cancelButton.topAnchor.constraint(equalTo: self.topAnchor, constant:  10).isActive = true
+        cancelButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
         cancelButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10).isActive = true
         
         self.addSubview(lblName)
-        lblName.topAnchor.constraint(equalTo: topAnchor).isActive=true
+        lblName.topAnchor.constraint(equalTo: topAnchor).isActive = true
         lblName.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive=true
-        lblName.leadingAnchor.constraint(equalTo: leadingAnchor, constant:  20).isActive = true
+        lblName.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
         addTextField.delegate = self
         subtractTextField.delegate = self
         incomeTextField.delegate = self
@@ -133,15 +133,8 @@ class EditIncomeView: UIView {
         subtractLabel.bottomAnchor.constraint(equalTo: subtractTextField.bottomAnchor).isActive = true
         subtractLabel.leadingAnchor.constraint(equalTo: subtractTextField.leadingAnchor).isActive = true
         
-//        let addSection = UIStackView(arrangedSubviews: [addLabel, addTextField])
-//        addSection.axis = .horizontal
-//        addSection.distribution = .fillProportionally
-//        addSection.alignment = .fill
-//
-//        let subtractSection = UIStackView(arrangedSubviews: [subtactLabel, subtractTextField])
-        
         var textFields = UIStackView(arrangedSubviews: [addTextField, subtractTextField])
-        if !hasIncome{
+        if !hasIncome {
             textFields = UIStackView(arrangedSubviews: [incomeTextField])
         }
         self.addSubview(textFields)
@@ -149,7 +142,7 @@ class EditIncomeView: UIView {
         textFields.distribution = .fillEqually
         textFields.alignment = .fill
         textFields.translatesAutoresizingMaskIntoConstraints = false
-        textFields.leadingAnchor.constraint(equalTo: self.leadingAnchor,constant: 40).isActive = true
+        textFields.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 40).isActive = true
         textFields.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40).isActive = true
         textFields.topAnchor.constraint(equalTo: lblName.bottomAnchor, constant: 10).isActive = true
         
@@ -159,60 +152,39 @@ class EditIncomeView: UIView {
         updateButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40).isActive = true
         updateButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20).isActive = true
         updateButton.heightAnchor.constraint(equalToConstant: 70 * heightRatio).isActive = true
-
-        
-        
-        
-//        let buttons = UIStackView(arrangedSubviews: [cancelButton, updateButton])
-//        self.addSubview(buttons)
-//        buttons.axis = .horizontal
-//        buttons.distribution = .fillEqually
-//        buttons.alignment = .fill
-//        buttons.spacing = 0
-//        buttons.translatesAutoresizingMaskIntoConstraints = false
-//        buttons.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-//        buttons.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-//        buttons.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        
         
     }
     
-    @objc func dissmissView(){
+    @objc func dissmissView() {
         delegate?.dismissView()
     }
     
-    @objc func updateIncome(){
+    @objc func updateIncome() {
         print("update income")
-        if hasIncome{
+        if hasIncome {
             guard let addString = addTextField.text, let addAmount = Double(addString), let subtractString = subtractTextField.text, let subtractAmount = Double(subtractString) else {return}
             let total = addAmount - subtractAmount
             delegate?.enterIncome(amount: total)
             
-        }else{
-            guard let amountString = incomeTextField.text, let amount = Double(amountString) else {return}
+        } else {
+            guard let amountString = incomeTextField.text, let amount = Double(amountString) else { return }
             delegate?.enterIncome(amount: amount)
         }
     }
   
-
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
 }
-extension EditIncomeView: UITextFieldDelegate{
+extension EditIncomeView: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        
-        //if textField.tag == 0 {
         
         let formatter = NumberFormatter()
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 2
         
         if !string.isEmpty {
-            print ("here")
             amountTypedString += string
             let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
             //let numbString = NSString(format:"%.2f", decNumber) as String
@@ -232,8 +204,6 @@ extension EditIncomeView: UITextFieldDelegate{
             }
             
         }
-        //     }
-        
         
         return false
         

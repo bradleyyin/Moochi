@@ -40,11 +40,10 @@ class MainViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         getRemainingFunds()
         updateView()
     }
-    func setUpUI(){
+    func setUpUI() {
         
         self.view.backgroundColor = .white
         
@@ -111,7 +110,7 @@ class MainViewController: UIViewController {
         dotLabel2.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(dotLabel2)
         dotLabel2.topAnchor.constraint(equalTo: moneyCircle.bottomAnchor, constant: 10).isActive = true
-        dotLabel2.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 10).isActive = true
+        dotLabel2.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
         dotLabel2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         dotLabel2.textColor = .black
         dotLabel2.font = dateNumberLabel.font.withSize(50)
@@ -132,21 +131,21 @@ class MainViewController: UIViewController {
         button.setTitleColor(superLightGray, for: .highlighted)
         button.addTarget(self, action: #selector(addEntry), for: .touchUpInside)
     }
-    func updateView(){
+    func updateView() {
         monthLabel.text = monthCalculator.currentMonthString
         
         dateNumberLabel.text = String(format: "%02d", monthCalculator.currentDate)
         
         print(remainFund)
         
-        if let remain = remainFund{
+        if let remain = remainFund {
             moneyLabel.text = "\(String(format: "%.2f", remain))"
-        }else{
+        } else {
             moneyLabel.text = "Tap to add income"
         }
         
     }
-    func getRemainingFunds(){
+    func getRemainingFunds() {
         guard let income = income else { return }
         let expenses = budgetController.readMonthlyExpense()
         remainFund = budgetCalculator.calculateRemainingFunds(income: income, expenses: expenses)
@@ -155,10 +154,12 @@ class MainViewController: UIViewController {
     
     @objc func addEntry () {
         print("add")
-        self.present(AddEntryViewController(), animated: true)
+        let addEntryVC = AddEntryViewController()
+        addEntryVC.modalPresentationStyle = .fullScreen
+        self.present(addEntryVC, animated: true)
     }
     
-    @objc func moneyCircleTapped(){
+    @objc func moneyCircleTapped() {
         let backGroundView = UIView()
         self.view.addSubview(backGroundView)
         backGroundView.translatesAutoresizingMaskIntoConstraints = false
@@ -190,33 +191,32 @@ class MainViewController: UIViewController {
     
     }
 }
-extension MainViewController: EditIncomeDelegate{
-    func enterIncome(amount: Double){
+extension MainViewController: EditIncomeDelegate {
+    func enterIncome(amount: Double) {
         let context = CoreDataStack.shared.mainContext
-        if let income = income{
+        if let income = income {
             income.amount += amount
-        }else{
+        } else {
             let newIncome = Income(context: context)
             newIncome.amount = amount
             newIncome.monthYear = monthCalculator.monthYear
             income = newIncome
         }
         
-        do{
+        do {
             try context.save()
-        }catch{
+        } catch {
             print("error adding income")
         }
         dismissView()
         getRemainingFunds()
         updateView()
     }
-    func dismissView(){
+    func dismissView() {
         let totalViewsNumber = self.view.subviews.count
         self.view.subviews[totalViewsNumber - 1].removeFromSuperview()
-       //self.view.subviews[totalViewsNumber - 1].removeFromSuperview()
     }
-    @objc func touchToDismiss(){
+    @objc func touchToDismiss() {
         dismissView()
     }
 }
@@ -230,7 +230,7 @@ extension MainViewController: UIGestureRecognizerDelegate{
 }
 
 
-extension UILabel{
+extension UILabel {
     func mainScreenLabel(fontSize: CGFloat) {
         self.textColor = .black
         self.backgroundColor = .clear
