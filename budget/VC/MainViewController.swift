@@ -184,7 +184,7 @@ class MainViewController: UIViewController {
     }
     func loadIncome(){
         
-        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else {return}
+        let context = CoreDataStack.shared.mainContext
         let request : NSFetchRequest<Income> = Income.fetchRequest()
         let predicate = NSPredicate(format: "monthYear == %@", monthYear)
         request.predicate = predicate
@@ -197,7 +197,7 @@ class MainViewController: UIViewController {
         
     }
     func loadExpenses(){
-        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else {return}
+        let context = CoreDataStack.shared.mainContext
         let currentDate = Date()
         let startOfMonth = currentDate.getThisMonthStart()
         let endOfMonth = currentDate.getThisMonthEnd()
@@ -311,7 +311,7 @@ class MainViewController: UIViewController {
 //}
 extension MainViewController: EditIncomeDelegate{
     func enterIncome(amount: Double){
-        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
+        let context = CoreDataStack.shared.mainContext
         if let income = income{
             income.amount += amount
         }else{

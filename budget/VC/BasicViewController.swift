@@ -46,7 +46,7 @@ class BasicViewController: UIViewController {
     }
     
     func loadCategories(){
-        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
+        let context = CoreDataStack.shared.mainContext
         let request : NSFetchRequest<Category> = Category.fetchRequest()
         do {
             categories = try context.fetch(request)

@@ -110,11 +110,11 @@ class SingleDayViewController: BasicViewController {
         
     }
     func loadItem() {
-        guard let date = date, let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
+        let context = CoreDataStack.shared.mainContext
         let request: NSFetchRequest<Expense> = Expense.fetchRequest()
         
-        
-        let predicate = NSPredicate(format: "date == %@", date as NSDate)
+        guard let date = date as? NSDate else { fatalError("cant convert date for fetch")}
+        let predicate = NSPredicate(format: "date == %@", date)
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
         
 

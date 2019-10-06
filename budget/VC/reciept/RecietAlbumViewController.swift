@@ -69,7 +69,7 @@ class ReceiptAlbumViewController : BasicViewController {
         
     }
     func loadExpenses(){
-        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else {return}
+        let context = CoreDataStack.shared.mainContext
         
         let request : NSFetchRequest<Expense> = Expense.fetchRequest()
         

@@ -104,7 +104,7 @@ class DetailsViewController: BasicViewController {
     
     func loadIncome() {
         
-        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
+        let context = CoreDataStack.shared.mainContext
         let request: NSFetchRequest<Income> = Income.fetchRequest()
         let predicate = NSPredicate(format: "monthYear == %@", monthYear)
         request.predicate = predicate
@@ -135,7 +135,7 @@ extension DetailsViewController: UITableViewDelegate, UITableViewDataSource {
        return categories.count
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
+        let context = CoreDataStack.shared.mainContext
         
         context.delete(categories[indexPath.row])
         categories.remove(at: indexPath.row)
@@ -213,7 +213,7 @@ extension DetailsViewController {
         
     }
     func createCategory(name: String, amount: Double) {
-        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
+        let context = CoreDataStack.shared.mainContext
         let newCategory = Category(context: context)
         newCategory.name = name.uppercased()
         newCategory.totalAmount = amount

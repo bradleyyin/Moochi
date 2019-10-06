@@ -21,7 +21,7 @@ class DetailsTableViewCell: UITableViewCell {
         return category.totalAmount
     }
     var categoryRemaining: Double {
-        guard let category = category, let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else {return 0.0}
+        let context = CoreDataStack.shared.mainContext
         let currentDate = Date()
         let startOfMonth = currentDate.getThisMonthStart()
         let endOfMonth = currentDate.getThisMonthEnd()
@@ -30,7 +30,7 @@ class DetailsTableViewCell: UITableViewCell {
         var expenses : [Expense] = []
         
         func loadItem(){
-            let predicate = NSPredicate(format: "category MATCHES %@", category.name!)
+            let predicate = NSPredicate(format: "category MATCHES %@", (category?.name)!)
             let predicate2 = NSPredicate(format: "(date => %@) AND (date <= %@)", startOfMonth as NSDate, endOfMonth as NSDate)
             
             let request : NSFetchRequest<Expense> = Expense.fetchRequest()
