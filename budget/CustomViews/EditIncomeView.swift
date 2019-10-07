@@ -25,7 +25,7 @@ class EditIncomeView: UIView {
     var amountSubtractTypedString = ""
     
     let lblName: UILabel = {
-        let lbl=UILabel()
+        let lbl = UILabel()
         lbl.text="current income"
         lbl.textColor = .black
         lbl.textAlignment = .center
@@ -39,7 +39,7 @@ class EditIncomeView: UIView {
     let cancelButton: UIButton = {
         let btn=UIButton()
         btn.setImage(UIImage(named: "cancel"), for: .normal)
-        btn.translatesAutoresizingMaskIntoConstraints=false
+        btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(dissmissView), for: .touchUpInside)
         return btn
     }()
@@ -119,7 +119,7 @@ class EditIncomeView: UIView {
         
         self.addSubview(lblName)
         lblName.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        lblName.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive=true
+        lblName.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
         lblName.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
         addTextField.delegate = self
         subtractTextField.delegate = self
@@ -212,8 +212,6 @@ extension EditIncomeView: UITextFieldDelegate {
         }
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        
         
         if textField.tag == 1 {
             autoDecimal(string: string, textField: textField, stringToStore: &amountAddTypedString)

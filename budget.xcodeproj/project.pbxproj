@@ -36,6 +36,7 @@
 		75B4D3BA22E9854E00438A7A /* ExpenseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B4D3B922E9854E00438A7A /* ExpenseTableViewCell.swift */; };
 		75BB937022EAC77E002C57AF /* AddEntryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BB936F22EAC77E002C57AF /* AddEntryTableViewCell.swift */; };
 		75BCC2CB234A9175001CA01A /* BudgetCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BCC2CA234A9175001CA01A /* BudgetCalculator.swift */; };
+		75BCC2CD234ABAC2001CA01A /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BCC2CC234ABAC2001CA01A /* CircleView.swift */; };
 		75CD180E22C5DD6800E2FB12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CD180D22C5DD6800E2FB12 /* AppDelegate.swift */; };
 		75CD181022C5DD6800E2FB12 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CD180F22C5DD6800E2FB12 /* MainViewController.swift */; };
 		75CD181522C5DD6B00E2FB12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75CD181422C5DD6B00E2FB12 /* Assets.xcassets */; };
@@ -79,6 +80,7 @@
 		75B4D3B922E9854E00438A7A /* ExpenseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseTableViewCell.swift; sourceTree = "<group>"; };
 		75BB936F22EAC77E002C57AF /* AddEntryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEntryTableViewCell.swift; sourceTree = "<group>"; };
 		75BCC2CA234A9175001CA01A /* BudgetCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetCalculator.swift; sourceTree = "<group>"; };
+		75BCC2CC234ABAC2001CA01A /* CircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
 		75CD180A22C5DD6800E2FB12 /* budget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = budget.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75CD180D22C5DD6800E2FB12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		75CD180F22C5DD6800E2FB12 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 				75AEC11B22E3E2480006A057 /* MonthView.swift */,
 				75AEC11D22E3E2700006A057 /* CalenderView.swift */,
 				75AEC11F22E409DE0006A057 /* WeekdayView.swift */,
+				75BCC2CC234ABAC2001CA01A /* CircleView.swift */,
 			);
 			path = Calender;
 			sourceTree = "<group>";
@@ -408,6 +411,7 @@
 				75AEC12422E446600006A057 /* SegueDirection.swift in Sources */,
 				75AEC12B22E577590006A057 /* AddEntryViewController.swift in Sources */,
 				755FFBE12345AA4D0085C5E5 /* BudgetController.swift in Sources */,
+				75BCC2CD234ABAC2001CA01A /* CircleView.swift in Sources */,
 				75373B4022ECF70500113E81 /* SingleDayDetailViewController.swift in Sources */,
 				755FFBEB2345BCCB0085C5E5 /* ImageSaver.swift in Sources */,
 				75E0BD6722CDD1BA00FE0F6C /* DetailsTableViewCell.swift in Sources */,
