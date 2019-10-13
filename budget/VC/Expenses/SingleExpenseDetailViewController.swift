@@ -9,12 +9,12 @@
 import UIKit
 import CoreData
 
-class SingleDayDetailViewController: BasicViewController {
+class SingleExpenseDetailViewController: BasicViewController {
     weak var imageView : UIImageView!
     
     var image: UIImage?
     
-    var expense : Expense?
+    var expense: Expense?
     lazy var imagePicker = UIImagePickerController()
     
 
@@ -221,7 +221,7 @@ class SingleDayDetailViewController: BasicViewController {
 
 }
 
-extension SingleDayDetailViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension SingleExpenseDetailViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }

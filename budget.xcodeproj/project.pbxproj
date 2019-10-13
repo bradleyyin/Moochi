@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3E7565EB3EE97495293EAEC0 /* Pods_budget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E7129ADDBEE30393855BB67 /* Pods_budget.framework */; };
-		75373B4022ECF70500113E81 /* SingleDayDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75373B3F22ECF70500113E81 /* SingleDayDetailViewController.swift */; };
+		75373B4022ECF70500113E81 /* SingleExpenseDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75373B3F22ECF70500113E81 /* SingleExpenseDetailViewController.swift */; };
 		75373B4222ED144500113E81 /* ReceiptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75373B4122ED144500113E81 /* ReceiptViewController.swift */; };
 		75373B4522ED747600113E81 /* RecietAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75373B4422ED747600113E81 /* RecietAlbumViewController.swift */; };
 		75373B4722ED792D00113E81 /* ReceiptAlbumTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75373B4622ED792D00113E81 /* ReceiptAlbumTableViewCell.swift */; };
@@ -47,12 +47,13 @@
 		75E0BD6422CDC63500FE0F6C /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0BD6322CDC63500FE0F6C /* DetailsViewController.swift */; };
 		75E0BD6722CDD1BA00FE0F6C /* DetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0BD6622CDD1BA00FE0F6C /* DetailsTableViewCell.swift */; };
 		75F2FB7F235138B9006007D8 /* DateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F2FB7E235138B9006007D8 /* DateCollectionViewCell.swift */; };
+		75F2FB8223513C9F006007D8 /* Date+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F2FB8123513C9F006007D8 /* Date+Utility.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4E7129ADDBEE30393855BB67 /* Pods_budget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_budget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		559E746410EB15F9655A2C81 /* Pods-budget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-budget.debug.xcconfig"; path = "Target Support Files/Pods-budget/Pods-budget.debug.xcconfig"; sourceTree = "<group>"; };
-		75373B3F22ECF70500113E81 /* SingleDayDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleDayDetailViewController.swift; sourceTree = "<group>"; };
+		75373B3F22ECF70500113E81 /* SingleExpenseDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleExpenseDetailViewController.swift; sourceTree = "<group>"; };
 		75373B4122ED144500113E81 /* ReceiptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptViewController.swift; sourceTree = "<group>"; };
 		75373B4422ED747600113E81 /* RecietAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecietAlbumViewController.swift; sourceTree = "<group>"; };
 		75373B4622ED792D00113E81 /* ReceiptAlbumTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptAlbumTableViewCell.swift; sourceTree = "<group>"; };
@@ -93,6 +94,7 @@
 		75E0BD6322CDC63500FE0F6C /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		75E0BD6622CDD1BA00FE0F6C /* DetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsTableViewCell.swift; sourceTree = "<group>"; };
 		75F2FB7E235138B9006007D8 /* DateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCollectionViewCell.swift; sourceTree = "<group>"; };
+		75F2FB8123513C9F006007D8 /* Date+Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Utility.swift"; sourceTree = "<group>"; };
 		CA66541F27560E6AADDEFB78 /* Pods-budget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-budget.release.xcconfig"; path = "Target Support Files/Pods-budget/Pods-budget.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -158,6 +160,7 @@
 		755FFBE92345BCAE0085C5E5 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				75F2FB8023513C72006007D8 /* extension */,
 				75E0BD6122CDBCC000FE0F6C /* GlobalStuffs.swift */,
 				755FFBEA2345BCCB0085C5E5 /* ImageSaver.swift */,
 				754248BE234A8A55004B6ECF /* MonthCalculator.swift */,
@@ -209,7 +212,7 @@
 				75B4D3B922E9854E00438A7A /* ExpenseTableViewCell.swift */,
 				75AEC12A22E577590006A057 /* AddEntryViewController.swift */,
 				75BB936F22EAC77E002C57AF /* AddEntryTableViewCell.swift */,
-				75373B3F22ECF70500113E81 /* SingleDayDetailViewController.swift */,
+				75373B3F22ECF70500113E81 /* SingleExpenseDetailViewController.swift */,
 			);
 			path = Expenses;
 			sourceTree = "<group>";
@@ -268,6 +271,14 @@
 				75E0BD6622CDD1BA00FE0F6C /* DetailsTableViewCell.swift */,
 			);
 			path = Details;
+			sourceTree = "<group>";
+		};
+		75F2FB8023513C72006007D8 /* extension */ = {
+			isa = PBXGroup;
+			children = (
+				75F2FB8123513C9F006007D8 /* Date+Utility.swift */,
+			);
+			path = extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -404,6 +415,7 @@
 				755FFBDE2345AA040085C5E5 /* CoreDataStacks.swift in Sources */,
 				75AEC12922E54F1B0006A057 /* SingleDayViewController.swift in Sources */,
 				755FFBE72345B1CC0085C5E5 /* Income+Convenience.swift in Sources */,
+				75F2FB8223513C9F006007D8 /* Date+Utility.swift in Sources */,
 				75AEC11722E3D7170006A057 /* SharedView.swift in Sources */,
 				75373B4522ED747600113E81 /* RecietAlbumViewController.swift in Sources */,
 				75373B4722ED792D00113E81 /* ReceiptAlbumTableViewCell.swift in Sources */,
@@ -415,7 +427,7 @@
 				75AEC12B22E577590006A057 /* AddEntryViewController.swift in Sources */,
 				755FFBE12345AA4D0085C5E5 /* BudgetController.swift in Sources */,
 				75BCC2CD234ABAC2001CA01A /* CircleView.swift in Sources */,
-				75373B4022ECF70500113E81 /* SingleDayDetailViewController.swift in Sources */,
+				75373B4022ECF70500113E81 /* SingleExpenseDetailViewController.swift in Sources */,
 				755FFBEB2345BCCB0085C5E5 /* ImageSaver.swift in Sources */,
 				75E0BD6722CDD1BA00FE0F6C /* DetailsTableViewCell.swift in Sources */,
 				75B4D39322E827A400438A7A /* Model.xcdatamodeld in Sources */,

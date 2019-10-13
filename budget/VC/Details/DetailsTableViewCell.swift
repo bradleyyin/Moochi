@@ -195,18 +195,4 @@ class DetailsTableViewCell: UITableViewCell {
 }
 
 
-extension Date{
-    // This Month Start
-    func getThisMonthStart() -> Date {
-        let components = Calendar.current.dateComponents([.year, .month], from: self)
-        return Calendar.current.date(from: components)!
-    }
-    
-    func getThisMonthEnd() -> Date {
-        let components:NSDateComponents = Calendar.current.dateComponents([.year, .month], from: self) as NSDateComponents
-        components.month += 1
-        components.day = 1
-        components.day -= 1
-        return Calendar.current.date(from: components as DateComponents)!
-    }
-}
+

@@ -10,21 +10,20 @@ import UIKit
 
 class ExpenseViewController: BasicViewController, CalenderDelegate {
     let calenderView: CalenderView = {
-        let v=CalenderView()
-        v.translatesAutoresizingMaskIntoConstraints=false
+        let v = CalenderView()
+        v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
+    
     override func viewDidLoad() {
         titleOfVC = "expenses"
         super.viewDidLoad()
-        
-        
        
         view.addSubview(calenderView)
-        calenderView.topAnchor.constraint(equalTo: view.topAnchor, constant: (statusBarHeight + 100 * heightRatio)).isActive=true
-        calenderView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -12).isActive=true
-        calenderView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 12).isActive=true
-        calenderView.heightAnchor.constraint(equalToConstant: 600 * heightRatio).isActive=true
+        calenderView.topAnchor.constraint(equalTo: view.topAnchor, constant: (statusBarHeight + 100 * heightRatio)).isActive = true
+        calenderView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -12).isActive = true
+        calenderView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 12).isActive = true
+        calenderView.heightAnchor.constraint(equalToConstant: 600 * heightRatio).isActive = true
         calenderView.backgroundColor = .clear
         calenderView.delegate = self
     }

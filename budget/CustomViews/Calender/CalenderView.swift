@@ -261,16 +261,7 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
     }
 }
 
-//get first day of the month
-extension Date {
-    var weekday: Int {
-        return Calendar.current.component(.weekday, from: self)
-    }
-    var firstDayOfTheMonth: Date {
-        return Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: self))!
-    }
-    
-}
+
 
 //get date from string
 extension String {

@@ -38,7 +38,7 @@ class SingleDayViewController: BasicViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadItem()
+        loadItem(for: date)
         table.reloadData()
     }
     override func setupUI() {
@@ -109,11 +109,11 @@ class SingleDayViewController: BasicViewController {
         
         
     }
-    func loadItem() {
+    func loadItem(for date: Date?) {
         let context = CoreDataStack.shared.mainContext
         let request: NSFetchRequest<Expense> = Expense.fetchRequest()
         
-        guard let date = date as? NSDate else { fatalError("cant convert date for fetch")}
+        guard let date = date as? NSDate else { fatalError("cannot convert date for fetching") }
         let predicate = NSPredicate(format: "date == %@", date)
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
         
@@ -124,32 +124,31 @@ class SingleDayViewController: BasicViewController {
         do {
             expenses = try context.fetch(request)
         } catch {
-            print("error loading entries: \(error)")
+            fatalError("error loading entries: \(error)")
         }
-        
-        //print(expenses[0].name)
     }
     @objc func swipeFromLeft() {
         backButtonTapped()
     }
+    
+    @objc func loadDayBefore() {
+        self.date = date?.dayBefore
+    }
+    
+    @objc func loadDayAfter() {
+        self.date = date?.dayAfter
+    }
+    
     @objc func showVC() {
         let addEntryVC = AddEntryViewController()
         addEntryVC.date = date
         present(addEntryVC, animated: true)
     }
-    
-    
-
 }
 
-extension SingleDayViewController : UITableViewDelegate, UITableViewDataSource {
+extension SingleDayViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        if section == 0 {
         return expenses.count
-//        }else{
-//            return 1
-//        }
-        
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -175,7 +174,7 @@ extension SingleDayViewController : UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
-            let singleDayDetailVC = SingleDayDetailViewController()
+            let singleDayDetailVC = SingleExpenseDetailViewController()
             singleDayDetailVC.expense = expenses[indexPath.row]
             navigationController?.pushViewController(singleDayDetailVC, animated: true)
         }
