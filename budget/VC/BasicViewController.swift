@@ -12,9 +12,9 @@ import CoreData
 
 class BasicViewController: UIViewController {
 
-    var titleOfVC : String = ""
+    var titleOfVC: String = ""
     var categories :[Category] = []
-    let budgetController = BudgetController()
+    var budgetController: BudgetController!
     //auto layout
     
 
@@ -24,12 +24,7 @@ class BasicViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
-    func setUpAutoLayout(){
-        
-    }
     func setupUI(){
-        
-        
         self.view.backgroundColor = .white
         
         let titleLabel = TitleLabel()
@@ -44,7 +39,7 @@ class BasicViewController: UIViewController {
     
     func loadCategories(){
         let context = CoreDataStack.shared.mainContext
-        let request : NSFetchRequest<Category> = Category.fetchRequest()
+        let request: NSFetchRequest<Category> = Category.fetchRequest()
         do {
             categories = try context.fetch(request)
         } catch {

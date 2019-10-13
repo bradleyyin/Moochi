@@ -14,8 +14,8 @@ class MainViewController: UIViewController {
     var remainFund: Double?
     
     let monthCalculator = MonthCalculator()
-    let budgetController = BudgetController()
-    let budgetCalculator = BudgetCalculator()
+    var budgetController: BudgetController!
+    var budgetCalculator:  BudgetCalculator!
     
     var amountTypedString = ""
     
