@@ -12,12 +12,12 @@ import CoreData
 class DetailsTableViewCell: UITableViewCell {
 
     var category: Category?{
-        didSet{
+        didSet {
             updateViews()
         }
     }
     var categoryTotal : Double {
-        guard let category = category else {return 0.0}
+        guard let category = category else { return 0.0 }
         return category.totalAmount
     }
     var categoryRemaining: Double {
@@ -27,18 +27,17 @@ class DetailsTableViewCell: UITableViewCell {
         let endOfMonth = currentDate.getThisMonthEnd()
         //print ("start, end", startOfMonth, endOfMonth)
         //let calender = Calendar.current
-        var expenses : [Expense] = []
+        var expenses: [Expense] = []
         
-        func loadItem(){
+        func loadItem() {
             let predicate = NSPredicate(format: "category MATCHES %@", (category?.name)!)
             let predicate2 = NSPredicate(format: "(date => %@) AND (date <= %@)", startOfMonth as NSDate, endOfMonth as NSDate)
             
-            let request : NSFetchRequest<Expense> = Expense.fetchRequest()
-            request.predicate = predicate
+            let request: NSFetchRequest<Expense> = Expense.fetchRequest()
             request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicate2])
-            do{
+            do {
                 expenses = try context.fetch(request)
-            }catch{
+            } catch {
                 print("error loading expenses: \(error)")
             }
         }
@@ -51,25 +50,21 @@ class DetailsTableViewCell: UITableViewCell {
         
         return categoryTotal - totalExpenses
     }
-    var fontSize : CGFloat = 0
+    var fontSize: CGFloat = 0
     
-    weak var titleLabel : UILabel!
-    weak var totalLabel : UILabel!
-    weak var whiteBarView : UIView!
-    weak var blackBarView : UIView!
-    weak var remainLabel : UILabel!
+    weak var titleLabel: UILabel!
+    weak var totalLabel: UILabel!
+    weak var whiteBarView: UIView!
+    weak var blackBarView: UIView!
+    weak var remainLabel: UILabel!
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUpViews()
 
     }
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        //setUpViews()
-        //updateViews()
-    }
-    func setUpViews(){
+    
+    func setUpViews() {
         
         let label1 = UILabel()
         label1.textAlignment = .left
@@ -96,8 +91,6 @@ class DetailsTableViewCell: UITableViewCell {
         remainLabel.topAnchor.constraint(equalTo: blackBarView.topAnchor).isActive = true
         remainLabel.bottomAnchor.constraint(equalTo: blackBarView.bottomAnchor).isActive = true
         remainLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        remainLabel.leadingAnchor.constraint(equalTo: blackBarView.leadingAnchor, constant: 5)
-        
         let totalStackView = UIStackView(arrangedSubviews: [topStackView, whiteBarView])
         totalStackView.axis = .vertical
         totalStackView.alignment = .fill
@@ -109,29 +102,12 @@ class DetailsTableViewCell: UITableViewCell {
         totalStackView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         totalStackView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         totalStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5).isActive = true
-        //label1.translatesAutoresizingMaskIntoConstraints = false
-        //self.addSubview(label1)
-        //label1.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        //label1.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
         
         
         self.backgroundColor = .clear
-//        let titleLabel = UILabel(frame: CGRect(x: 0, y: 10, width: self.frame.width / 2, height: self.frame.height / 2 - 10))
-//        self.addSubview(titleLabel)
+
         self.titleLabel = label1
-        
-//        let totalLabel = UILabel(frame: CGRect(x: self.frame.width / 2, y: 10, width: self.frame.width / 2, height: self.frame.height / 2 - 10))
-//        self.addSubview(totalLabel)
         self.totalLabel = label2
-        
-        //let whiteBarView = UIView(frame: CGRect(x: 0, y: self.frame.height / 2, width: self.frame.width, height: self.frame.height / 2))
-        
-        
-        //let blackBarView = UIView(frame: CGRect(x: self.frame.width , y: 0, width: self.frame.width, height: self.frame.height / 2))
-        
-        
-        
-        
         self.remainLabel = remainLabel
         self.blackBarView = blackBarView
         self.whiteBarView = whiteBarView
@@ -151,7 +127,7 @@ class DetailsTableViewCell: UITableViewCell {
         
         totalLabel.textAlignment = .right
         totalLabel.textColor = .black
-        totalLabel.text = NSString(format:"%.2f", categoryTotal) as String
+        totalLabel.text = NSString(format: "%.2f", categoryTotal) as String
         totalLabel.font = UIFont(name: fontName, size: fontSize)
         
         
@@ -164,7 +140,7 @@ class DetailsTableViewCell: UITableViewCell {
             blackRatio = 1
         }
         //print (titleLabel.text, blackRatio)
-        guard let blackWidthAnchor = blackBarView.constraints.first(where: {$0.firstAttribute == .width}) else {return}
+        guard let blackWidthAnchor = blackBarView.constraints.first(where: { $0.firstAttribute == .width }) else {return}
         blackWidthAnchor.constant = self.frame.width * blackRatio
         
         blackBarView.layoutIfNeeded()
@@ -176,13 +152,13 @@ class DetailsTableViewCell: UITableViewCell {
             remainLabel.textColor = .black
             remainLabel.leadingAnchor.constraint(equalTo: blackBarView.leadingAnchor, constant: 5).isActive = true
             remainLabel.textAlignment = .left
-        }else{
+        } else {
             remainLabel.textColor = .black
             remainLabel.trailingAnchor.constraint(equalTo: blackBarView.leadingAnchor, constant: -5).isActive = true
             remainLabel.textAlignment = .right
         }
         
-        remainLabel.text = NSString(format:"%.2f", categoryRemaining) as String
+        remainLabel.text = NSString(format: "%.2f", categoryRemaining) as String
         //print(remainLabel.text)
         remainLabel.font = UIFont(name: fontName, size: fontSize)
         
@@ -193,6 +169,3 @@ class DetailsTableViewCell: UITableViewCell {
     }
 
 }
-
-
-

@@ -18,38 +18,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         
-        
-        let tabBarController = UITabBarController()
-        let mainVC = MainViewController()
-        let detailsVC = DetailsViewController()
-        let expensesVC = ExpenseViewController()
-        let expensesNav = UINavigationController(rootViewController: expensesVC)
-        let recieptAlbumVC = ReceiptAlbumViewController()
-        let recieptNav = UINavigationController(rootViewController: recieptAlbumVC)
-        expensesNav.isNavigationBarHidden = true
-        recieptNav.isNavigationBarHidden = true
-        
-        mainVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "home"), tag: 0)
-        detailsVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "details"), tag: 1)
-        expensesVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "calender"), tag: 2)
-        recieptAlbumVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "album"), tag: 3)
-        
-        let controllers = [mainVC, detailsVC, expensesNav, recieptNav]
-        tabBarController.viewControllers = controllers
-        tabBarController.tabBar.barTintColor = .clear
-        tabBarController.tabBar.shadowImage = UIImage()
-        tabBarController.tabBar.backgroundImage = UIImage()
-        tabBarController.tabBar.tintColor = .black
-        tabBarController.tabBar.unselectedItemTintColor = superLightGray
-        
-        
+        let tabBarController = MainTabBarController()
+      
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
         
-        #if DEBUG
-        Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
-        
-        #endif
         return true
     }
 

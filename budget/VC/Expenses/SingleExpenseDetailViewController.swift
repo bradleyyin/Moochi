@@ -166,7 +166,7 @@ class SingleExpenseDetailViewController: BasicViewController {
         self.imageView = imageView
         
         
-        let swipeFromLeftGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(swipeFromLeft))
+        let swipeFromLeftGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(swipeFromLeftEdge))
         swipeFromLeftGesture.edges = .left
         self.view.addGestureRecognizer(swipeFromLeftGesture)
     }
@@ -215,7 +215,7 @@ class SingleExpenseDetailViewController: BasicViewController {
         
         
     }
-    @objc func swipeFromLeft() {
+    @objc func swipeFromLeftEdge() {
         backButtonTapped()
     }
 

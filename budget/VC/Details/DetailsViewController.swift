@@ -114,6 +114,7 @@ class DetailsViewController: BasicViewController {
     func updateViews() {
         if let incomeNotBudget = incomeNotBuget {
             incomeNotBudgetLabel.text = "Income not budgeted: \(String(format: "%.2f", incomeNotBudget))"
+            print("income not budget: \(incomeNotBudget)")
         } else {
             incomeNotBudgetLabel.text = "No income information."
         }

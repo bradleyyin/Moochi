@@ -72,6 +72,7 @@ class EditIncomeView: UIView {
         textField.text = "0.00"
         textField.font = UIFont(name: fontName, size: 25)
         textField.textAlignment = .center
+        textField.textColor = .black
         return textField
     }()
     
@@ -91,6 +92,7 @@ class EditIncomeView: UIView {
         textField.text = "0.00"
         textField.textAlignment = .center
         textField.font = UIFont(name: fontName, size: 25)
+        textField.textColor = .black
         return textField
     }()
     let incomeTextField: UITextField = {
@@ -100,6 +102,7 @@ class EditIncomeView: UIView {
         textField.placeholder = "enter income here"
         textField.font = UIFont(name: fontName, size: 25)
         textField.textAlignment = .center
+        textField.textColor = .black
         return textField
     }()
     
@@ -107,12 +110,12 @@ class EditIncomeView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.white
-        
+        self.layer.cornerRadius = 20
         //setupViews()
     }
 
     
-    func setupViews() {
+    private func setupViews() {
         self.addSubview(cancelButton)
         cancelButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
         cancelButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10).isActive = true

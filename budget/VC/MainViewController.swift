@@ -154,7 +154,6 @@ class MainViewController: UIViewController {
 
     
     @objc func addEntry () {
-        print("add")
         let addEntryVC = AddEntryViewController()
         addEntryVC.modalPresentationStyle = .fullScreen
         self.present(addEntryVC, animated: true)
@@ -215,7 +214,7 @@ extension MainViewController: EditIncomeDelegate {
         dismissView()
     }
 }
-extension MainViewController: UIGestureRecognizerDelegate{
+extension MainViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if touch.view != backgroundView {
             return false

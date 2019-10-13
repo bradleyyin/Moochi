@@ -22,42 +22,34 @@ class SingleDayViewController: BasicViewController {
     weak var table: UITableView!
 
     override func viewDidLoad() {
-        titleOfVC = "here"
+        super.viewDidLoad()
+        addGestures()
+    }
+    
+    private func updateViews() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM/dd"
         if let date = date {
             dateString = dateFormatter.string(from: date)
         }
-        
-        super.viewDidLoad()
-        
-        //loadItem()
-
-        // Do any additional setup after loading the view.
+        self.titleLabel.text = dateString
+        table.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadItem(for: date)
-        table.reloadData()
     }
     override func setupUI() {
         super.setupUI()
         
         let label = TitleLabel(frame: .zero)
         self.view.addSubview(label)
-
-
-        //label.heightAnchor.constraint(equalToConstant: 300 * heightRatio).isActive = true
-        //label.widthAnchor.constraint(equalToConstant: 300 * heightRatio).isActive = true
+        
         label.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         label.topAnchor.constraint(equalTo: self.view.topAnchor, constant: statusBarHeight + 70 * heightRatio).isActive = true
-        //label.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
-
 
         self.titleLabel = label
-        
-        self.titleLabel.text = dateString
         titleLabel.textAlignment = .center
         titleLabel.backgroundColor = .clear
         titleLabel.font = UIFont(name: fontName, size: 80 * heightRatio)
@@ -65,7 +57,6 @@ class SingleDayViewController: BasicViewController {
         if let title = self.view.subviews[0] as? TitleLabel {
             title.removeFromSuperview()
         }
-        
         
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -89,12 +80,7 @@ class SingleDayViewController: BasicViewController {
         expensesTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
         expensesTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         expensesTableView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 20).isActive = true
-//        expensesTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
         self.table = expensesTableView
-        
-        let swipeFromLeftGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(swipeFromLeft))
-        swipeFromLeftGesture.edges = .left
-        self.view.addGestureRecognizer(swipeFromLeftGesture)
         
         let button2 = UIButton()
         button2.translatesAutoresizingMaskIntoConstraints = false
@@ -109,11 +95,25 @@ class SingleDayViewController: BasicViewController {
         
         
     }
+    private func addGestures() {
+        let swipeFromLeftEdgeGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(swipeFromLeftEdge))
+        swipeFromLeftEdgeGesture.edges = .left
+        self.view.addGestureRecognizer(swipeFromLeftEdgeGesture)
+        
+        let swipeLeftGesture = UISwipeGestureRecognizer(target: self, action: #selector(loadDayAfter))
+        swipeLeftGesture.direction = .left
+        self.view.addGestureRecognizer(swipeLeftGesture)
+        
+        let swipeRightGesture = UISwipeGestureRecognizer(target: self, action: #selector(loadDayBefore))
+        swipeRightGesture.direction = .right
+        self.view.addGestureRecognizer(swipeRightGesture)
+        //print(self.view.gestureRecognizers)
+    }
     func loadItem(for date: Date?) {
         let context = CoreDataStack.shared.mainContext
         let request: NSFetchRequest<Expense> = Expense.fetchRequest()
         
-        guard let date = date as? NSDate else { fatalError("cannot convert date for fetching") }
+        guard let date = date as NSDate? else { fatalError("cannot convert date for fetching") }
         let predicate = NSPredicate(format: "date == %@", date)
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
         
@@ -123,25 +123,30 @@ class SingleDayViewController: BasicViewController {
         
         do {
             expenses = try context.fetch(request)
+            print(expenses.count)
+            updateViews()
         } catch {
             fatalError("error loading entries: \(error)")
         }
     }
-    @objc func swipeFromLeft() {
+    @objc func swipeFromLeftEdge() {
         backButtonTapped()
     }
     
     @objc func loadDayBefore() {
         self.date = date?.dayBefore
+        loadItem(for: self.date)
     }
     
     @objc func loadDayAfter() {
         self.date = date?.dayAfter
+        loadItem(for: self.date)
     }
     
     @objc func showVC() {
         let addEntryVC = AddEntryViewController()
         addEntryVC.date = date
+        addEntryVC.modalPresentationStyle = .fullScreen
         present(addEntryVC, animated: true)
     }
 }
@@ -156,20 +161,13 @@ extension SingleDayViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        if indexPath.section == 1{
-//            guard let cell = tableView.dequeueReusableCell(withIdentifier: "AddEntryCell", for: indexPath) as? AddEntryTableViewCell else {return UITableViewCell()}
-//            cell.delegate = self
-//            cell.selectionStyle = .none
-//            cell.cellType = .addEntry
-//            return cell
-//        }else{
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExpenseCell", for: indexPath) as? ExpenseTableViewCell else {
             fatalError("cant make ExpenseTableViewCell")
         }
         cell.expense = expenses[indexPath.row]
         
         return cell
-       // }
        
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
