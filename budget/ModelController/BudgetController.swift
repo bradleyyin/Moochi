@@ -13,6 +13,19 @@ import UIKit
 class BudgetController {
     let imageSaver = ImageSaver()
     
+    func saveToPersistentData(context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+        context.performAndWait {
+            do {
+                try context.save()
+            } catch {
+                print("error saving to persistent data : \(error)")
+            }
+        }
+    }
+}
+
+//- MARK: expense
+extension BudgetController {
     func createNewExpense(name: String,
                           amount: Double,
                           date: Date,
@@ -59,21 +72,9 @@ class BudgetController {
             saveToPersistentData()
         }
     }
-    
-    func createCategory(name: String, totalAmount: Double, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
-        context.performAndWait {
-            Category(name: name, totalAmount: totalAmount)
-            saveToPersistentData()
-        }
-    }
-    
-    func deleteCategory(category: Category, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
-        context.performAndWait {
-            context.delete(category)
-            saveToPersistentData()
-        }
-    }
-    
+}
+//- MARK: income
+extension BudgetController {
     func createIncome(amount: Double, monthYear: String, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         context.performAndWait {
             Income(monthYear: monthYear, amount: amount)
@@ -103,14 +104,33 @@ class BudgetController {
             saveToPersistentData()
         }
     }
-    
-    func saveToPersistentData(context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+}
+
+//- MARK: category
+extension BudgetController {
+    func createCategory(name: String, totalAmount: Double, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         context.performAndWait {
+            Category(name: name, totalAmount: totalAmount)
+            saveToPersistentData()
+        }
+    }
+    func readCategories(context: NSManagedObjectContext = CoreDataStack.shared.mainContext) -> [Category] {
+        var categories: [Category] = []
+        context.performAndWait {
+            let request: NSFetchRequest<Category> = Category.fetchRequest()
             do {
-                try context.save()
+                categories = try context.fetch(request)
             } catch {
-                print("error saving to persistent data : \(error)")
+                print("error loading categories: \(error)")
             }
+        }
+        return categories
+    }
+    
+    func deleteCategory(category: Category, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+        context.performAndWait {
+            context.delete(category)
+            saveToPersistentData()
         }
     }
 }
