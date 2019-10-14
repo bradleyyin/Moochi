@@ -146,6 +146,7 @@ class SingleDayViewController: BasicViewController {
     @objc func showVC() {
         let addEntryVC = AddEntryViewController()
         addEntryVC.date = date
+        addEntryVC.budgetController = budgetController
         addEntryVC.modalPresentationStyle = .fullScreen
         present(addEntryVC, animated: true)
     }
@@ -174,6 +175,7 @@ extension SingleDayViewController: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 0 {
             let singleDayDetailVC = SingleExpenseDetailViewController()
             singleDayDetailVC.expense = expenses[indexPath.row]
+            singleDayDetailVC.budgetController = budgetController
             navigationController?.pushViewController(singleDayDetailVC, animated: true)
         }
     }

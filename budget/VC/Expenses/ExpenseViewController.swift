@@ -34,6 +34,7 @@ class ExpenseViewController: BasicViewController, CalenderDelegate {
     func goToSingleDay(date: Date) {
         let singleDayVC = SingleDayViewController()
         singleDayVC.date = date
+        singleDayVC.budgetController = budgetController
         self.navigationController?.pushViewController(singleDayVC, animated: true)
     }
 }

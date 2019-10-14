@@ -13,26 +13,26 @@ import CoreData
 
 class AddEntryViewController: BasicViewController {
     
-    weak var imageView : UIImageView!
-    weak var nameTextField : UITextField!
-    weak var amountTextFeild : UITextField!
-    weak var dateTextField : UITextField!
+    weak var imageView: UIImageView!
+    weak var nameTextField: UITextField!
+    weak var amountTextFeild: UITextField!
+    weak var dateTextField: UITextField!
     
-    weak var categoryTextFeild : UITextField!
+    weak var categoryTextFeild: UITextField!
     
-    var imagePicker : UIImagePickerController!
-    var datePicker : UIDatePicker!
-    var categoryPicker : UIPickerView!
+    var imagePicker: UIImagePickerController!
+    var datePicker: UIDatePicker!
+    var categoryPicker: UIPickerView!
     let formatter = DateFormatter()
     
-    var categorypickerData : [String]{
+    var categorypickerData: [String] {
         var nameArray : [String] = ["uncategorized"]
-        for category in categories{
+        for category in categories {
             nameArray.append(category.name!)
         }
         return nameArray
     }
-    var selectedCategory : String = "uncategorized"
+    var selectedCategory: String = "uncategorized"
     
     var date: Date?
     var amountTypedString = ""

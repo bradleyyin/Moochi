@@ -34,7 +34,7 @@ class BasicViewController: UIViewController {
         titleLabel.heightAnchor.constraint(equalToConstant: 100 * heightRatio).isActive = true
     }
     
-    func loadCategories(){
+    func loadCategories() {
         categories = budgetController.readCategories()
     }
     

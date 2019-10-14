@@ -24,11 +24,8 @@ class ReceiptAlbumViewController : BasicViewController {
     var monthArray: [String] = []
     
     override func viewDidLoad() {
-        titleOfVC = "RECEIPT ALBUM"
         super.viewDidLoad()
-        
-        
-        
+        titleOfVC = "RECEIPT ALBUM"
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -65,15 +62,15 @@ class ReceiptAlbumViewController : BasicViewController {
         tableView.backgroundColor = .clear
         self.recieptTableView = tableView
     }
-    func updateViews(){
+    func updateViews() {
         
     }
-    func loadExpenses(){
+    func loadExpenses() {
         let context = CoreDataStack.shared.mainContext
         
         let request : NSFetchRequest<Expense> = Expense.fetchRequest()
         
-        do{
+        do {
             expenses = try context.fetch(request)
         }catch{
             print("error loading income")

@@ -33,6 +33,7 @@ class DetailsViewController: BasicViewController {
     var amountTypedString = ""
     var incomeNotBuget: Double?
     
+    
     lazy var fetchedResultsController: NSFetchedResultsController<Category> = {
        let fetchRequest: NSFetchRequest<Category> = Category.fetchRequest()
        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
@@ -112,6 +113,8 @@ class DetailsViewController: BasicViewController {
         
     }
     func updateViews() {
+       
+        
         if let incomeNotBudget = incomeNotBuget {
             incomeNotBudgetLabel.text = "Income not budgeted: \(String(format: "%.2f", incomeNotBudget))"
             print("income not budget: \(incomeNotBudget)")
@@ -137,9 +140,10 @@ class DetailsViewController: BasicViewController {
     
     func calcRemainingBudget() {
         var totalBudget = 0.0
-        for category in categories {
+        for category in fetchedResultsController.fetchedObjects ?? [] {
             totalBudget += category.totalAmount
         }
+        print("budget: \(totalBudget)")
         if let income = income {
             incomeNotBuget = income.amount - totalBudget
         } else {
