@@ -30,7 +30,8 @@ class DetailsTableViewCell: UITableViewCell {
         var expenses: [Expense] = []
         
         func loadItem() {
-            let predicate = NSPredicate(format: "category MATCHES %@", (category?.name)!)
+            print("expenses", category?.expenses as? Set<Expense>)
+            let predicate = NSPredicate(format: "parentCategory == %@", (category)!)
             let predicate2 = NSPredicate(format: "(date => %@) AND (date <= %@)", startOfMonth as NSDate, endOfMonth as NSDate)
             
             let request: NSFetchRequest<Expense> = Expense.fetchRequest()

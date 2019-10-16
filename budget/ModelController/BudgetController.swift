@@ -29,7 +29,7 @@ extension BudgetController {
     func createNewExpense(name: String,
                           amount: Double,
                           date: Date,
-                          category: String,
+                          category: Category?,
                           image: UIImage?,
                           context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         var imagePath: String?
@@ -37,7 +37,7 @@ extension BudgetController {
             imagePath = imageSaver.saveImage(image: image)
         }
         context.performAndWait {
-            Expense(name: name, imagePath: imagePath, date: date, category: category.uppercased(), amount: amount)
+            Expense(name: name, imagePath: imagePath, date: date, category: category, amount: amount)
             saveToPersistentData()
         }
     }

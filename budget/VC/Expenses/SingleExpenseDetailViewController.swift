@@ -91,7 +91,8 @@ class SingleExpenseDetailViewController: BasicViewController {
         //categoryLabel.widthAnchor.constraint(equalToConstant: screenWidth * 3 / 10).isActive = true
         
         let categoryContentLabel = UILabel()
-        categoryContentLabel.text = expense.category?.uppercased()
+        let categoryText = expense.parentCategory?.name ?? "UNCATEGORIZED"
+        categoryContentLabel.text = categoryText.uppercased()
         categoryContentLabel.setUpLabelForSingleDayDetailVC()
         categoryContentLabel.textAlignment = .center
     

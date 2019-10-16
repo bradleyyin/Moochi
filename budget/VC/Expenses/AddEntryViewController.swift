@@ -26,7 +26,7 @@ class AddEntryViewController: BasicViewController {
     let formatter = DateFormatter()
     
     var categorypickerData: [String] {
-        var nameArray : [String] = ["uncategorized"]
+        var nameArray: [String] = ["uncategorized"]
         for category in categories {
             nameArray.append(category.name!)
         }
@@ -66,7 +66,7 @@ class AddEntryViewController: BasicViewController {
         
         self.view.backgroundColor = .white
         
-        if let label = self.view.subviews[0] as? TitleLabel{
+        if let label = self.view.subviews[0] as? TitleLabel {
             label.widthAnchor.constraint(equalToConstant: screenWidth * 3 / 4).isActive = true
         }
         
@@ -90,8 +90,6 @@ class AddEntryViewController: BasicViewController {
         button2.setImage(UIImage(named: "cancel"), for: .normal)
         button2.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
 
-        
-       
         let nameLabel = UILabel()
         nameLabel.text = "NAME"
         nameLabel.textColor = .black
@@ -252,16 +250,23 @@ class AddEntryViewController: BasicViewController {
         guard let name = nameTextField.text, !name.isEmpty,
             let amountString = amountTextFeild.text, let amount = Double(amountString),
             let dateString = dateTextField.text,
-            let date = formatter.date(from: dateString),
-            let category = categoryTextFeild.text, !category.isEmpty else { return }
+            let date = formatter.date(from: dateString) else { return }
        
         print(name)
         print(amount)
         print(date)
-        print(category)
         var image: UIImage? = imageView.image
         if imageView.image == UIImage(named: "addImage"){
             image = nil
+        }
+        print(categoryPicker.selectedRow(inComponent: 0))
+        print(categories)
+        var category: Category?
+        if categoryPicker.selectedRow(inComponent: 0) == 0 {
+            category = nil
+        } else {
+            category = categories[categoryPicker.selectedRow(inComponent: 0) - 1]
+            print(category?.name)
         }
         budgetController.createNewExpense(name: name, amount: amount, date: date, category: category, image: image)
         dismiss(animated: true, completion: nil)
