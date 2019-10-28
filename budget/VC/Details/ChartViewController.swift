@@ -18,13 +18,17 @@ class ChartViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        loadExpenses()
+        setupGraph()
+        NotificationCenter.default.addObserver(self, selector: #selector(loadExpenses), name: NSNotification.Name.init("addedEntry"), object: nil)
+
+        // Do any additional setup after loading the view.
+    }
+    @objc private func loadExpenses() {
         guard let expensesSet: Set<Expense> = category?.expenses as? Set<Expense> else { return }
         
         expenses = Array(expensesSet)
         sortExpenses()
-        setupGraph()
-
-        // Do any additional setup after loading the view.
     }
     override func viewDidLayoutSubviews() {
         if traitCollection.userInterfaceStyle == .light {
@@ -33,7 +37,7 @@ class ChartViewController: UIViewController {
             view.backgroundColor = .black
         }
     }
-    func sortExpenses() {
+    private func sortExpenses() {
         var dictionary: [String: Double] = [:]
         for expense in expenses {
             guard let date = expense.date else { continue }
@@ -47,7 +51,6 @@ class ChartViewController: UIViewController {
             }
         }
         expensesDictionary = dictionary
-        print(dictionary.keys)
         sortedKey = dictionary.keys.sorted(by: {
             if $0.count < $1.count {
                 return true
@@ -58,7 +61,6 @@ class ChartViewController: UIViewController {
             }
             
         })
-        print(sortedKey)
     }
     
     private func setupGraph() {

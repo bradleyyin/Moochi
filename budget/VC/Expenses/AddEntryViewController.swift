@@ -132,15 +132,13 @@ class AddEntryViewController: BasicViewController {
         
         let dateTextField = UITextField()
         dateTextField.textColor =  .black
-        if let date = date{
+        if let date = date {
             dateTextField.text = formatter.string(from: date)
-        }else{
+        } else {
             dateTextField.text = formatter.string(from: Date())
         }
         dateTextField.setBottomBorder()
         self.dateTextField = dateTextField
-        
-
         
         let categoryLabel = UILabel()
         categoryLabel.text = "CATEGORY"
@@ -216,8 +214,6 @@ class AddEntryViewController: BasicViewController {
         imageView.contentMode = .center
         imageView.backgroundColor = superLightGray
         
-        
-        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
         imageView.addGestureRecognizer(tapGesture)
         
@@ -225,18 +221,18 @@ class AddEntryViewController: BasicViewController {
         
        
     }
-    @objc func imageTapped(){
+    @objc func imageTapped() {
         let alertController = UIAlertController(title: "select source", message: nil, preferredStyle: .actionSheet)
         
-        let choseCam = UIAlertAction(title: "Camera", style: .default) { (action) in
+        let choseCam = UIAlertAction(title: "Camera", style: .default) { _ in
             self.imagePicker.sourceType = .camera
             self.present(self.imagePicker, animated: true)
         }
-        let choseLibrary = UIAlertAction(title: "Photo", style: .default) { (action) in
+        let choseLibrary = UIAlertAction(title: "Photo", style: .default) { _ in
             self.imagePicker.sourceType = .photoLibrary
             self.present(self.imagePicker, animated: true)
         }
-        let cancelAction = UIAlertAction(title: "cancel", style: .cancel) { (action) in
+        let cancelAction = UIAlertAction(title: "cancel", style: .cancel) { _ in
             //cancel
         }
         alertController.addAction(choseCam)
@@ -245,7 +241,7 @@ class AddEntryViewController: BasicViewController {
         self.present(alertController, animated: true)
         
     }
-    @objc func checkMarkTapped(){
+    @objc func checkMarkTapped() {
         
         guard let name = nameTextField.text, !name.isEmpty,
             let amountString = amountTextFeild.text, let amount = Double(amountString),
@@ -256,7 +252,7 @@ class AddEntryViewController: BasicViewController {
         print(amount)
         print(date)
         var image: UIImage? = imageView.image
-        if imageView.image == UIImage(named: "addImage"){
+        if imageView.image == UIImage(named: "addImage") {
             image = nil
         }
         print(categoryPicker.selectedRow(inComponent: 0))
@@ -266,9 +262,9 @@ class AddEntryViewController: BasicViewController {
             category = nil
         } else {
             category = categories[categoryPicker.selectedRow(inComponent: 0) - 1]
-            print(category?.name)
         }
         budgetController.createNewExpense(name: name, amount: amount, date: date, category: category, image: image)
+        NotificationCenter.default.post(name: Notification.Name("addedEntry"), object: nil)
         dismiss(animated: true, completion: nil)
         
         
@@ -277,9 +273,9 @@ class AddEntryViewController: BasicViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    func showDatePicker(){
+    func showDatePicker() {
         //format date
-        if let date = date{
+        if let date = date {
             datePicker.date = date
         }
         datePicker.datePickerMode = .date
@@ -291,61 +287,59 @@ class AddEntryViewController: BasicViewController {
         let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneDatePicker))
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
-        toolbar.setItems([cancelButton,space,doneButton], animated: false)
+        toolbar.setItems([cancelButton, space, doneButton], animated: false)
         dateTextField.inputAccessoryView = toolbar
         dateTextField.inputView = datePicker
     }
-    func showCategoryPicker(){
+    func showCategoryPicker() {
         
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
         let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneCategoryPicker))
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
-        toolbar.setItems([cancelButton,space,doneButton], animated: false)
+        toolbar.setItems([cancelButton, space, doneButton], animated: false)
         categoryTextFeild.inputAccessoryView = toolbar
         categoryTextFeild.inputView = categoryPicker
         
         
     }
     
-    func addToolBarNameAndAmount(){
+    func addToolBarNameAndAmount() {
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
         let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(cancelDatePicker))
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
-        toolbar.setItems([cancelButton,space,doneButton], animated: false)
+        toolbar.setItems([cancelButton, space, doneButton], animated: false)
         amountTextFeild.inputAccessoryView = toolbar
         nameTextField.inputAccessoryView = toolbar
         
     }
     
-    @objc func doneDatePicker(){
+    @objc func doneDatePicker() {
         
         dateTextField.text = formatter.string(from: datePicker.date)
         self.view.endEditing(true)
     }
     
-    @objc func cancelDatePicker(){
+    @objc func cancelDatePicker() {
         self.view.endEditing(true)
     }
     
-    @objc func doneCategoryPicker(){
+    @objc func doneCategoryPicker() {
         categoryTextFeild.text = selectedCategory.uppercased()
         self.view.endEditing(true)
     }
-    
-
-
 }
 
-extension AddEntryViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+extension AddEntryViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let userPickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        if let userPickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             imageView.image = userPickedImage
             imageView.contentMode = .scaleAspectFill
             imageView.clipsToBounds = true
@@ -354,7 +348,7 @@ extension AddEntryViewController : UIImagePickerControllerDelegate, UINavigation
     }
 }
 
-extension UITextField{
+extension UITextField {
     
     //To add bottom border only
     func setBottomBorder(withColor color: UIColor = .black) {
@@ -373,17 +367,16 @@ extension UITextField{
         
     }
 }
-extension AddEntryViewController: UITextFieldDelegate{
+extension AddEntryViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        if textField == amountTextFeild{
+        if textField == amountTextFeild {
             
             let formatter = NumberFormatter()
             formatter.minimumFractionDigits = 2
             formatter.maximumFractionDigits = 2
             
             if !string.isEmpty {
-                print ("here")
                 amountTypedString += string
                 let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
                 //let numbString = NSString(format:"%.2f", decNumber) as String
@@ -418,14 +411,11 @@ extension AddEntryViewController: UITextFieldDelegate{
 }
 
 
-extension AddEntryViewController: UIPickerViewDataSource, UIPickerViewDelegate{
+extension AddEntryViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return categorypickerData.count
     }
-    
-    
-    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
