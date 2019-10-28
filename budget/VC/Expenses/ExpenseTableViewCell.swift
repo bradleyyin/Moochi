@@ -10,28 +10,41 @@ import UIKit
 
 class ExpenseTableViewCell: UITableViewCell {
     
-    weak var titleLabel : UILabel!
-    weak var amountLabel : UILabel!
+    weak var titleLabel: UILabel!
+    weak var amountLabel: UILabel!
 
-    var expense : Expense? {
-        didSet{
+    var expense: Expense? {
+        didSet {
             updateViews()
         }
     }
     
-    var fontSize : CGFloat = 25 * heightRatio
+    var fontSize: CGFloat = 25 * heightRatio
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUpViews()
     }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setupUIColor()
+    }
     
-    func setUpViews(){
+    private func setupUIColor() {
+        if traitCollection.userInterfaceStyle == .light {
+            titleLabel.textColor = .black
+            amountLabel.textColor = .black
+        } else {
+            titleLabel.textColor = .white
+            amountLabel.textColor = .white
+        }
+    }
+    
+    func setUpViews() {
         self.backgroundColor = .clear
         
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.textColor = .black
         titleLabel.font = UIFont(name: fontName, size: fontSize)
         titleLabel.textAlignment = .left
         self.addSubview(titleLabel)
@@ -43,7 +56,6 @@ class ExpenseTableViewCell: UITableViewCell {
         let amountLabel = UILabel()
         amountLabel.translatesAutoresizingMaskIntoConstraints = false
         amountLabel.textAlignment = .right
-        amountLabel.textColor = .black
         amountLabel.font = UIFont(name: fontName, size: fontSize)
         self.addSubview(amountLabel)
         amountLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20).isActive = true
@@ -52,9 +64,9 @@ class ExpenseTableViewCell: UITableViewCell {
         
     }
     func updateViews() {
-        guard let expense = expense else{return}
+        guard let expense = expense else { return }
         titleLabel.text = expense.name
-        amountLabel.text = NSString(format:"%.2f", expense.amount) as String
+        amountLabel.text = NSString(format: "%.2f", expense.amount) as String
     }
     
     required init?(coder aDecoder: NSCoder) {

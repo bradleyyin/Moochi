@@ -10,7 +10,16 @@ import UIKit
 import CoreData
 
 class SingleExpenseDetailViewController: BasicViewController {
-    weak var imageView : UIImageView!
+    var imageView: UIImageView!
+    var nameLabel: UILabel!
+    var nameContentLabel: UILabel!
+    var amountLabel: UILabel!
+    var amountContentLabel: UILabel!
+    var dateLabel: UILabel!
+    var dateContentLabel: UILabel!
+    var categoryLabel: UILabel!
+    var categoryContentLabel: UILabel!
+    var backButton: UIButton!
     
     var image: UIImage?
     
@@ -19,7 +28,7 @@ class SingleExpenseDetailViewController: BasicViewController {
     
 
     override func viewDidLoad() {
-        
+        configureLabels()
         super.viewDidLoad()
         
 
@@ -31,14 +40,94 @@ class SingleExpenseDetailViewController: BasicViewController {
         imagePicker.delegate = self
         imagePicker.allowsEditing = false
     }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        setupUIColor()
+    }
+    private func setupUIColor() {
+        if traitCollection.userInterfaceStyle == .light {
+            self.view.backgroundColor = .white
+            nameLabel.textColor = .black
+            nameContentLabel.textColor = .black
+            dateLabel.textColor = .black
+            dateContentLabel.textColor = .black
+            categoryLabel.textColor = .black
+            categoryContentLabel.textColor = .black
+            amountLabel.textColor = .black
+            amountContentLabel.textColor = .black
+            backButton.tintColor = .black
+        } else {
+            self.view.backgroundColor = .black
+            nameLabel.textColor = .white
+            nameContentLabel.textColor = .white
+            dateLabel.textColor = .white
+            dateContentLabel.textColor = .white
+            categoryLabel.textColor = .white
+            categoryContentLabel.textColor = .white
+            amountLabel.textColor = .white
+            amountContentLabel.textColor = .white
+            backButton.tintColor = .white
+        }
+    }
+    private func configureLabels() {
+        
+        guard let expense = expense else { return }
+        
+        let nameLabel = UILabel()
+        nameLabel.text = "NAME"
+        nameLabel.setUpLabelForSingleDayDetailVC()
+        nameLabel.backgroundColor = .clear
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.nameLabel = nameLabel
+        
+        let amountLabel = UILabel()
+        amountLabel.text = "AMOUNT"
+        amountLabel.setUpLabelForSingleDayDetailVC()
+        self.amountLabel = amountLabel
+        
+        let dateLabel = UILabel()
+        dateLabel.text = "DATE"
+        dateLabel.setUpLabelForSingleDayDetailVC()
+        self.dateLabel = dateLabel
+        
+        let categoryLabel = UILabel()
+        categoryLabel.text = "CATEGORY"
+        categoryLabel.setUpLabelForSingleDayDetailVC()
+        categoryLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.categoryLabel = categoryLabel
+        
+        let nameContentLabel = UILabel()
+        nameContentLabel.text = expense.name
+        nameContentLabel.setUpLabelForSingleDayDetailVC()
+        nameContentLabel.textAlignment = .center
+        nameContentLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.nameContentLabel = nameContentLabel
+        
+        let amountContentLabel = UILabel()
+        amountContentLabel.text = NSString(format: "%.2f", expense.amount) as String
+        amountContentLabel.setUpLabelForSingleDayDetailVC()
+        amountContentLabel.textAlignment = .center
+        self.amountContentLabel = amountContentLabel
+        
+        let dateContentLabel = UILabel()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd/yyyy"
+        dateContentLabel.text = formatter.string(from: expense.date!)
+        dateContentLabel.setUpLabelForSingleDayDetailVC()
+        dateContentLabel.textAlignment = .center
+        self.dateContentLabel = dateContentLabel
+        
+        let categoryContentLabel = UILabel()
+        let categoryText = expense.parentCategory?.name ?? "UNCATEGORIZED"
+        categoryContentLabel.text = categoryText.uppercased()
+        categoryContentLabel.setUpLabelForSingleDayDetailVC()
+        categoryContentLabel.textAlignment = .center
+        self.categoryContentLabel = categoryContentLabel
+    }
 
     override func setupUI() {
         
         loadImage()
-        
-        self.view.backgroundColor = .white
-        
-        guard let expense = expense else { return }
         
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -47,55 +136,11 @@ class SingleExpenseDetailViewController: BasicViewController {
         button.widthAnchor.constraint(equalToConstant: buttonWidth * heightRatio).isActive = true
         button.heightAnchor.constraint(equalToConstant: buttonHeight * heightRatio).isActive = true
         button.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 20 * heightRatio - buttonHeight / 2).isActive = true
-        button.setImage(UIImage(named: "back"), for: .normal)
+        button.setImage(UIImage(named: "back")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.setTitleColor(superLightGray, for: .highlighted)
         button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        self.backButton = button
         
-        let nameLabel = UILabel()
-        nameLabel.text = "NAME"
-        nameLabel.setUpLabelForSingleDayDetailVC()
-        nameLabel.backgroundColor = .clear
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        
-        let nameContentLabel = UILabel()
-        nameContentLabel.text = expense.name
-        nameContentLabel.setUpLabelForSingleDayDetailVC()
-        nameContentLabel.textAlignment = .center
-        nameContentLabel.translatesAutoresizingMaskIntoConstraints = false
-       
-        
-        let amountLabel = UILabel()
-        amountLabel.text = "AMOUNT"
-        amountLabel.setUpLabelForSingleDayDetailVC()
-        
-        let amountContentLabel = UILabel()
-        amountContentLabel.text = NSString(format: "%.2f", expense.amount) as String
-        amountContentLabel.setUpLabelForSingleDayDetailVC()
-        amountContentLabel.textAlignment = .center
-        
-        let dateLabel = UILabel()
-        dateLabel.text = "DATE"
-        dateLabel.setUpLabelForSingleDayDetailVC()
-        
-        let dateContentLabel = UILabel()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MM/dd/yyyy"
-        dateContentLabel.text = formatter.string(from: expense.date!)
-        dateContentLabel.setUpLabelForSingleDayDetailVC()
-        dateContentLabel.textAlignment = .center
-        
-        let categoryLabel = UILabel()
-        categoryLabel.text = "CATEGORY"
-        categoryLabel.setUpLabelForSingleDayDetailVC()
-        categoryLabel.translatesAutoresizingMaskIntoConstraints = false
-        //categoryLabel.widthAnchor.constraint(equalToConstant: screenWidth * 3 / 10).isActive = true
-        
-        let categoryContentLabel = UILabel()
-        let categoryText = expense.parentCategory?.name ?? "UNCATEGORIZED"
-        categoryContentLabel.text = categoryText.uppercased()
-        categoryContentLabel.setUpLabelForSingleDayDetailVC()
-        categoryContentLabel.textAlignment = .center
-    
         let nameStackView = UIStackView(arrangedSubviews: [nameLabel, nameContentLabel])
         nameStackView.axis = .horizontal
         nameStackView.distribution = .fillEqually

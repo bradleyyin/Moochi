@@ -43,13 +43,16 @@ class SingleDayViewController: BasicViewController {
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        setupUIColor()
     }
     private func setupUIColor() {
         if traitCollection.userInterfaceStyle == .light {
+            self.view.backgroundColor = .white
             titleLabel.textColor = .black
             addEntryButton.setTitleColor(.black, for: .normal)
             backButton.tintColor = .black
         } else {
+            self.view.backgroundColor = .black
             titleLabel.textColor = .white
             addEntryButton.setTitleColor(.white, for: .normal)
             backButton.tintColor = .white
@@ -80,7 +83,9 @@ class SingleDayViewController: BasicViewController {
         button.widthAnchor.constraint(equalToConstant: buttonWidth * heightRatio).isActive = true
         button.heightAnchor.constraint(equalToConstant: buttonHeight * heightRatio).isActive = true
         button.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 50 * heightRatio - buttonHeight / 2).isActive = true
-        button.setImage(UIImage(named: "back"), for: .normal)
+        let originalImage = UIImage(named: "back")
+        let tintedImage = originalImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
         button.setTitleColor(superLightGray, for: .highlighted)
         button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         self.backButton = button

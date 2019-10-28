@@ -64,6 +64,7 @@ class DetailsTableViewCell: UITableViewCell {
         
     }
     override func layoutSubviews() {
+        super.layoutSubviews()
         setupUIColor()
     }
     private func setupUIColor() {

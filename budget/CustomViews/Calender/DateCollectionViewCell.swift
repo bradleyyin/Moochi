@@ -18,6 +18,7 @@ class DateCollectionViewCell: UICollectionViewCell {
     }
     
     override func layoutSubviews() {
+        super.layoutSubviews()
         if traitCollection.userInterfaceStyle == .light {
             lbl.textColor = .black
         } else {
