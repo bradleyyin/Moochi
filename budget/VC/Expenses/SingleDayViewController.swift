@@ -186,6 +186,7 @@ extension SingleDayViewController: UITableViewDelegate, UITableViewDataSource {
             budgetController.deleteExpense(expense: expense)
             expenses.remove(at: indexPath.row)
             tableView.reloadData()
+            NotificationCenter.default.post(name: Notification.Name("changedEntry"), object: nil)
         }
     }
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {

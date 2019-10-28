@@ -264,7 +264,7 @@ class AddEntryViewController: BasicViewController {
             category = categories[categoryPicker.selectedRow(inComponent: 0) - 1]
         }
         budgetController.createNewExpense(name: name, amount: amount, date: date, category: category, image: image)
-        NotificationCenter.default.post(name: Notification.Name("addedEntry"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name("changedEntry"), object: nil)
         dismiss(animated: true, completion: nil)
         
         

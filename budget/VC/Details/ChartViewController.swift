@@ -14,13 +14,14 @@ class ChartViewController: UIViewController {
     var expenses: [Expense] = []
     var expensesDictionary: [String: Double] = [:]
     var sortedKey: [String] = []
+    var graphView: ScrollableGraphView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        loadExpenses()
         setupGraph()
-        NotificationCenter.default.addObserver(self, selector: #selector(loadExpenses), name: NSNotification.Name.init("addedEntry"), object: nil)
+        loadExpenses()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(loadExpenses), name: NSNotification.Name("changedEntry"), object: nil)
 
         // Do any additional setup after loading the view.
     }
@@ -29,6 +30,8 @@ class ChartViewController: UIViewController {
         
         expenses = Array(expensesSet)
         sortExpenses()
+        graphView.reload()
+        
     }
     override func viewDidLayoutSubviews() {
         if traitCollection.userInterfaceStyle == .light {
@@ -76,6 +79,7 @@ class ChartViewController: UIViewController {
         graphView.topMargin = 50
         graphView.bottomMargin = 50
         
+        
         graphView.translatesAutoresizingMaskIntoConstraints = false
         
         self.view.addSubview(graphView)
@@ -83,6 +87,7 @@ class ChartViewController: UIViewController {
         graphView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         graphView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         graphView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        self.graphView = graphView
     }
     
 
