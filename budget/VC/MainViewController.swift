@@ -20,9 +20,12 @@ class MainViewController: UIViewController {
     var amountTypedString = ""
     
     weak var monthLabel: UILabel!
+    weak var dotLabel1: UILabel!
+    weak var dotLabel2: UILabel!
     weak var dateNumberLabel: UILabel!
     weak var moneyLabel: UILabel!
     weak var moneyCircle: UIView!
+    weak var addEntryButton: UIButton!
     weak var backgroundView: UIView!
     
 
@@ -43,9 +46,31 @@ class MainViewController: UIViewController {
         getRemainingFunds()
         updateView()
     }
+    
+    override func viewDidLayoutSubviews() {
+        setupUIColor()
+    }
+    
+    private func setupUIColor() {
+        if traitCollection.userInterfaceStyle == .light {
+            monthLabel.textColor = .black
+            dateNumberLabel.textColor = .black
+            dotLabel1.textColor = .black
+            dotLabel2.textColor = .black
+            moneyLabel.textColor = .black
+            addEntryButton.setTitleColor(.black, for: .normal)
+            view.backgroundColor = .white
+        } else {
+            monthLabel.textColor = .white
+            dateNumberLabel.textColor = .white
+            moneyLabel.textColor = .white
+            dotLabel1.textColor = .white
+            dotLabel2.textColor = .white
+            addEntryButton.setTitleColor(.white, for: .normal)
+            view.backgroundColor = .black
+        }
+    }
     func setUpUI() {
-        
-        self.view.backgroundColor = .white
         
         let monthLabel = UILabel()
         self.view.addSubview(monthLabel)
@@ -72,6 +97,7 @@ class MainViewController: UIViewController {
         dotLabel1.font = dateNumberLabel.font.withSize(50)
         dotLabel1.text = "•  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •"
         dotLabel1.lineBreakMode = .byClipping
+        self.dotLabel1 = dotLabel1
         
         let moneyCircle = UIView()
         moneyCircle.translatesAutoresizingMaskIntoConstraints = false
@@ -80,7 +106,6 @@ class MainViewController: UIViewController {
         moneyCircle.heightAnchor.constraint(equalToConstant: 300 * heightRatio).isActive = true
         moneyCircle.widthAnchor.constraint(equalTo: moneyCircle.heightAnchor).isActive = true
         moneyCircle.topAnchor.constraint(equalTo: dotLabel1.bottomAnchor, constant: 10).isActive = true
-        
         moneyCircle.backgroundColor = superLightGray
         moneyCircle.layer.masksToBounds = true
         moneyCircle.layer.cornerRadius = 150 * heightRatio
@@ -95,7 +120,6 @@ class MainViewController: UIViewController {
         moneyLabel.centerXAnchor.constraint(equalTo: moneyCircle.centerXAnchor).isActive = true
         moneyLabel.centerYAnchor.constraint(equalTo: moneyCircle.centerYAnchor).isActive = true
         moneyLabel.widthAnchor.constraint(equalTo: moneyCircle.widthAnchor, multiplier: 0.8).isActive = true
-        
         moneyLabel.backgroundColor = .clear
         moneyLabel.textAlignment = .center
         moneyLabel.textColor = .black
@@ -103,8 +127,6 @@ class MainViewController: UIViewController {
         moneyLabel.adjustsFontSizeToFitWidth = true
         moneyLabel.minimumScaleFactor = 0.3
         moneyLabel.baselineAdjustment = .alignCenters
-        
-        
         self.moneyLabel = moneyLabel
         
         let dotLabel2 = UILabel()
@@ -117,6 +139,7 @@ class MainViewController: UIViewController {
         dotLabel2.font = dateNumberLabel.font.withSize(50)
         dotLabel2.text = "•  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •"
         dotLabel2.lineBreakMode = .byClipping
+        self.dotLabel2 = dotLabel2
         
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -131,6 +154,7 @@ class MainViewController: UIViewController {
         button.setTitleColor(.black, for: .normal)
         button.setTitleColor(superLightGray, for: .highlighted)
         button.addTarget(self, action: #selector(addEntry), for: .touchUpInside)
+        self.addEntryButton = button
     }
     func updateView() {
         monthLabel.text = monthCalculator.currentMonthString
