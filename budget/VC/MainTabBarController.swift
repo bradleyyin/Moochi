@@ -45,6 +45,9 @@ class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewControllers()
+        
+    }
+    override func viewDidLayoutSubviews() {
         setupAppearance()
     }
     
@@ -63,10 +66,19 @@ class MainTabBarController: UITabBarController {
     }
     
     private func setupAppearance() {
-        self.tabBar.barTintColor = .clear
-        self.tabBar.shadowImage = UIImage()
-        self.tabBar.backgroundImage = UIImage()
-        self.tabBar.tintColor = .black
-        self.tabBar.unselectedItemTintColor = superLightGray
+        if traitCollection.userInterfaceStyle == .light {
+            self.tabBar.barTintColor = .clear
+            self.tabBar.shadowImage = UIImage()
+            self.tabBar.backgroundImage = UIImage()
+            self.tabBar.tintColor = .black
+            self.tabBar.unselectedItemTintColor = superLightGray
+        } else {
+            self.tabBar.barTintColor = .clear
+            self.tabBar.shadowImage = UIImage()
+            self.tabBar.backgroundImage = UIImage()
+            self.tabBar.tintColor = .white
+            self.tabBar.unselectedItemTintColor = .darkGray
+        }
+        
     }
 }

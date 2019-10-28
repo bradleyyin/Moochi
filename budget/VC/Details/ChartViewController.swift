@@ -25,6 +25,13 @@ class ChartViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
+    override func viewDidLayoutSubviews() {
+        if traitCollection.userInterfaceStyle == .light {
+            view.backgroundColor = .white
+        } else {
+            view.backgroundColor = .black
+        }
+    }
     
     private func setupGraph() {
         let graphView = ScrollableGraphView(frame: CGRect(x: 10, y: 10, width: 300, height: 500), dataSource: self)
