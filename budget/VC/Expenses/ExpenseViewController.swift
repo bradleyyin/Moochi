@@ -8,9 +8,9 @@
 
 import UIKit
 
-class ExpenseViewController: BasicViewController, CalenderDelegate {
-    let calenderView: CalenderView = {
-        let v = CalenderView()
+class ExpenseViewController: BasicViewController, CalendarDelegate {
+    let calendarView: CalendarView = {
+        let v = CalendarView()
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -19,14 +19,14 @@ class ExpenseViewController: BasicViewController, CalenderDelegate {
         titleOfVC = "expenses"
         super.viewDidLoad()
        
-        configureCalenderView()
+        configureCalendarView()
         setupConstraints()
     }
-    private func configureCalenderView() {
-        view.addSubview(calenderView)
+    private func configureCalendarView() {
+        view.addSubview(calendarView)
         
-        calenderView.backgroundColor = .clear
-        calenderView.delegate = self
+        calendarView.backgroundColor = .clear
+        calendarView.delegate = self
     }
     private func setupUIColor() {
         if traitCollection.userInterfaceStyle == .light {
@@ -39,17 +39,17 @@ class ExpenseViewController: BasicViewController, CalenderDelegate {
     }
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        calenderView.myCollectionView.collectionViewLayout.invalidateLayout()
+        calendarView.myCollectionView.collectionViewLayout.invalidateLayout()
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         setupUIColor()
     }
     private func setupConstraints() {
-        calenderView.topAnchor.constraint(equalTo: view.topAnchor, constant: (statusBarHeight + 100 * heightRatio)).isActive = true
-        calenderView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -12).isActive = true
-        calenderView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 12).isActive = true
-        calenderView.heightAnchor.constraint(equalToConstant: 600 * heightRatio).isActive = true
+        calendarView.topAnchor.constraint(equalTo: view.topAnchor, constant: (statusBarHeight + 100 * heightRatio)).isActive = true
+        calendarView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -12).isActive = true
+        calendarView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 12).isActive = true
+        calendarView.heightAnchor.constraint(equalToConstant: 600 * heightRatio).isActive = true
     }
     func goToSingleDay(date: Date) {
         let singleDayVC = SingleDayViewController()

@@ -31,7 +31,7 @@ class MainTabBarController: UITabBarController {
     private var expenseViewController: ExpenseViewController {
         let expenseVC = ExpenseViewController()
         expenseVC.budgetController = budgetController
-        expenseVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "calender"), tag: 2)
+        expenseVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "calendar"), tag: 2)
         return expenseVC
     }
     

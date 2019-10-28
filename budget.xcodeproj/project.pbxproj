@@ -26,7 +26,7 @@
 		75AEC11722E3D7170006A057 /* SharedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC11622E3D7170006A057 /* SharedView.swift */; };
 		75AEC11922E3DC8A0006A057 /* BasicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC11822E3DC8A0006A057 /* BasicViewController.swift */; };
 		75AEC11C22E3E2480006A057 /* MonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC11B22E3E2480006A057 /* MonthView.swift */; };
-		75AEC11E22E3E2700006A057 /* CalenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC11D22E3E2700006A057 /* CalenderView.swift */; };
+		75AEC11E22E3E2700006A057 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC11D22E3E2700006A057 /* CalendarView.swift */; };
 		75AEC12022E409DE0006A057 /* WeekdayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC11F22E409DE0006A057 /* WeekdayView.swift */; };
 		75AEC12222E413290006A057 /* ExpenseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC12122E413290006A057 /* ExpenseViewController.swift */; };
 		75AEC12422E446600006A057 /* SegueDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC12322E446600006A057 /* SegueDirection.swift */; };
@@ -74,7 +74,7 @@
 		75AEC11622E3D7170006A057 /* SharedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedView.swift; sourceTree = "<group>"; };
 		75AEC11822E3DC8A0006A057 /* BasicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicViewController.swift; sourceTree = "<group>"; };
 		75AEC11B22E3E2480006A057 /* MonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthView.swift; sourceTree = "<group>"; };
-		75AEC11D22E3E2700006A057 /* CalenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalenderView.swift; sourceTree = "<group>"; };
+		75AEC11D22E3E2700006A057 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		75AEC11F22E409DE0006A057 /* WeekdayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayView.swift; sourceTree = "<group>"; };
 		75AEC12122E413290006A057 /* ExpenseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseViewController.swift; sourceTree = "<group>"; };
 		75AEC12322E446600006A057 /* SegueDirection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegueDirection.swift; sourceTree = "<group>"; };
@@ -200,7 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				75AEC11B22E3E2480006A057 /* MonthView.swift */,
-				75AEC11D22E3E2700006A057 /* CalenderView.swift */,
+				75AEC11D22E3E2700006A057 /* CalendarView.swift */,
 				75AEC11F22E409DE0006A057 /* WeekdayView.swift */,
 				75BCC2CC234ABAC2001CA01A /* CircleView.swift */,
 				75F2FB7E235138B9006007D8 /* DateCollectionViewCell.swift */,
@@ -428,7 +428,7 @@
 				75BCC2CB234A9175001CA01A /* BudgetCalculator.swift in Sources */,
 				75373B7D22F4085500113E81 /* EditIncomeView.swift in Sources */,
 				75AEC12022E409DE0006A057 /* WeekdayView.swift in Sources */,
-				75AEC11E22E3E2700006A057 /* CalenderView.swift in Sources */,
+				75AEC11E22E3E2700006A057 /* CalendarView.swift in Sources */,
 				75AEC11922E3DC8A0006A057 /* BasicViewController.swift in Sources */,
 				75E0BD5C22CDA7DB00FE0F6C /* MenuViewController.swift in Sources */,
 				755FFBE52345B1B60085C5E5 /* Expense+Convenience.swift in Sources */,

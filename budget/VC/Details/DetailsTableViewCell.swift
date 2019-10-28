@@ -26,7 +26,6 @@ class DetailsTableViewCell: UITableViewCell {
         let startOfMonth = currentDate.getThisMonthStart()
         let endOfMonth = currentDate.getThisMonthEnd()
         //print ("start, end", startOfMonth, endOfMonth)
-        //let calender = Calendar.current
         var expenses: [Expense] = []
         
         func loadItem() {

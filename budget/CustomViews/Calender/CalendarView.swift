@@ -1,5 +1,5 @@
 //
-//  CalenderView.swift
+//  CalendarView.swift
 //  budget
 //
 //  Created by Bradley Yin on 7/20/19.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol CalenderDelegate: AnyObject {
+protocol CalendarDelegate: AnyObject {
     func goToSingleDay(date: Date)
 }
 
@@ -43,7 +43,7 @@ protocol CalenderDelegate: AnyObject {
 //    }
 //}
 
-class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, MonthViewDelegate {
+class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, MonthViewDelegate {
     
     var numOfDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     var currentMonthIndex: Int = 0
@@ -53,7 +53,7 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
     var todaysDate = 0
     var firstWeekDayOfMonth = 0   //(Sunday-Saturday 1-7)
     
-    weak var delegate: CalenderDelegate?
+    weak var delegate: CalendarDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
