@@ -47,6 +47,7 @@
 		75E0BD6422CDC63500FE0F6C /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0BD6322CDC63500FE0F6C /* DetailsViewController.swift */; };
 		75E0BD6722CDD1BA00FE0F6C /* DetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0BD6622CDD1BA00FE0F6C /* DetailsTableViewCell.swift */; };
 		75E6F65D23666A8B002F3BF3 /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E6F65C23666A8B002F3BF3 /* ChartViewController.swift */; };
+		75E6F65F236682CA002F3BF3 /* DarkAndLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E6F65E236682CA002F3BF3 /* DarkAndLight.swift */; };
 		75F2FB7F235138B9006007D8 /* DateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F2FB7E235138B9006007D8 /* DateCollectionViewCell.swift */; };
 		75F2FB8223513C9F006007D8 /* Date+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F2FB8123513C9F006007D8 /* Date+Utility.swift */; };
 		75F2FB842352E296006007D8 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F2FB832352E296006007D8 /* MainTabBarController.swift */; };
@@ -96,6 +97,7 @@
 		75E0BD6322CDC63500FE0F6C /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		75E0BD6622CDD1BA00FE0F6C /* DetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsTableViewCell.swift; sourceTree = "<group>"; };
 		75E6F65C23666A8B002F3BF3 /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
+		75E6F65E236682CA002F3BF3 /* DarkAndLight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkAndLight.swift; sourceTree = "<group>"; };
 		75F2FB7E235138B9006007D8 /* DateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCollectionViewCell.swift; sourceTree = "<group>"; };
 		75F2FB8123513C9F006007D8 /* Date+Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Utility.swift"; sourceTree = "<group>"; };
 		75F2FB832352E296006007D8 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 				755FFBEA2345BCCB0085C5E5 /* ImageSaver.swift */,
 				754248BE234A8A55004B6ECF /* MonthCalculator.swift */,
 				75BCC2CA234A9175001CA01A /* BudgetCalculator.swift */,
+				75E6F65E236682CA002F3BF3 /* DarkAndLight.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -422,6 +425,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75B4D3BA22E9854E00438A7A /* ExpenseTableViewCell.swift in Sources */,
+				75E6F65F236682CA002F3BF3 /* DarkAndLight.swift in Sources */,
 				75373B4922ED842000113E81 /* ReceiptCollectionViewCell.swift in Sources */,
 				75AEC11C22E3E2480006A057 /* MonthView.swift in Sources */,
 				75CD181022C5DD6800E2FB12 /* MainViewController.swift in Sources */,
