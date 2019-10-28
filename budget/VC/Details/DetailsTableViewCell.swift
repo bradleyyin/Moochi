@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 class DetailsTableViewCell: UITableViewCell {
-
+    
     var category: Category? {
         didSet {
             updateViews()
@@ -62,7 +62,21 @@ class DetailsTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUpViews()
-
+        
+    }
+    override func layoutSubviews() {
+        setupUIColor()
+    }
+    private func setupUIColor() {
+        if traitCollection.userInterfaceStyle == .light {
+            titleLabel.textColor = .black
+            totalLabel.textColor = .black
+            remainLabel.textColor = .black
+        } else {
+            titleLabel.textColor = .white
+            totalLabel.textColor = .white
+            remainLabel.textColor = .white
+        }
     }
     
     func setUpViews() {
@@ -106,7 +120,7 @@ class DetailsTableViewCell: UITableViewCell {
         
         
         self.backgroundColor = .clear
-
+        
         self.titleLabel = label1
         self.totalLabel = label2
         self.remainLabel = remainLabel
@@ -168,5 +182,5 @@ class DetailsTableViewCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
 }
