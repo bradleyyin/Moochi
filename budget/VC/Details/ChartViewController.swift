@@ -12,8 +12,8 @@ import ScrollableGraphView
 class ChartViewController: UIViewController {
     var category: Category!
     var expenses: [Expense] = []
-    let testNumber = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]
-    
+    var expensesDictionary: [String: Double] = [:]
+    var sortedKey: [String] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +21,7 @@ class ChartViewController: UIViewController {
         guard let expensesSet: Set<Expense> = category?.expenses as? Set<Expense> else { return }
         
         expenses = Array(expensesSet)
+        sortExpenses()
         setupGraph()
 
         // Do any additional setup after loading the view.
@@ -32,6 +33,33 @@ class ChartViewController: UIViewController {
             view.backgroundColor = .black
         }
     }
+    func sortExpenses() {
+        var dictionary: [String: Double] = [:]
+        for expense in expenses {
+            guard let date = expense.date else { continue }
+            let month = Calendar.current.component(.month, from: date)
+            let year = Calendar.current.component(.year, from: date)
+            let monthYear = "\(year)/\(month)"
+            if dictionary[monthYear] == nil {
+                dictionary[monthYear] = expense.amount
+            } else {
+                dictionary[monthYear]! += expense.amount
+            }
+        }
+        expensesDictionary = dictionary
+        print(dictionary.keys)
+        sortedKey = dictionary.keys.sorted(by: {
+            if $0.count < $1.count {
+                return true
+            } else if $0 < $1 && $0.count == $1.count {
+                return true
+            } else {
+                return false
+            }
+            
+        })
+        print(sortedKey)
+    }
     
     private func setupGraph() {
         let graphView = ScrollableGraphView(frame: CGRect(x: 10, y: 10, width: 300, height: 500), dataSource: self)
@@ -41,9 +69,10 @@ class ChartViewController: UIViewController {
         graphView.addPlot(plot: linePlot)
         graphView.addReferenceLines(referenceLines: referenceLines)
         graphView.shouldAdaptRange = true
-        graphView.direction = .leftToRight
-        //graphView.topMargin = 100
-        //graphView.bottomMargin = 100
+        graphView.direction = .rightToLeft
+        graphView.dataPointSpacing = 100
+        graphView.topMargin = 50
+        graphView.bottomMargin = 50
         
         graphView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -60,19 +89,19 @@ class ChartViewController: UIViewController {
 extension ChartViewController: ScrollableGraphViewDataSource {
     func value(forPlot plot: Plot, atIndex pointIndex: Int) -> Double {
         // Return the data for each plot.
-        switch(plot.identifier) {
-        case "Line":
-            return testNumber[pointIndex]
-        default:
-            return 0
+        if plot.identifier == "Line" {
+            let key = sortedKey[pointIndex]
+            let amount = expensesDictionary[key]
+            return amount ?? 0
         }
+        return 0
     }
 
     func label(atIndex pointIndex: Int) -> String {
-        return "FEB \(pointIndex)"
+        return sortedKey[pointIndex]
     }
 
     func numberOfPoints() -> Int {
-        return testNumber.count
+        return sortedKey.count
     }
 }
