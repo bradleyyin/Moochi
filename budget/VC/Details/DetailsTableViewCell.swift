@@ -11,12 +11,12 @@ import CoreData
 
 class DetailsTableViewCell: UITableViewCell {
 
-    var category: Category?{
+    var category: Category? {
         didSet {
             updateViews()
         }
     }
-    var categoryTotal : Double {
+    var categoryTotal: Double {
         guard let category = category else { return 0.0 }
         return category.totalAmount
     }
@@ -45,7 +45,7 @@ class DetailsTableViewCell: UITableViewCell {
         loadItem()
         //print(expenses)
         var totalExpenses = 0.0
-        for expense in expenses{
+        for expense in expenses {
             totalExpenses += expense.amount
         }
         
@@ -141,7 +141,7 @@ class DetailsTableViewCell: UITableViewCell {
             blackRatio = 1
         }
         //print (titleLabel.text, blackRatio)
-        guard let blackWidthAnchor = blackBarView.constraints.first(where: { $0.firstAttribute == .width }) else {return}
+        guard let blackWidthAnchor = blackBarView.constraints.first(where: { $0.firstAttribute == .width }) else { return }
         blackWidthAnchor.constant = self.frame.width * blackRatio
         
         blackBarView.layoutIfNeeded()

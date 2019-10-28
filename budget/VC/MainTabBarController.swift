@@ -55,8 +55,11 @@ class MainTabBarController: UITabBarController {
         
         let receiptNav = UINavigationController(rootViewController: receiptAlbumViewController)
         receiptNav.isNavigationBarHidden = true
+        
+        let detailsNav = UINavigationController(rootViewController: detailsViewController)
+        detailsNav.isNavigationBarHidden = true
    
-        self.viewControllers = [mainViewController, detailsViewController, expensesNav, receiptNav]
+        self.viewControllers = [mainViewController, detailsNav, expensesNav, receiptNav]
     }
     
     private func setupAppearance() {

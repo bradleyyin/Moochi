@@ -42,6 +42,20 @@ extension BudgetController {
         }
     }
     
+//    func readAllExpenses(of category: Category, context:NSManagedObjectContext = CoreDataStack.shared.mainContext) -> [Expense] {
+//        var expenses: [Expense] = []
+//        let request: NSFetchRequest<Expense> = Expense.fetchRequest()
+//        request.predicate = NSPredicate(format: "parentCategory == %@", category)
+//        context.performAndWait {
+//            do {
+//                expenses = try context.fetch(request)
+//            } catch {
+//                print("error loading all expenses")
+//            }
+//        }
+//        return expenses
+//    }
+    
     func readMonthlyExpense(context: NSManagedObjectContext = CoreDataStack.shared.mainContext) -> [Expense] {
         let currentDate = Date()
         let startOfMonth = currentDate.getThisMonthStart()

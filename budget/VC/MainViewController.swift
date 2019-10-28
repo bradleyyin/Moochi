@@ -156,6 +156,7 @@ class MainViewController: UIViewController {
     @objc func addEntry () {
         let addEntryVC = AddEntryViewController()
         addEntryVC.modalPresentationStyle = .fullScreen
+        addEntryVC.budgetController = budgetController
         self.present(addEntryVC, animated: true)
     }
     

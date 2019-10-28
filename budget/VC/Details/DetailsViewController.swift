@@ -95,7 +95,7 @@ class DetailsViewController: BasicViewController {
         detailsTableView.backgroundColor = .clear
         detailsTableView.register(DetailsTableViewCell.self, forCellReuseIdentifier: "DetailsCell")
         detailsTableView.separatorStyle = .none
-        detailsTableView.allowsSelection = false
+        detailsTableView.allowsSelection = true
         
         self.tableView = detailsTableView
         
@@ -159,7 +159,7 @@ extension DetailsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         let context = CoreDataStack.shared.mainContext
         
-        context.delete(categories[indexPath.row])
+        context.delete(fetchedResultsController.object(at: indexPath))
         categories.remove(at: indexPath.row)
         
         //TODO: run delete in controller
@@ -186,6 +186,12 @@ extension DetailsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let category = fetchedResultsController.fetchedObjects?[indexPath.row]
+        let chartVC = ChartViewController()
+        chartVC.category = category
+        self.navigationController?.pushViewController(chartVC, animated: true)
     }
 }
 

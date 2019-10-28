@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -46,6 +46,7 @@
 		75E0BD6222CDBCC000FE0F6C /* GlobalStuffs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0BD6122CDBCC000FE0F6C /* GlobalStuffs.swift */; };
 		75E0BD6422CDC63500FE0F6C /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0BD6322CDC63500FE0F6C /* DetailsViewController.swift */; };
 		75E0BD6722CDD1BA00FE0F6C /* DetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0BD6622CDD1BA00FE0F6C /* DetailsTableViewCell.swift */; };
+		75E6F65D23666A8B002F3BF3 /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E6F65C23666A8B002F3BF3 /* ChartViewController.swift */; };
 		75F2FB7F235138B9006007D8 /* DateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F2FB7E235138B9006007D8 /* DateCollectionViewCell.swift */; };
 		75F2FB8223513C9F006007D8 /* Date+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F2FB8123513C9F006007D8 /* Date+Utility.swift */; };
 		75F2FB842352E296006007D8 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F2FB832352E296006007D8 /* MainTabBarController.swift */; };
@@ -94,6 +95,7 @@
 		75E0BD6122CDBCC000FE0F6C /* GlobalStuffs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalStuffs.swift; sourceTree = "<group>"; };
 		75E0BD6322CDC63500FE0F6C /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		75E0BD6622CDD1BA00FE0F6C /* DetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsTableViewCell.swift; sourceTree = "<group>"; };
+		75E6F65C23666A8B002F3BF3 /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
 		75F2FB7E235138B9006007D8 /* DateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCollectionViewCell.swift; sourceTree = "<group>"; };
 		75F2FB8123513C9F006007D8 /* Date+Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Utility.swift"; sourceTree = "<group>"; };
 		75F2FB832352E296006007D8 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
@@ -272,6 +274,7 @@
 			children = (
 				75E0BD6322CDC63500FE0F6C /* DetailsViewController.swift */,
 				75E0BD6622CDD1BA00FE0F6C /* DetailsTableViewCell.swift */,
+				75E6F65C23666A8B002F3BF3 /* ChartViewController.swift */,
 			);
 			path = Details;
 			sourceTree = "<group>";
@@ -296,6 +299,7 @@
 				75CD180722C5DD6800E2FB12 /* Frameworks */,
 				75CD180822C5DD6800E2FB12 /* Resources */,
 				7550A3FB23493F1D0063FE3E /* ShellScript */,
+				9FDD0038BB3DA252A7066169 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -371,6 +375,23 @@
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
+		9FDD0038BB3DA252A7066169 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-budget/Pods-budget-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-budget/Pods-budget-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-budget/Pods-budget-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		C612968C6DB9E29E2C433DF3 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -420,6 +441,7 @@
 				75AEC12922E54F1B0006A057 /* SingleDayViewController.swift in Sources */,
 				755FFBE72345B1CC0085C5E5 /* Income+Convenience.swift in Sources */,
 				75F2FB8223513C9F006007D8 /* Date+Utility.swift in Sources */,
+				75E6F65D23666A8B002F3BF3 /* ChartViewController.swift in Sources */,
 				75AEC11722E3D7170006A057 /* SharedView.swift in Sources */,
 				75373B4522ED747600113E81 /* RecietAlbumViewController.swift in Sources */,
 				75373B4722ED792D00113E81 /* ReceiptAlbumTableViewCell.swift in Sources */,

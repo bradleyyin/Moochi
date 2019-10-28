@@ -7,5 +7,6 @@ target 'budget' do
 
   # Pods for budget
 pod 'SwiftLint'
+pod 'ScrollableGraphView'
 
 end
