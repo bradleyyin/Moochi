@@ -17,6 +17,13 @@ class DateCollectionViewCell: UICollectionViewCell {
         setupViews()
     }
     
+    override func layoutSubviews() {
+        if traitCollection.userInterfaceStyle == .light {
+            lbl.textColor = .black
+        } else {
+            lbl.textColor = .white
+        }
+    }
     
     func setupViews() {
         addSubview(lbl)
@@ -46,7 +53,6 @@ class DateCollectionViewCell: UICollectionViewCell {
         label.text = "00"
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 25)
-        label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

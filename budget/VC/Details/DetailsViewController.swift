@@ -69,6 +69,7 @@ class DetailsViewController: BasicViewController {
         tableView.reloadData()
     }
     override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         setupUIColor()
     }
     private func setupUIColor() {

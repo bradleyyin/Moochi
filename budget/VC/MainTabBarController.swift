@@ -48,6 +48,7 @@ class MainTabBarController: UITabBarController {
         
     }
     override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         setupAppearance()
     }
     

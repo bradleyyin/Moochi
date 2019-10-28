@@ -34,6 +34,7 @@ class ChartViewController: UIViewController {
         
     }
     override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         if traitCollection.userInterfaceStyle == .light {
             view.backgroundColor = .white
         } else {

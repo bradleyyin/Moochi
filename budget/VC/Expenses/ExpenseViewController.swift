@@ -19,17 +19,37 @@ class ExpenseViewController: BasicViewController, CalenderDelegate {
         titleOfVC = "expenses"
         super.viewDidLoad()
        
+        configureCalenderView()
+        setupConstraints()
+    }
+    private func configureCalenderView() {
         view.addSubview(calenderView)
-        calenderView.topAnchor.constraint(equalTo: view.topAnchor, constant: (statusBarHeight + 100 * heightRatio)).isActive = true
-        calenderView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -12).isActive = true
-        calenderView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 12).isActive = true
-        calenderView.heightAnchor.constraint(equalToConstant: 600 * heightRatio).isActive = true
+        
         calenderView.backgroundColor = .clear
         calenderView.delegate = self
+    }
+    private func setupUIColor() {
+        if traitCollection.userInterfaceStyle == .light {
+            screenTitleLabel.textColor = .black
+            self.view.backgroundColor = .white
+        } else {
+            screenTitleLabel.textColor = .white
+            self.view.backgroundColor = .black
+        }
     }
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         calenderView.myCollectionView.collectionViewLayout.invalidateLayout()
+    }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        setupUIColor()
+    }
+    private func setupConstraints() {
+        calenderView.topAnchor.constraint(equalTo: view.topAnchor, constant: (statusBarHeight + 100 * heightRatio)).isActive = true
+        calenderView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -12).isActive = true
+        calenderView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 12).isActive = true
+        calenderView.heightAnchor.constraint(equalToConstant: 600 * heightRatio).isActive = true
     }
     func goToSingleDay(date: Date) {
         let singleDayVC = SingleDayViewController()

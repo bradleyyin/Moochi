@@ -18,8 +18,9 @@ class SingleDayViewController: BasicViewController {
     var expenses: [Expense] = []
     
     weak var titleLabel: TitleLabel!
-    
     weak var table: UITableView!
+    weak var backButton: UIButton!
+    weak var addEntryButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +40,20 @@ class SingleDayViewController: BasicViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadItem(for: date)
+    }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+    }
+    private func setupUIColor() {
+        if traitCollection.userInterfaceStyle == .light {
+            titleLabel.textColor = .black
+            addEntryButton.setTitleColor(.black, for: .normal)
+            backButton.tintColor = .black
+        } else {
+            titleLabel.textColor = .white
+            addEntryButton.setTitleColor(.white, for: .normal)
+            backButton.tintColor = .white
+        }
     }
     override func setupUI() {
         super.setupUI()
@@ -66,7 +81,9 @@ class SingleDayViewController: BasicViewController {
         button.heightAnchor.constraint(equalToConstant: buttonHeight * heightRatio).isActive = true
         button.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 50 * heightRatio - buttonHeight / 2).isActive = true
         button.setImage(UIImage(named: "back"), for: .normal)
+        button.setTitleColor(superLightGray, for: .highlighted)
         button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        self.backButton = button
         
         let expensesTableView = UITableView()
         expensesTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -90,8 +107,9 @@ class SingleDayViewController: BasicViewController {
         button2.topAnchor.constraint(equalTo: expensesTableView.bottomAnchor, constant: 40).isActive = true
         button2.setTitle("+ add an entry", for: .normal)
         button2.titleLabel?.font = UIFont(name: fontName, size: 30)
-        button2.setTitleColor(.black, for: .normal)
+        button2.setTitleColor(superLightGray, for: .highlighted)
         button2.addTarget(self, action: #selector(showVC), for: .touchUpInside)
+        self.addEntryButton = button2
         
         
     }

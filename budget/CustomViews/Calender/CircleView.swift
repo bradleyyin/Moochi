@@ -21,7 +21,11 @@ class CircleView: UIView {
                                     width: rect.size.width - borderWidth,
                                     height: rect.size.height - borderWidth)
             context.addEllipse(in: strokeRect)
-            context.setStrokeColor(UIColor.black.cgColor)
+            if traitCollection.userInterfaceStyle == .light {
+                context.setStrokeColor(UIColor.black.cgColor)
+            } else {
+                context.setStrokeColor(UIColor.white.cgColor)
+            }
             context.setLineWidth(borderWidth)
             context.strokePath()
         }

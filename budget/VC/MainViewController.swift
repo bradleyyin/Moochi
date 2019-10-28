@@ -50,6 +50,7 @@ class MainViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         setupUIColor()
     }
     

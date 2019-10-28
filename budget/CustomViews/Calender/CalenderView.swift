@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol CalenderDelegate {
+protocol CalenderDelegate: AnyObject {
     func goToSingleDay(date: Date)
 }
 
@@ -53,7 +53,7 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
     var todaysDate = 0
     var firstWeekDayOfMonth = 0   //(Sunday-Saturday 1-7)
     
-    var delegate: CalenderDelegate?
+    weak var delegate: CalenderDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -93,7 +93,7 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         
         //for leap years, make february month of 29 days
         if currentMonthIndex == 2 && currentYear % 4 == 0 {
-            numOfDaysInMonth[currentMonthIndex-1] = 29
+            numOfDaysInMonth[currentMonthIndex - 1] = 29
         }
         //end
         
@@ -260,9 +260,6 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         fatalError("init(coder:) has not been implemented")
     }
 }
-
-
-
 //get date from string
 extension String {
     static var dateFormatter: DateFormatter = {
