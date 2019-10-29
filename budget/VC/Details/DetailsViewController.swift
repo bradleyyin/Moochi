@@ -77,7 +77,7 @@ class DetailsViewController: BasicViewController {
             self.view.backgroundColor = .white
             incomeNotBudgetLabel.textColor = .black
             screenTitleLabel.textColor = .black
-            
+            addCategoryButton.setTitleColor(.black, for: .normal)
         } else {
             self.view.backgroundColor = .black
             incomeNotBudgetLabel.textColor = .white
@@ -90,8 +90,8 @@ class DetailsViewController: BasicViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(button)
-        button.setTitle("+ add a category", for: .normal)
-        button.titleLabel?.font = UIFont(name: fontName, size: 30)
+        button.setTitle("+", for: .normal)
+        button.titleLabel?.font = UIFont(name: fontName, size: 40)
         button.setTitleColor(superLightGray, for: .highlighted)
         button.addTarget(self, action: #selector(showVC), for: .touchUpInside)
         self.addCategoryButton = button
@@ -126,11 +126,13 @@ class DetailsViewController: BasicViewController {
         
         NSLayoutConstraint.activate([tableView.topAnchor.constraint(equalTo: incomeNotBudgetLabel.bottomAnchor, constant: 20),
                                      tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-                                     tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)])
-            
-        addCategoryButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        addCategoryButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
-        addCategoryButton.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 40).isActive = true
+                                     tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+                                     tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)])
+        
+        addCategoryButton.widthAnchor.constraint(equalToConstant: buttonWidth * heightRatio).isActive = true
+        addCategoryButton.heightAnchor.constraint(equalTo: addCategoryButton.widthAnchor).isActive = true
+        addCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        addCategoryButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5).isActive = true
     }
     func updateViews() {
        

@@ -132,8 +132,8 @@ class MainViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(button)
-        button.setTitle("+ add an entry", for: .normal)
-        button.titleLabel?.font = UIFont(name: fontName, size: 30)
+        button.setTitle("+", for: .normal)
+        button.titleLabel?.font = UIFont(name: fontName, size: 40)
         button.setTitleColor(.black, for: .normal)
         button.setTitleColor(superLightGray, for: .highlighted)
         button.addTarget(self, action: #selector(addEntry), for: .touchUpInside)
@@ -160,8 +160,8 @@ class MainViewController: UIViewController {
         dotLabel2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         
         addEntryButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        addEntryButton.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        addEntryButton.heightAnchor.constraint(equalToConstant: 30 * heightRatio).isActive = true
+        addEntryButton.widthAnchor.constraint(equalToConstant: buttonWidth * heightRatio).isActive = true
+        addEntryButton.heightAnchor.constraint(equalToConstant: buttonHeight * heightRatio).isActive = true
         addEntryButton.topAnchor.constraint(equalTo: dotLabel2.bottomAnchor).isActive = true
     }
     func updateView() {

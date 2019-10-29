@@ -82,7 +82,7 @@ class SingleDayViewController: BasicViewController {
         button.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
         button.widthAnchor.constraint(equalToConstant: buttonWidth * heightRatio).isActive = true
         button.heightAnchor.constraint(equalToConstant: buttonHeight * heightRatio).isActive = true
-        button.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 50 * heightRatio - buttonHeight / 2).isActive = true
+        button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
         let originalImage = UIImage(named: "back")
         let tintedImage = originalImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
@@ -102,16 +102,18 @@ class SingleDayViewController: BasicViewController {
         expensesTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
         expensesTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         expensesTableView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 20).isActive = true
+        expensesTableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         self.table = expensesTableView
         
         let button2 = UIButton()
         button2.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(button2)
-        button2.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        button2.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
-        button2.topAnchor.constraint(equalTo: expensesTableView.bottomAnchor, constant: 40).isActive = true
-        button2.setTitle("+ add an entry", for: .normal)
-        button2.titleLabel?.font = UIFont(name: fontName, size: 30)
+        button2.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+        button2.widthAnchor.constraint(equalToConstant: buttonWidth * heightRatio).isActive = true
+        button2.heightAnchor.constraint(equalToConstant: buttonHeight * heightRatio).isActive = true
+        button2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
+        button2.setTitle("+", for: .normal)
+        button2.titleLabel?.font = UIFont(name: fontName, size: 40)
         button2.setTitleColor(superLightGray, for: .highlighted)
         button2.addTarget(self, action: #selector(showVC), for: .touchUpInside)
         self.addEntryButton = button2

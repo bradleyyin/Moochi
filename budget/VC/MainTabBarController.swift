@@ -35,12 +35,12 @@ class MainTabBarController: UITabBarController {
         return expenseVC
     }
     
-    private var receiptAlbumViewController: ReceiptAlbumViewController {
-        let receiptAlbumVC = ReceiptAlbumViewController()
-        receiptAlbumVC.budgetController = budgetController
-        receiptAlbumVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "album"), tag: 3)
-        return receiptAlbumVC
-    }
+//    private var receiptAlbumViewController: ReceiptAlbumViewController {
+//        let receiptAlbumVC = ReceiptAlbumViewController()
+//        receiptAlbumVC.budgetController = budgetController
+//        receiptAlbumVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "album"), tag: 3)
+//        return receiptAlbumVC
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,13 +57,13 @@ class MainTabBarController: UITabBarController {
         let expensesNav = UINavigationController(rootViewController: expenseViewController)
         expensesNav.isNavigationBarHidden = true
         
-        let receiptNav = UINavigationController(rootViewController: receiptAlbumViewController)
-        receiptNav.isNavigationBarHidden = true
+        //let receiptNav = UINavigationController(rootViewController: receiptAlbumViewController)
+        //receiptNav.isNavigationBarHidden = true
         
         let detailsNav = UINavigationController(rootViewController: detailsViewController)
         detailsNav.isNavigationBarHidden = true
    
-        self.viewControllers = [mainViewController, detailsNav, expensesNav, receiptNav]
+        self.viewControllers = [mainViewController, detailsNav, expensesNav]
     }
     
     private func setupAppearance() {

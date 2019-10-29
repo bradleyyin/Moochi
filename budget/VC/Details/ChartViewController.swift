@@ -18,11 +18,13 @@ class ChartViewController: UIViewController {
     var graphView: ScrollableGraphView?
     var expensesTableView: UITableView!
     var titleLabel: UILabel!
+    var backButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
         setupLabel()
+        setupButton()
         setupUI()
         loadExpenses()
         NotificationCenter.default.addObserver(self, selector: #selector(loadExpenses), name: NSNotification.Name("changedEntry"), object: nil)
@@ -67,9 +69,11 @@ class ChartViewController: UIViewController {
         if traitCollection.userInterfaceStyle == .light {
             view.backgroundColor = .white
             titleLabel.textColor = .black
+            backButton.tintColor = .black
         } else {
             view.backgroundColor = .black
             titleLabel.textColor = .white
+            backButton.tintColor = .white
         }
         setupGraph()
         setupConstraint()
@@ -89,8 +93,21 @@ class ChartViewController: UIViewController {
     private func setupLabel() {
         let label = TitleLabel()
         label.text = category.name
+        label.textAlignment = .right
         self.view.addSubview(label)
         self.titleLabel = label
+    }
+    private func setupButton() {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "back")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.setTitleColor(superLightGray, for: .highlighted)
+        button.addTarget(self, action: #selector(back), for: .touchUpInside)
+        self.view.addSubview(button)
+        self.backButton = button
+    }
+    @objc func back() {
+        self.navigationController?.popViewController(animated: true)
     }
     
     private func setupGraph() {
@@ -119,6 +136,7 @@ class ChartViewController: UIViewController {
         
 
         dotPlot.adaptAnimationType = ScrollableGraphViewAnimationType.elastic
+        linePlot.adaptAnimationType = .elastic
         graphView.addPlot(plot: linePlot)
         graphView.addPlot(plot: dotPlot)
         graphView.addReferenceLines(referenceLines: referenceLines)
@@ -137,9 +155,13 @@ class ChartViewController: UIViewController {
     }
     private func setupConstraint() {
         guard let graphView = graphView else { return }
+        backButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
+        backButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: backButton.trailingAnchor, constant: 20).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
         titleLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
-        titleLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
-        titleLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 100).isActive = true
         graphView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor).isActive = true
         graphView.bottomAnchor.constraint(equalTo: self.expensesTableView.topAnchor).isActive = true
         graphView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
