@@ -14,11 +14,15 @@ class ChartViewController: UIViewController {
     var expenses: [Expense] = []
     var expensesDictionary: [String: Double] = [:]
     var sortedKey: [String] = []
+    var reversedKey: [String] = []
     var graphView: ScrollableGraphView?
     var expensesTableView: UITableView!
+    var titleLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupTableView()
+        setupLabel()
         setupUI()
         loadExpenses()
         NotificationCenter.default.addObserver(self, selector: #selector(loadExpenses), name: NSNotification.Name("changedEntry"), object: nil)
@@ -29,6 +33,7 @@ class ChartViewController: UIViewController {
         expenses = Array(expensesSet)
         sortExpenses()
         graphView?.reload()
+        expensesTableView.reloadData()
     }
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         setupUI()
@@ -55,23 +60,37 @@ class ChartViewController: UIViewController {
             } else {
                 return false
             }
-            
         })
+        reversedKey = sortedKey.reversed()
     }
     private func setupUI() {
         if traitCollection.userInterfaceStyle == .light {
             view.backgroundColor = .white
+            titleLabel.textColor = .black
         } else {
             view.backgroundColor = .black
+            titleLabel.textColor = .white
         }
         setupGraph()
-        setupTableView()
         setupConstraint()
     }
     private func setupTableView() {
-//        let tableView = UITableView()
-//        tableView.delegate = self
-//        tableView.dataSource
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(ChartTableViewCell.self, forCellReuseIdentifier: "expenseChartCell")
+        tableView.separatorStyle = .none
+        tableView.allowsSelection = false
+        tableView.backgroundColor = .clear
+        self.view.addSubview(tableView)
+        self.expensesTableView = tableView
+    }
+    private func setupLabel() {
+        let label = TitleLabel()
+        label.text = category.name
+        self.view.addSubview(label)
+        self.titleLabel = label
     }
     
     private func setupGraph() {
@@ -86,15 +105,16 @@ class ChartViewController: UIViewController {
         referenceLines.shouldShowReferenceLines = false
         
         let dotPlot = DotPlot(identifier: "Dot") // Add dots as well.
-        dotPlot.dataPointSize = 8
+        dotPlot.dataPointSize = 5
         if traitCollection.userInterfaceStyle == .light {
             dotPlot.dataPointFillColor = UIColor.black
             linePlot.lineColor = .black
-            referenceLines.referenceLineColor = .black
+            referenceLines.dataPointLabelColor = .black
         } else {
             dotPlot.dataPointFillColor = UIColor.white
             linePlot.lineColor = .white
-            referenceLines.referenceLineColor = .white
+            referenceLines.dataPointLabelColor = .white
+            
         }
         
 
@@ -105,7 +125,7 @@ class ChartViewController: UIViewController {
         graphView.shouldAdaptRange = true
         graphView.shouldRangeAlwaysStartAtZero = true
         graphView.direction = .rightToLeft
-        graphView.dataPointSpacing = 100
+        graphView.dataPointSpacing = 70
         graphView.topMargin = 50
         graphView.bottomMargin = 50
         graphView.backgroundFillColor = .clear
@@ -117,10 +137,17 @@ class ChartViewController: UIViewController {
     }
     private func setupConstraint() {
         guard let graphView = graphView else { return }
-        graphView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
-        graphView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 100).isActive = true
+        graphView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor).isActive = true
+        graphView.bottomAnchor.constraint(equalTo: self.expensesTableView.topAnchor).isActive = true
         graphView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         graphView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        graphView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height / 2).isActive = true
+        expensesTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        expensesTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        expensesTableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     
 
@@ -144,5 +171,24 @@ extension ChartViewController: ScrollableGraphViewDataSource {
     func numberOfPoints() -> Int {
         return sortedKey.count
     }
+    
+}
+extension ChartViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return sortedKey.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "expenseChartCell",
+                                                       for: indexPath) as? ChartTableViewCell else {
+            return UITableViewCell()
+        }
+        
+        let key = reversedKey[indexPath.row]
+        guard let amount = expensesDictionary[key] else { return cell }
+        cell.expenseDataPair = (key, amount)
+        return cell
+    }
+    
     
 }
