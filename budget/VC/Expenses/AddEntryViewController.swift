@@ -13,12 +13,17 @@ import CoreData
 
 class AddEntryViewController: BasicViewController {
     
-    weak var imageView: UIImageView!
-    weak var nameTextField: UITextField!
-    weak var amountTextFeild: UITextField!
-    weak var dateTextField: UITextField!
-    
-    weak var categoryTextFeild: UITextField!
+    var imageView: UIImageView!
+    var nameLabel: UILabel!
+    var nameTextField: UITextField!
+    var amountLabel: UILabel!
+    var amountTextField: UITextField!
+    var dateLabel: UILabel!
+    var dateTextField: UITextField!
+    var categoryLabel: UILabel!
+    var categoryTextField: UITextField!
+    var cancelButton: UIButton!
+    var checkButton: UIButton!
     
     var imagePicker: UIImagePickerController!
     var datePicker: UIDatePicker!
@@ -61,6 +66,45 @@ class AddEntryViewController: BasicViewController {
         showCategoryPicker()
         showDatePicker()
     }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        setupUIColor()
+    }
+    private func setupUIColor() {
+        if traitCollection.userInterfaceStyle == .light {
+            self.view.backgroundColor = .white
+            nameLabel.textColor = .black
+            nameTextField.textColor = .black
+            nameTextField.setBottomBorder()
+            dateLabel.textColor = .black
+            dateTextField.textColor = .black
+            dateTextField.setBottomBorder()
+            categoryLabel.textColor = .black
+            categoryTextField.textColor = .black
+            categoryTextField.setBottomBorder()
+            amountLabel.textColor = .black
+            amountTextField.textColor = .black
+            amountTextField.setBottomBorder()
+            checkButton.tintColor = .black
+            cancelButton.tintColor = .black
+        } else {
+            self.view.backgroundColor = .black
+            nameLabel.textColor = .white
+            nameTextField.textColor = .white
+            nameTextField.setBottomBorder(withColor: .white)
+            dateLabel.textColor = .white
+            dateTextField.textColor = .white
+            dateTextField.setBottomBorder(withColor: .white)
+            categoryLabel.textColor = .white
+            categoryTextField.textColor = .white
+            categoryTextField.setBottomBorder(withColor: .white)
+            amountLabel.textColor = .white
+            amountTextField.textColor = .white
+            amountTextField.setBottomBorder(withColor: .white)
+            checkButton.tintColor = .white
+            cancelButton.tintColor = .white
+        }
+    }
     override func setupUI() {
         super.setupUI()
         
@@ -77,8 +121,9 @@ class AddEntryViewController: BasicViewController {
         button.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
         button.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
         button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
-        button.setImage(UIImage(named: "checkMark"), for: .normal)
+        button.setImage(UIImage(named: "checkMark")?.withRenderingMode(.alwaysTemplate), for: .normal)
         button.addTarget(self, action: #selector(checkMarkTapped), for: .touchUpInside)
+        checkButton = button
         
         let button2 = UIButton()
         button2.translatesAutoresizingMaskIntoConstraints = false
@@ -87,57 +132,51 @@ class AddEntryViewController: BasicViewController {
         button2.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
         button2.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
         button2.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 50 * heightRatio - buttonHeight / 2).isActive = true
-        button2.setImage(UIImage(named: "cancel"), for: .normal)
+        button2.setImage(UIImage(named: "cancel")?.withRenderingMode(.alwaysTemplate), for: .normal)
         button2.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
+        cancelButton = button2
 
         let nameLabel = UILabel()
         nameLabel.text = "NAME"
-        nameLabel.textColor = .black
         nameLabel.font = UIFont(name: fontName, size: 20)
         nameLabel.adjustsFontSizeToFitWidth = true
         nameLabel.minimumScaleFactor = 0.3
         nameLabel.backgroundColor = .clear
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.nameLabel = nameLabel
         
         let nameTextField = UITextField()
-        nameTextField.textColor = .black
-        nameTextField.setBottomBorder()
         nameTextField.autocorrectionType = .no
         nameTextField.translatesAutoresizingMaskIntoConstraints = false
         self.nameTextField = nameTextField
         
         let amountLabel = UILabel()
         amountLabel.text = "AMOUNT"
-        amountLabel.textColor = .black
         amountLabel.font = UIFont(name: fontName, size: 20)
         amountLabel.adjustsFontSizeToFitWidth = true
         amountLabel.minimumScaleFactor = 0.3
+        self.amountLabel = amountLabel
         
         let amountTextField = UITextField()
-        amountTextField.textColor =  .black
         amountTextField.text = "0.00"
         amountTextField.delegate = self
-        amountTextField.setBottomBorder()
         amountTextField.keyboardType = .numberPad
-        
-        self.amountTextFeild = amountTextField
+        self.amountTextField = amountTextField
         addToolBarNameAndAmount()
         
         let dateLabel = UILabel()
         dateLabel.text = "DATE"
-        dateLabel.textColor = .black
         dateLabel.font = UIFont(name: fontName, size: 20)
         dateLabel.adjustsFontSizeToFitWidth = true
         dateLabel.minimumScaleFactor = 0.3
+        self.dateLabel = dateLabel
         
         let dateTextField = UITextField()
-        dateTextField.textColor =  .black
         if let date = date {
             dateTextField.text = formatter.string(from: date)
         } else {
             dateTextField.text = formatter.string(from: Date())
         }
-        dateTextField.setBottomBorder()
         self.dateTextField = dateTextField
         
         let categoryLabel = UILabel()
@@ -148,12 +187,12 @@ class AddEntryViewController: BasicViewController {
         //categoryLabel.minimumScaleFactor = 0.3
         categoryLabel.translatesAutoresizingMaskIntoConstraints = false
         categoryLabel.widthAnchor.constraint(equalToConstant: screenWidth * 3 / 10).isActive = true
+        self.categoryLabel = categoryLabel
         
         let categoryTextField = UITextField()
         categoryTextField.textColor =  .black
         categoryTextField.text = "UNCATEGORIZED"
-        categoryTextField.setBottomBorder()
-        self.categoryTextFeild = categoryTextField
+        self.categoryTextField = categoryTextField
         
         
         let nameStackView = UIStackView(arrangedSubviews: [nameLabel, nameTextField])
@@ -244,7 +283,7 @@ class AddEntryViewController: BasicViewController {
     @objc func checkMarkTapped() {
         
         guard let name = nameTextField.text, !name.isEmpty,
-            let amountString = amountTextFeild.text, let amount = Double(amountString),
+            let amountString = amountTextField.text, let amount = Double(amountString),
             let dateString = dateTextField.text,
             let date = formatter.date(from: dateString) else { return }
        
@@ -299,8 +338,8 @@ class AddEntryViewController: BasicViewController {
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
         toolbar.setItems([cancelButton, space, doneButton], animated: false)
-        categoryTextFeild.inputAccessoryView = toolbar
-        categoryTextFeild.inputView = categoryPicker
+        categoryTextField.inputAccessoryView = toolbar
+        categoryTextField.inputView = categoryPicker
         
         
     }
@@ -312,7 +351,7 @@ class AddEntryViewController: BasicViewController {
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
         toolbar.setItems([cancelButton, space, doneButton], animated: false)
-        amountTextFeild.inputAccessoryView = toolbar
+        amountTextField.inputAccessoryView = toolbar
         nameTextField.inputAccessoryView = toolbar
         
     }
@@ -328,7 +367,7 @@ class AddEntryViewController: BasicViewController {
     }
     
     @objc func doneCategoryPicker() {
-        categoryTextFeild.text = selectedCategory.uppercased()
+        categoryTextField.text = selectedCategory.uppercased()
         self.view.endEditing(true)
     }
 }
@@ -370,7 +409,7 @@ extension UITextField {
 extension AddEntryViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        if textField == amountTextFeild {
+        if textField == amountTextField {
             
             let formatter = NumberFormatter()
             formatter.minimumFractionDigits = 2
