@@ -28,7 +28,7 @@ class DateCollectionViewCell: UICollectionViewCell {
     
     func setupViews() {
         addSubview(lbl)
-        if isToday {
+        if isSelected {
             let circleView = CircleView(frame: CGRect(x: 1,
                                                       y: self.frame.height / 2 - (self.frame.width / 2),
                                                       width: self.frame.width - 2,
@@ -36,6 +36,10 @@ class DateCollectionViewCell: UICollectionViewCell {
             circleView.backgroundColor = .clear
             circleView.tag = 1
             self.addSubview(circleView)
+        } else {
+            if let circleView = self.viewWithTag(1) {
+                circleView.removeFromSuperview()
+            }
         }
         lbl.topAnchor.constraint(equalTo: topAnchor).isActive = true
         lbl.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
@@ -57,8 +61,7 @@ class DateCollectionViewCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    var isToday = false {
+    override var isSelected: Bool {
         didSet {
             setupViews()
         }

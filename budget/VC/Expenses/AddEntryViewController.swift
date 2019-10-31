@@ -11,7 +11,7 @@
 import UIKit
 import CoreData
 
-class AddEntryViewController: BasicViewController {
+class AddEntryViewController: UIViewController {
     
     var imageView: UIImageView!
     var nameLabel: UILabel!
@@ -24,11 +24,15 @@ class AddEntryViewController: BasicViewController {
     var categoryTextField: UITextField!
     var cancelButton: UIButton!
     var checkButton: UIButton!
+    var screenTitleLabel: UILabel!
+    var titleOfVC: String = ""
     
     var imagePicker: UIImagePickerController!
+    var budgetController: BudgetController!
     var datePicker: UIDatePicker!
     var categoryPicker: UIPickerView!
     let formatter = DateFormatter()
+    var categories: [Category] = []
     
     var categorypickerData: [String] {
         var nameArray: [String] = ["uncategorized"]
@@ -48,6 +52,7 @@ class AddEntryViewController: BasicViewController {
         formatter.dateFormat = "MM/dd/yyyy"
         titleOfVC = "add an entry"
         super.viewDidLoad()
+        setupUI()
         
         loadCategories()
 
@@ -105,14 +110,18 @@ class AddEntryViewController: BasicViewController {
             cancelButton.tintColor = .white
         }
     }
-    override func setupUI() {
-        super.setupUI()
+    private func setupUI() {
+        let label = TitleLabel()
+                
+        label.text = titleOfVC.uppercased()
+        label.textAlignment = .left
+        self.view.addSubview(label)
+        label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50 * heightRatio - buttonHeight / 2).isActive = true
+        label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+                
+        self.screenTitleLabel = label
         
-        self.view.backgroundColor = .white
-        
-        if let label = self.view.subviews[0] as? TitleLabel {
-            label.widthAnchor.constraint(equalToConstant: screenWidth * 3 / 4).isActive = true
-        }
+        label.widthAnchor.constraint(equalToConstant: screenWidth * 3 / 4).isActive = true
         
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -257,8 +266,9 @@ class AddEntryViewController: BasicViewController {
         imageView.addGestureRecognizer(tapGesture)
         
         self.imageView = imageView
-        
-       
+    }
+    private func loadCategories() {
+        categories = budgetController.readCategories()
     }
     @objc func imageTapped() {
         let alertController = UIAlertController(title: "select source", message: nil, preferredStyle: .actionSheet)

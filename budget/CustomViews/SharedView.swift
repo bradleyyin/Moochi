@@ -14,10 +14,10 @@ class TitleLabel : UILabel {
         super.init(frame: frame)
         self.adjustsFontSizeToFitWidth = true
         self.minimumScaleFactor = 0.3
-        self.textAlignment = .left
+        self.textAlignment = .center
         self.translatesAutoresizingMaskIntoConstraints = false
         
-        self.font = UIFont(name: fontName, size: 70 * heightRatio)
+        self.font = UIFont(name: fontName, size: 50 * heightRatio)
     }
     
     required init?(coder aDecoder: NSCoder) {
