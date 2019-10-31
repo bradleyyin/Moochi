@@ -91,7 +91,7 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width / 7 - 8
-        let height: CGFloat = 50 * heightRatio
+        let height: CGFloat = 50
         return CGSize(width: width, height: height)
     }
     
@@ -158,7 +158,11 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         myCollectionView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0).isActive = true
         myCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0).isActive = true
         myCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        
+        let totalNumberOfCells = numOfDaysInMonth[currentMonthIndex - 1] + firstWeekDayOfMonth - 1
+        print("total cells", totalNumberOfCells)
+        let totalRows = (Double(totalNumberOfCells) / 7.0).rounded(.up)
+        print("total row", totalRows)
+        myCollectionView.heightAnchor.constraint(equalToConstant: CGFloat(totalRows * 60)).isActive = true
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(goToLastMonth))
         swipeRight.direction = .right
         self.addGestureRecognizer(swipeRight)

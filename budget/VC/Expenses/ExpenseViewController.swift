@@ -52,6 +52,8 @@ class ExpenseViewController: BasicViewController, CalendarDelegate {
         let button1 = UIButton()
         button1.translatesAutoresizingMaskIntoConstraints = false
         button1.setTitle("Today", for: .normal)
+        button1.titleLabel?.adjustsFontSizeToFitWidth = true
+        button1.titleLabel?.minimumScaleFactor = 0.3
         button1.setTitleColor(superLightGray, for: .highlighted)
         button1.addTarget(self, action: #selector(goToToday), for: .touchUpInside)
         self.view.addSubview(button1)
@@ -96,13 +98,13 @@ class ExpenseViewController: BasicViewController, CalendarDelegate {
         
         todayButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12).isActive = true
         todayButton.topAnchor.constraint(equalTo: screenTitleLabel.topAnchor).isActive = true
-        todayButton.widthAnchor.constraint(equalToConstant: buttonWidth * heightRatio).isActive = true
-        todayButton.heightAnchor.constraint(equalToConstant: buttonHeight * heightRatio).isActive = true
+        todayButton.widthAnchor.constraint(equalToConstant: 60 * heightRatio).isActive = true
+        todayButton.heightAnchor.constraint(equalToConstant: 40 * heightRatio).isActive = true
         
         calendarView.topAnchor.constraint(equalTo: screenTitleLabel.bottomAnchor, constant: 10 * heightRatio).isActive = true
         calendarView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -12).isActive = true
         calendarView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 12).isActive = true
-        calendarView.heightAnchor.constraint(equalToConstant: (view.frame.height - 160 * heightRatio) / 2 ).isActive = true
+        
         singleDayTableView.topAnchor.constraint(equalTo: calendarView.bottomAnchor).isActive = true
         singleDayTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12).isActive = true
         singleDayTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12).isActive = true
