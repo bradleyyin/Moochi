@@ -119,7 +119,7 @@ class DetailsViewController: BasicViewController {
     override func setupUI() {
         super.setupUI()
         
-        NSLayoutConstraint.activate([incomeNotBudgetLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 100 * heightRatio),
+        NSLayoutConstraint.activate([incomeNotBudgetLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100 * heightRatio),
                                      incomeNotBudgetLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
                                      incomeNotBudgetLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
                                      ])
@@ -182,7 +182,6 @@ extension DetailsViewController: UITableViewDelegate, UITableViewDataSource {
         let context = CoreDataStack.shared.mainContext
         
         context.delete(fetchedResultsController.object(at: indexPath))
-        categories.remove(at: indexPath.row)
         
         //TODO: run delete in controller
         

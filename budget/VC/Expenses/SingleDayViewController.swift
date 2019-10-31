@@ -65,7 +65,7 @@ class SingleDayViewController: BasicViewController {
         self.view.addSubview(label)
         
         label.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        label.topAnchor.constraint(equalTo: self.view.topAnchor, constant: statusBarHeight + 70 * heightRatio).isActive = true
+        label.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 70 * heightRatio).isActive = true
 
         self.titleLabel = label
         titleLabel.textAlignment = .center

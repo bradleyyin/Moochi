@@ -131,7 +131,7 @@ class AddEntryViewController: BasicViewController {
         button2.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -10).isActive = true
         button2.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
         button2.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
-        button2.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 50 * heightRatio - buttonHeight / 2).isActive = true
+        button2.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50 * heightRatio - buttonHeight / 2).isActive = true
         button2.setImage(UIImage(named: "cancel")?.withRenderingMode(.alwaysTemplate), for: .normal)
         button2.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
         cancelButton = button2

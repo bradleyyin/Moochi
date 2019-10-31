@@ -12,7 +12,7 @@ import UIKit
 let fontName = "GillSans-Light"
 let screenWidth = UIScreen.main.bounds.width
 let screenHeight = UIScreen.main.bounds.height
-let statusBarHeight = UIApplication.shared.statusBarFrame.height
+//let statusBarHeight = UIApplication.shared.statusBarFrame.height
 let heightRatio = screenHeight / 896
 let buttonHeight: CGFloat = 60 * heightRatio
 let buttonWidth: CGFloat = 60 * heightRatio

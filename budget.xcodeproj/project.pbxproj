@@ -604,6 +604,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 8367QTYVY6;
 				INFOPLIST_FILE = "$(SRCROOT)/budget/Resource/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -623,6 +624,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 8367QTYVY6;
 				INFOPLIST_FILE = "$(SRCROOT)/budget/Resource/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (

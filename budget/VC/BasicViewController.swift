@@ -28,7 +28,7 @@ class BasicViewController: UIViewController {
         
         label.text = titleOfVC.uppercased()
         self.view.addSubview(label)
-        label.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight).isActive = true
+        label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         label.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10).isActive = true
         label.heightAnchor.constraint(equalToConstant: 100 * heightRatio).isActive = true
         self.screenTitleLabel = label

@@ -135,7 +135,7 @@ class SingleExpenseDetailViewController: BasicViewController {
         button.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
         button.widthAnchor.constraint(equalToConstant: buttonWidth * heightRatio).isActive = true
         button.heightAnchor.constraint(equalToConstant: buttonHeight * heightRatio).isActive = true
-        button.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 20 * heightRatio - buttonHeight / 2).isActive = true
+        button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20 * heightRatio - buttonHeight / 2).isActive = true
         button.setImage(UIImage(named: "back")?.withRenderingMode(.alwaysTemplate), for: .normal)
         button.setTitleColor(superLightGray, for: .highlighted)
         button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
