@@ -136,12 +136,14 @@ extension ExpenseViewController: UITableViewDelegate, UITableViewDataSource {
        
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         if indexPath.section == 0 {
             let singleDayDetailVC = SingleExpenseDetailViewController()
             singleDayDetailVC.expense = expenses[indexPath.row]
             singleDayDetailVC.budgetController = budgetController
             navigationController?.pushViewController(singleDayDetailVC, animated: true)
         }
+        
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

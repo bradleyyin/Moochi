@@ -126,34 +126,24 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
             cell.isUserInteractionEnabled = true
             cell.lbl.textColor = .black
         }
-        if cell.lbl.text == "\(todaysDate)" && currentMonthIndex == Calendar.current.component(.month, from: Date()) {
-            
-            cell.isToday = true
-            
-        }
+//        if cell.lbl.text == "\(todaysDate)" && currentMonthIndex == Calendar.current.component(.month, from: Date()) {
+//            cell.isToday = true
+//        }
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath)
-        //cell?.backgroundColor=Colors.darkRed
-        guard let lbl = cell?.subviews[1] as? UILabel else { return }
+        guard let cell = collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell else { return }
+
+        let lbl = cell.lbl
+ 
         let day = lbl.text ?? "01"
         if let date = "\(currentYear)-\(currentMonthIndex)-\(day)".date {
             delegate?.goToSingleDay(date: date)
         }
-        
     }
-    
-//    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-//        let cell=collectionView.cellForItem(at: indexPath)
-//        cell?.backgroundColor=UIColor.clear
-//        let lbl = cell?.subviews[1] as! UILabel
-//        lbl.textColor = .black
-//
-//    }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width / 7 - 8
         let height: CGFloat = 50 * heightRatio
