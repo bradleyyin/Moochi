@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+//TODO: use FRC
+
 class ExpenseViewController: BasicViewController, CalendarDelegate {
     let calendarView: CalendarView = {
         let v = CalendarView()
@@ -41,7 +43,7 @@ class ExpenseViewController: BasicViewController, CalendarDelegate {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.backgroundColor = .red
+        tableView.backgroundColor = .clear
         tableView.register(ExpenseTableViewCell.self, forCellReuseIdentifier: "ExpenseCell")
         self.view.addSubview(tableView)
         self.singleDayTableView = tableView
