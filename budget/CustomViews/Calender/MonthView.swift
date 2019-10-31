@@ -48,6 +48,12 @@ class MonthView: UIView {
         lblName.text="\(monthsArr[currentMonthIndex]) \(currentYear)"
         delegate?.didChangeMonth(monthIndex: currentMonthIndex, year: currentYear)
     }
+    func gotoThisMonth() {
+        currentMonthIndex = Calendar.current.component(.month, from: Date()) - 1
+        currentYear = Calendar.current.component(.year, from: Date())
+        lblName.text="\(monthsArr[currentMonthIndex]) \(currentYear)"
+        delegate?.didChangeMonth(monthIndex: currentMonthIndex, year: currentYear)
+    }
     
     private func setupUIColor() {
         if traitCollection.userInterfaceStyle == .light {

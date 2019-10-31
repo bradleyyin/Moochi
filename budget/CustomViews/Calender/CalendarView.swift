@@ -12,37 +12,6 @@ protocol CalendarDelegate: AnyObject {
     func goToSingleDay(date: Date)
 }
 
-
-//struct Style {
-//    static var bgColor = UIColor.white
-//    static var monthViewLblColor = UIColor.white
-//    static var monthViewBtnRightColor = UIColor.white
-//    static var monthViewBtnLeftColor = UIColor.white
-//    static var activeCellLblColor = UIColor.white
-//    static var activeCellLblColorHighlighted = UIColor.black
-//    static var weekdaysLblColor = UIColor.white
-//
-//    static func themeDark(){
-//        bgColor = Colors.darkGray
-//        monthViewLblColor = UIColor.white
-//        monthViewBtnRightColor = UIColor.white
-//        monthViewBtnLeftColor = UIColor.white
-//        activeCellLblColor = UIColor.white
-//        activeCellLblColorHighlighted = UIColor.black
-//        weekdaysLblColor = UIColor.white
-//    }
-//
-//    static func themeLight(){
-//        bgColor = UIColor.white
-//        monthViewLblColor = UIColor.black
-//        monthViewBtnRightColor = UIColor.black
-//        monthViewBtnLeftColor = UIColor.black
-//        activeCellLblColor = UIColor.black
-//        activeCellLblColorHighlighted = UIColor.white
-//        weekdaysLblColor = UIColor.black
-//    }
-//}
-
 class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, MonthViewDelegate {
     
     var numOfDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -60,30 +29,6 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         
         initializeView()
     }
-    
-//    convenience init(theme: MyTheme) {
-//        self.init()
-//
-//        if theme == .dark {
-//            Style.themeDark()
-//        } else {
-//            Style.themeLight()
-//        }
-//
-//        initializeView()
-//    }
-    
-//    func changeTheme() {
-//        myCollectionView.reloadData()
-//
-//        monthView.lblName.textColor = Style.monthViewLblColor
-//        monthView.btnRight.setTitleColor(Style.monthViewBtnRightColor, for: .normal)
-//        monthView.btnLeft.setTitleColor(Style.monthViewBtnLeftColor, for: .normal)
-//
-//        for i in 0..<7 {
-//            (weekdaysView.myStackView.subviews[i] as! UILabel).textColor = Style.weekdaysLblColor
-//        }
-//    }
     
     func initializeView() {
         currentMonthIndex = Calendar.current.component(.month, from: Date())
@@ -165,12 +110,14 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
     func getFirstWeekDay() -> Int {
         let day = ("\(currentYear)-\(currentMonthIndex)-01".date?.firstDayOfTheMonth.weekday)!
         //return day == 7 ? 1 : day
+        print(day)
         return day
     }
     func goToToday() {
-        currentMonthIndex = Calendar.current.component(.month, from: Date())
-        currentYear = Calendar.current.component(.year, from: Date())
-        myCollectionView.reloadData()
+        monthView.gotoThisMonth()
+        let day = Calendar.current.component(.day, from: Date())
+        myCollectionView.selectItem(at: IndexPath(item: day - 1 + firstWeekDayOfMonth - 1, section: 0), animated: true, scrollPosition: .top)
+        
     }
     
     func didChangeMonth(monthIndex: Int, year: Int) {
