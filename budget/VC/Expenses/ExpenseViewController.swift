@@ -119,8 +119,19 @@ class ExpenseViewController: BasicViewController, CalendarDelegate {
         
     }
     @objc func goToToday() {
-        goToSingleDay(date: Date())
-        calendarView.goToToday()
+        let date = Date()
+        let day = Calendar.current.component(.day, from: date)
+        let month = Calendar.current.component(.month, from: date)
+        let year = Calendar.current.component(.year, from: date)
+        let todayString = String(format: "%02d/%02d/%d", month, day, year)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd/yyyy"
+        print(todayString)
+        if let today = formatter.date(from: todayString) {
+            goToSingleDay(date: today)
+            calendarView.goToToday()
+        }
+        
         
     }
     func goToSingleDay(date: Date) {
