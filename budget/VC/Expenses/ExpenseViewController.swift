@@ -17,11 +17,35 @@ class ExpenseViewController: BasicViewController, CalendarDelegate {
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
-    var singleDayTableView: UITableView!
+    var tableView: UITableView!
     var addEntryButton: UIButton!
     var todayButton: UIButton!
-    var expenses: [Expense] = []
+    //var expenses: [Expense] = []
     var date: Date?
+    
+    lazy var fetchedResultsController: NSFetchedResultsController<Expense>? = {
+        let request: NSFetchRequest<Expense> = Expense.fetchRequest()
+        
+        guard let date = date as NSDate? else { fatalError("cannot convert date for fetching") }
+        let predicate = NSPredicate(format: "date == %@", date)
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        
+
+        request.predicate = predicate
+        request.sortDescriptors = [sortDescriptor]
+        
+        let moc = CoreDataStack.shared.mainContext
+        let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+        
+        frc.delegate = self
+        
+     do {
+         try frc.performFetch()
+     } catch {
+         fatalError("cant fetch expense")
+     }
+        return frc
+    }()
     
     override func viewDidLoad() {
         titleOfVC = "expenses"
@@ -46,7 +70,7 @@ class ExpenseViewController: BasicViewController, CalendarDelegate {
         tableView.backgroundColor = .clear
         tableView.register(ExpenseTableViewCell.self, forCellReuseIdentifier: "ExpenseCell")
         self.view.addSubview(tableView)
-        self.singleDayTableView = tableView
+        self.tableView = tableView
     }
     private func configureButtons() {
         let button1 = UIButton()
@@ -105,16 +129,16 @@ class ExpenseViewController: BasicViewController, CalendarDelegate {
         calendarView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -12).isActive = true
         calendarView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 12).isActive = true
         
-        singleDayTableView.topAnchor.constraint(equalTo: calendarView.bottomAnchor).isActive = true
-        singleDayTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12).isActive = true
-        singleDayTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12).isActive = true
-        singleDayTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        tableView.topAnchor.constraint(equalTo: calendarView.bottomAnchor).isActive = true
+        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     private func updateViews() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM/dd"
         if date != nil {
-           singleDayTableView.reloadData()
+           tableView.reloadData()
         }
         
     }
@@ -140,29 +164,56 @@ class ExpenseViewController: BasicViewController, CalendarDelegate {
         //singleDayVC.budgetController = budgetController
         //self.navigationController?.pushViewController(singleDayVC, animated: true)
         self.date = date
-        self.loadItem(for: date)
-        self.singleDayTableView.reloadData()
+        refreshFRC()
+        tableView.reloadData()
     }
-    func loadItem(for date: Date?) {
-        let context = CoreDataStack.shared.mainContext
-        let request: NSFetchRequest<Expense> = Expense.fetchRequest()
-        
-        guard let date = date as NSDate? else { fatalError("cannot convert date for fetching") }
-        let predicate = NSPredicate(format: "date == %@", date)
-        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-        
+    private func refreshFRC() {
+        fetchedResultsController = nil
+        fetchedResultsController = {
+            let request: NSFetchRequest<Expense> = Expense.fetchRequest()
+            
+            guard let date = date as NSDate? else { fatalError("cannot convert date for fetching") }
+            let predicate = NSPredicate(format: "date == %@", date)
+            let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+            
 
-        request.predicate = predicate
-        request.sortDescriptors = [sortDescriptor]
+            request.predicate = predicate
+            request.sortDescriptors = [sortDescriptor]
+            
+            let moc = CoreDataStack.shared.mainContext
+            let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+            
+            frc.delegate = self
+            
+         do {
+             try frc.performFetch()
+         } catch {
+             fatalError("cant fetch expense")
+         }
+            return frc
+        }()
         
-        do {
-            expenses = try context.fetch(request)
-            print(expenses.count)
-            updateViews()
-        } catch {
-            fatalError("error loading entries: \(error)")
-        }
     }
+//    func loadItem(for date: Date?) {
+//        let context = CoreDataStack.shared.mainContext
+//        let request: NSFetchRequest<Expense> = Expense.fetchRequest()
+//
+//        guard let date = date as NSDate? else { fatalError("cannot convert date for fetching") }
+//        let predicate = NSPredicate(format: "date == %@", date)
+//        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+//
+//
+//        request.predicate = predicate
+//        request.sortDescriptors = [sortDescriptor]
+//
+//        do {
+//            expenses = try context.fetch(request)
+//            print(expenses.count)
+//            updateViews()
+//        } catch {
+//            fatalError("error loading entries: \(error)")
+//        }
+//    }
     @objc func showVC() {
         let addEntryVC = AddEntryViewController()
         addEntryVC.date = date
@@ -174,7 +225,7 @@ class ExpenseViewController: BasicViewController, CalendarDelegate {
 
 extension ExpenseViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return expenses.count
+        return fetchedResultsController?.fetchedObjects?.count ?? 0
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -186,7 +237,7 @@ extension ExpenseViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExpenseCell", for: indexPath) as? ExpenseTableViewCell else {
             fatalError("cant make ExpenseTableViewCell")
         }
-        cell.expense = expenses[indexPath.row]
+        cell.expense = fetchedResultsController?.object(at: indexPath)
         
         return cell
        
@@ -195,7 +246,7 @@ extension ExpenseViewController: UITableViewDelegate, UITableViewDataSource {
         
         if indexPath.section == 0 {
             let singleDayDetailVC = SingleExpenseDetailViewController()
-            singleDayDetailVC.expense = expenses[indexPath.row]
+            singleDayDetailVC.expense = fetchedResultsController?.object(at: indexPath)
             singleDayDetailVC.budgetController = budgetController
             navigationController?.pushViewController(singleDayDetailVC, animated: true)
         }
@@ -204,10 +255,8 @@ extension ExpenseViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
-            let expense = expenses[indexPath.row]
+            guard let expense = fetchedResultsController?.object(at: indexPath) else { return }
             budgetController.deleteExpense(expense: expense)
-            expenses.remove(at: indexPath.row)
-            tableView.reloadData()
             NotificationCenter.default.post(name: Notification.Name("changedEntry"), object: nil)
         }
     }
@@ -216,5 +265,55 @@ extension ExpenseViewController: UITableViewDelegate, UITableViewDataSource {
             return .delete
         }
         return .none
+    }
+}
+extension ExpenseViewController: NSFetchedResultsControllerDelegate {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any,
+                    at indexPath: IndexPath?,
+                    for type: NSFetchedResultsChangeType,
+                    newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            guard let newIndexPath = newIndexPath else { return }
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+        case .delete:
+            guard let indexPath = indexPath else { return }
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        case .move:
+            guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
+            tableView.moveRow(at: indexPath, to: newIndexPath)
+        case .update:
+            guard let indexPath = indexPath else { return }
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        @unknown default:
+            fatalError("new cases for fetch result controller type")
+        }
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange sectionInfo: NSFetchedResultsSectionInfo,
+                    atSectionIndex sectionIndex: Int,
+                    for type: NSFetchedResultsChangeType) {
+        
+        let sectionsIndexSet = IndexSet(integer: sectionIndex)
+        
+        
+        switch type {
+        case .insert:
+            tableView.insertSections(sectionsIndexSet, with: .automatic)
+        case .delete:
+            tableView.deleteSections(sectionsIndexSet, with: .automatic)
+        default:
+            break
+        }
     }
 }
