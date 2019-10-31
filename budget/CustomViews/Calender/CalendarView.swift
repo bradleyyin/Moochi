@@ -167,6 +167,11 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         //return day == 7 ? 1 : day
         return day
     }
+    func goToToday() {
+        currentMonthIndex = Calendar.current.component(.month, from: Date())
+        currentYear = Calendar.current.component(.year, from: Date())
+        myCollectionView.reloadData()
+    }
     
     func didChangeMonth(monthIndex: Int, year: Int) {
         currentMonthIndex = monthIndex + 1

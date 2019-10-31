@@ -119,7 +119,7 @@ class DetailsViewController: BasicViewController {
     override func setupUI() {
         super.setupUI()
         
-        NSLayoutConstraint.activate([incomeNotBudgetLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100 * heightRatio),
+        NSLayoutConstraint.activate([incomeNotBudgetLabel.topAnchor.constraint(equalTo: screenTitleLabel.bottomAnchor, constant: 10 * heightRatio),
                                      incomeNotBudgetLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
                                      incomeNotBudgetLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
                                      ])
@@ -238,7 +238,7 @@ extension DetailsViewController {
         let addAction = UIAlertAction(title: "Add", style: .default) { _ in
             guard let categoryName = alertController.textFields?[0].text,
                 !categoryName.isEmpty,
-                !self.categories.contains(where: { $0.name == categoryName }),
+                !(self.fetchedResultsController.fetchedObjects ?? []).contains(where: { $0.name == categoryName }) ,
                 let amountString = alertController.textFields?[1].text,
                 let amount = Double(amountString) else { return }
             

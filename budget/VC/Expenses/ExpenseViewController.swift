@@ -17,6 +17,7 @@ class ExpenseViewController: BasicViewController, CalendarDelegate {
     }()
     var singleDayTableView: UITableView!
     var addEntryButton: UIButton!
+    var todayButton: UIButton!
     var expenses: [Expense] = []
     var date: Date?
     
@@ -25,7 +26,9 @@ class ExpenseViewController: BasicViewController, CalendarDelegate {
         super.viewDidLoad()
         configureTableView()
         configureCalendarView()
+        configureButtons()
         setupConstraints()
+        goToToday()
     }
     private func configureCalendarView() {
         view.addSubview(calendarView)
@@ -43,13 +46,35 @@ class ExpenseViewController: BasicViewController, CalendarDelegate {
         self.view.addSubview(tableView)
         self.singleDayTableView = tableView
     }
+    private func configureButtons() {
+        let button1 = UIButton()
+        button1.translatesAutoresizingMaskIntoConstraints = false
+        button1.setTitle("Today", for: .normal)
+        button1.setTitleColor(superLightGray, for: .highlighted)
+        button1.addTarget(self, action: #selector(goToToday), for: .touchUpInside)
+        self.view.addSubview(button1)
+        todayButton = button1
+        
+        let button2 = UIButton()
+        button2.translatesAutoresizingMaskIntoConstraints = false
+        button2.setTitle("+", for: .normal)
+        button2.setTitleColor(superLightGray, for: .highlighted)
+        button2.titleLabel?.font = UIFont(name: fontName, size: 40)
+        button2.addTarget(self, action: #selector(showVC), for: .touchUpInside)
+        self.view.addSubview(button2)
+        addEntryButton = button2
+    }
     private func setupUIColor() {
         if traitCollection.userInterfaceStyle == .light {
             screenTitleLabel.textColor = .black
             self.view.backgroundColor = .white
+            addEntryButton.setTitleColor(.black, for: .normal)
+            todayButton.setTitleColor(.black, for: .normal)
         } else {
             screenTitleLabel.textColor = .white
             self.view.backgroundColor = .black
+            addEntryButton.setTitleColor(.white, for: .normal)
+            todayButton.setTitleColor(.white, for: .normal)
         }
     }
     override func viewWillLayoutSubviews() {
@@ -61,13 +86,24 @@ class ExpenseViewController: BasicViewController, CalendarDelegate {
         setupUIColor()
     }
     private func setupConstraints() {
-        calendarView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100 * heightRatio).isActive = true
+        addEntryButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        addEntryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12).isActive = true
+        addEntryButton.widthAnchor.constraint(equalToConstant: buttonWidth * heightRatio).isActive = true
+        addEntryButton.heightAnchor.constraint(equalToConstant: buttonHeight * heightRatio).isActive = true
+        
+        
+        todayButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12).isActive = true
+        todayButton.topAnchor.constraint(equalTo: screenTitleLabel.topAnchor).isActive = true
+        todayButton.widthAnchor.constraint(equalToConstant: buttonWidth * heightRatio).isActive = true
+        todayButton.heightAnchor.constraint(equalToConstant: buttonHeight * heightRatio).isActive = true
+        
+        calendarView.topAnchor.constraint(equalTo: screenTitleLabel.bottomAnchor, constant: 10 * heightRatio).isActive = true
         calendarView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -12).isActive = true
         calendarView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 12).isActive = true
         calendarView.heightAnchor.constraint(equalToConstant: (view.frame.height - 160 * heightRatio) / 2 ).isActive = true
         singleDayTableView.topAnchor.constraint(equalTo: calendarView.bottomAnchor).isActive = true
-        singleDayTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        singleDayTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        singleDayTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12).isActive = true
+        singleDayTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12).isActive = true
         singleDayTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     private func updateViews() {
@@ -76,6 +112,11 @@ class ExpenseViewController: BasicViewController, CalendarDelegate {
         if date != nil {
            singleDayTableView.reloadData()
         }
+        
+    }
+    @objc func goToToday() {
+        goToSingleDay(date: Date())
+        calendarView.goToToday()
         
     }
     func goToSingleDay(date: Date) {
