@@ -9,16 +9,15 @@
 import Foundation
 import UIKit
 
-class TitleLabel : UILabel{
+class TitleLabel : UILabel {
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.textColor = .black
         self.adjustsFontSizeToFitWidth = true
         self.minimumScaleFactor = 0.3
-        self.textAlignment = .left
+        self.textAlignment = .center
         self.translatesAutoresizingMaskIntoConstraints = false
         
-        self.font = UIFont(name: fontName, size: 70 * heightRatio)
+        self.font = UIFont(name: fontName, size: 50 * heightRatio)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -26,7 +25,7 @@ class TitleLabel : UILabel{
     }
 }
 
-class MenuButton : UIButton{
+class MenuButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setImage(UIImage(named: "menuButton"), for: .normal)

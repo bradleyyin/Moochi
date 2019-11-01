@@ -19,7 +19,7 @@ class MonthCalculator {
         return currentMonth
     }
     
-    var currentYear: Int{
+    var currentYear: Int {
         let date = Date()
         let calendar = Calendar.current
         return calendar.component(.year, from: date)

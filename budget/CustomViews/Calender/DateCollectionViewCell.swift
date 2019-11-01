@@ -17,10 +17,18 @@ class DateCollectionViewCell: UICollectionViewCell {
         setupViews()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if traitCollection.userInterfaceStyle == .light {
+            lbl.textColor = .black
+        } else {
+            lbl.textColor = .white
+        }
+    }
     
     func setupViews() {
         addSubview(lbl)
-        if isToday {
+        if isSelected {
             let circleView = CircleView(frame: CGRect(x: 1,
                                                       y: self.frame.height / 2 - (self.frame.width / 2),
                                                       width: self.frame.width - 2,
@@ -28,6 +36,10 @@ class DateCollectionViewCell: UICollectionViewCell {
             circleView.backgroundColor = .clear
             circleView.tag = 1
             self.addSubview(circleView)
+        } else {
+            if let circleView = self.viewWithTag(1) {
+                circleView.removeFromSuperview()
+            }
         }
         lbl.topAnchor.constraint(equalTo: topAnchor).isActive = true
         lbl.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
@@ -46,12 +58,10 @@ class DateCollectionViewCell: UICollectionViewCell {
         label.text = "00"
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 25)
-        label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    var isToday = false {
+    override var isSelected: Bool {
         didSet {
             setupViews()
         }

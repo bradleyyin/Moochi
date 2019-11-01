@@ -20,17 +20,22 @@ class MainViewController: UIViewController {
     var amountTypedString = ""
     
     weak var monthLabel: UILabel!
+    weak var dotLabel1: UILabel!
+    weak var dotLabel2: UILabel!
     weak var dateNumberLabel: UILabel!
     weak var moneyLabel: UILabel!
     weak var moneyCircle: UIView!
+    weak var addEntryButton: UIButton!
     weak var backgroundView: UIView!
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
         income = budgetController.readIncome(monthYear: monthCalculator.monthYear)
-        
-        setUpUI()
+        configureLabels()
+        configureMoneyCircle()
+        configureButton()
+        setupConstraints()
         
         //check for file
         //TODO: remove this later
@@ -43,44 +48,62 @@ class MainViewController: UIViewController {
         getRemainingFunds()
         updateView()
     }
-    func setUpUI() {
-        
-        self.view.backgroundColor = .white
-        
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        setupUIColor()
+    }
+    
+    private func setupUIColor() {
+        if traitCollection.userInterfaceStyle == .light {
+            monthLabel.textColor = .black
+            dateNumberLabel.textColor = .black
+            dotLabel1.textColor = .black
+            dotLabel2.textColor = .black
+            moneyLabel.textColor = .black
+            addEntryButton.setTitleColor(.black, for: .normal)
+            view.backgroundColor = .white
+        } else {
+            monthLabel.textColor = .white
+            dateNumberLabel.textColor = .white
+            moneyLabel.textColor = .white
+            dotLabel1.textColor = .white
+            dotLabel2.textColor = .white
+            addEntryButton.setTitleColor(.white, for: .normal)
+            view.backgroundColor = .black
+        }
+    }
+    private func configureLabels() {
         let monthLabel = UILabel()
         self.view.addSubview(monthLabel)
         monthLabel.mainScreenLabel(fontSize: 100)
-        monthLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        monthLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
         self.monthLabel = monthLabel
         
         let dateNumberLabel = UILabel()
         self.view.addSubview(dateNumberLabel)
         dateNumberLabel.mainScreenLabel(fontSize: 50)
-        dateNumberLabel.topAnchor.constraint(equalTo: monthLabel.bottomAnchor, constant: 20).isActive = true
-        dateNumberLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         self.dateNumberLabel = dateNumberLabel
-        
         
         let dotLabel1 = UILabel()
         dotLabel1.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(dotLabel1)
-        dotLabel1.topAnchor.constraint(equalTo: dateNumberLabel.bottomAnchor, constant: 10).isActive = true
-        dotLabel1.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
-        dotLabel1.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
-        dotLabel1.textColor = .black
         dotLabel1.font = dateNumberLabel.font.withSize(50)
         dotLabel1.text = "•  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •"
         dotLabel1.lineBreakMode = .byClipping
+        self.dotLabel1 = dotLabel1
         
+        let dotLabel2 = UILabel()
+        dotLabel2.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(dotLabel2)
+        dotLabel2.font = dateNumberLabel.font.withSize(50)
+        dotLabel2.text = "•  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •"
+        dotLabel2.lineBreakMode = .byClipping
+        self.dotLabel2 = dotLabel2
+    }
+    private func configureMoneyCircle() {
         let moneyCircle = UIView()
         moneyCircle.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(moneyCircle)
-        moneyCircle.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        moneyCircle.heightAnchor.constraint(equalToConstant: 300 * heightRatio).isActive = true
-        moneyCircle.widthAnchor.constraint(equalTo: moneyCircle.heightAnchor).isActive = true
-        moneyCircle.topAnchor.constraint(equalTo: dotLabel1.bottomAnchor, constant: 10).isActive = true
-        
         moneyCircle.backgroundColor = superLightGray
         moneyCircle.layer.masksToBounds = true
         moneyCircle.layer.cornerRadius = 150 * heightRatio
@@ -95,7 +118,6 @@ class MainViewController: UIViewController {
         moneyLabel.centerXAnchor.constraint(equalTo: moneyCircle.centerXAnchor).isActive = true
         moneyLabel.centerYAnchor.constraint(equalTo: moneyCircle.centerYAnchor).isActive = true
         moneyLabel.widthAnchor.constraint(equalTo: moneyCircle.widthAnchor, multiplier: 0.8).isActive = true
-        
         moneyLabel.backgroundColor = .clear
         moneyLabel.textAlignment = .center
         moneyLabel.textColor = .black
@@ -103,34 +125,44 @@ class MainViewController: UIViewController {
         moneyLabel.adjustsFontSizeToFitWidth = true
         moneyLabel.minimumScaleFactor = 0.3
         moneyLabel.baselineAdjustment = .alignCenters
-        
-        
         self.moneyLabel = moneyLabel
-        
-        let dotLabel2 = UILabel()
-        dotLabel2.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(dotLabel2)
-        dotLabel2.topAnchor.constraint(equalTo: moneyCircle.bottomAnchor, constant: 10).isActive = true
-        dotLabel2.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
-        dotLabel2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
-        dotLabel2.textColor = .black
-        dotLabel2.font = dateNumberLabel.font.withSize(50)
-        dotLabel2.text = "•  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •"
-        dotLabel2.lineBreakMode = .byClipping
-        
+    }
+    
+    private func configureButton() {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(button)
-        button.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 30 * heightRatio).isActive = true
-        button.topAnchor.constraint(equalTo: dotLabel2.bottomAnchor).isActive = true
-        
-        button.setTitle("+ add an entry", for: .normal)
-        button.titleLabel?.font = UIFont(name: fontName, size: 30)
+        button.setTitle("+", for: .normal)
+        button.titleLabel?.font = UIFont(name: fontName, size: 40)
         button.setTitleColor(.black, for: .normal)
         button.setTitleColor(superLightGray, for: .highlighted)
         button.addTarget(self, action: #selector(addEntry), for: .touchUpInside)
+        self.addEntryButton = button
+    }
+    func setupConstraints() {
+        monthLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        monthLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+        
+        dateNumberLabel.topAnchor.constraint(equalTo: monthLabel.bottomAnchor, constant: 20).isActive = true
+        dateNumberLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
+        dotLabel1.topAnchor.constraint(equalTo: dateNumberLabel.bottomAnchor, constant: 10).isActive = true
+        dotLabel1.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
+        dotLabel1.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
+        
+        moneyCircle.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        moneyCircle.heightAnchor.constraint(equalToConstant: 300 * heightRatio).isActive = true
+        moneyCircle.widthAnchor.constraint(equalTo: moneyCircle.heightAnchor).isActive = true
+        moneyCircle.topAnchor.constraint(equalTo: dotLabel1.bottomAnchor, constant: 10).isActive = true
+        
+        dotLabel2.topAnchor.constraint(equalTo: moneyCircle.bottomAnchor, constant: 10).isActive = true
+        dotLabel2.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
+        dotLabel2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
+        
+        addEntryButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        addEntryButton.widthAnchor.constraint(equalToConstant: buttonWidth * heightRatio).isActive = true
+        addEntryButton.heightAnchor.constraint(equalToConstant: buttonHeight * heightRatio).isActive = true
+        addEntryButton.topAnchor.constraint(equalTo: dotLabel2.bottomAnchor).isActive = true
     }
     func updateView() {
         monthLabel.text = monthCalculator.currentMonthString
@@ -156,6 +188,7 @@ class MainViewController: UIViewController {
     @objc func addEntry () {
         let addEntryVC = AddEntryViewController()
         addEntryVC.modalPresentationStyle = .fullScreen
+        addEntryVC.budgetController = budgetController
         self.present(addEntryVC, animated: true)
     }
     
@@ -226,7 +259,6 @@ extension MainViewController: UIGestureRecognizerDelegate {
 
 extension UILabel {
     func mainScreenLabel(fontSize: CGFloat) {
-        self.textColor = .black
         self.backgroundColor = .clear
         self.adjustsFontSizeToFitWidth = true
         self.textAlignment = .center

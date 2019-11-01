@@ -28,7 +28,7 @@ class ReceiptViewController: UIViewController {
         button.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
         button.widthAnchor.constraint(equalToConstant: buttonWidth * heightRatio).isActive = true
         button.heightAnchor.constraint(equalToConstant: buttonHeight * heightRatio).isActive = true
-        button.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 20 * heightRatio - buttonHeight / 2).isActive = true
+        button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20 * heightRatio - buttonHeight / 2).isActive = true
         button.setImage(UIImage(named: "cancel"), for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         

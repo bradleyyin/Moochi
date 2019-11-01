@@ -13,7 +13,7 @@ import CoreData
 class BasicViewController: UIViewController {
 
     var titleOfVC: String = ""
-    var categories: [Category] = []
+    weak var screenTitleLabel: TitleLabel!
     var budgetController: BudgetController!
     //auto layout
     
@@ -23,19 +23,14 @@ class BasicViewController: UIViewController {
         setupUI()
     }
     func setupUI() {
-        self.view.backgroundColor = .white
+        let label = TitleLabel()
         
-        let titleLabel = TitleLabel()
-        
-        titleLabel.text = titleOfVC.uppercased()
-        self.view.addSubview(titleLabel)
-        titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight).isActive = true
-        titleLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10).isActive = true
-        titleLabel.heightAnchor.constraint(equalToConstant: 100 * heightRatio).isActive = true
-    }
-    
-    func loadCategories() {
-        categories = budgetController.readCategories()
+        label.text = titleOfVC.uppercased()
+        self.view.addSubview(label)
+        label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        label.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        //label.heightAnchor.constraint(equalToConstant: 100 * heightRatio).isActive = true
+        self.screenTitleLabel = label
     }
     
     @objc func backButtonTapped () {

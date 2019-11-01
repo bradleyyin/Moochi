@@ -31,20 +31,24 @@ class MainTabBarController: UITabBarController {
     private var expenseViewController: ExpenseViewController {
         let expenseVC = ExpenseViewController()
         expenseVC.budgetController = budgetController
-        expenseVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "calender"), tag: 2)
+        expenseVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "calendar"), tag: 2)
         return expenseVC
     }
     
-    private var receiptAlbumViewController: ReceiptAlbumViewController {
-        let receiptAlbumVC = ReceiptAlbumViewController()
-        receiptAlbumVC.budgetController = budgetController
-        receiptAlbumVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "album"), tag: 3)
-        return receiptAlbumVC
-    }
+//    private var receiptAlbumViewController: ReceiptAlbumViewController {
+//        let receiptAlbumVC = ReceiptAlbumViewController()
+//        receiptAlbumVC.budgetController = budgetController
+//        receiptAlbumVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "album"), tag: 3)
+//        return receiptAlbumVC
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewControllers()
+        
+    }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         setupAppearance()
     }
     
@@ -53,17 +57,29 @@ class MainTabBarController: UITabBarController {
         let expensesNav = UINavigationController(rootViewController: expenseViewController)
         expensesNav.isNavigationBarHidden = true
         
-        let receiptNav = UINavigationController(rootViewController: receiptAlbumViewController)
-        receiptNav.isNavigationBarHidden = true
+        //let receiptNav = UINavigationController(rootViewController: receiptAlbumViewController)
+        //receiptNav.isNavigationBarHidden = true
+        
+        let detailsNav = UINavigationController(rootViewController: detailsViewController)
+        detailsNav.isNavigationBarHidden = true
    
-        self.viewControllers = [mainViewController, detailsViewController, expensesNav, receiptNav]
+        self.viewControllers = [mainViewController, detailsNav, expensesNav]
     }
     
     private func setupAppearance() {
-        self.tabBar.barTintColor = .clear
-        self.tabBar.shadowImage = UIImage()
-        self.tabBar.backgroundImage = UIImage()
-        self.tabBar.tintColor = .black
-        self.tabBar.unselectedItemTintColor = superLightGray
+        if traitCollection.userInterfaceStyle == .light {
+            self.tabBar.barTintColor = .clear
+            self.tabBar.shadowImage = UIImage()
+            self.tabBar.backgroundImage = UIImage()
+            self.tabBar.tintColor = .black
+            self.tabBar.unselectedItemTintColor = superLightGray
+        } else {
+            self.tabBar.barTintColor = .clear
+            self.tabBar.shadowImage = UIImage()
+            self.tabBar.backgroundImage = UIImage()
+            self.tabBar.tintColor = .white
+            self.tabBar.unselectedItemTintColor = .darkGray
+        }
+        
     }
 }

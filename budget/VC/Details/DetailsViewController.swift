@@ -29,6 +29,7 @@ class DetailsViewController: BasicViewController {
 
     weak var tableView: UITableView!
     weak var incomeNotBudgetLabel: UILabel!
+    weak var addCategoryButton: UIButton!
     
     var amountTypedString = ""
     var incomeNotBuget: Double?
@@ -54,63 +55,84 @@ class DetailsViewController: BasicViewController {
     
     override func viewDidLoad() {
         titleOfVC = "DETAILS"
+        configureButton()
+        configureLabel()
+        configureTableView()
         super.viewDidLoad()
         monthYear = "\(currentYear)\(currentMonth)"
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //loadCategories()
         loadIncome()
         calcRemainingBudget()
         updateViews()
         tableView.reloadData()
-        
     }
-    override func setupUI() {
-        super.setupUI()
-        
-        self.view.backgroundColor = .white
-        
-        let unbudgetIncomeLabel = UILabel()
-        unbudgetIncomeLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(unbudgetIncomeLabel)
-        unbudgetIncomeLabel.font = UIFont(name: fontName, size: 20)
-        NSLayoutConstraint.activate([unbudgetIncomeLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 100 * heightRatio),
-                                     unbudgetIncomeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-                                     unbudgetIncomeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-                                     ])
-        
-        self.incomeNotBudgetLabel = unbudgetIncomeLabel
-        
-        
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        setupUIColor()
+    }
+    private func setupUIColor() {
+        if traitCollection.userInterfaceStyle == .light {
+            self.view.backgroundColor = .white
+            incomeNotBudgetLabel.textColor = .black
+            screenTitleLabel.textColor = .black
+            addCategoryButton.setTitleColor(.black, for: .normal)
+        } else {
+            self.view.backgroundColor = .black
+            incomeNotBudgetLabel.textColor = .white
+            screenTitleLabel.textColor = .white
+            addCategoryButton.setTitleColor(.white, for: .normal)
+        }
+    }
+    
+    private func configureButton() {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(button)
+        button.setTitle("+", for: .normal)
+        button.titleLabel?.font = UIFont(name: fontName, size: 40)
+        button.setTitleColor(superLightGray, for: .highlighted)
+        button.addTarget(self, action: #selector(showVC), for: .touchUpInside)
+        self.addCategoryButton = button
+    }
+    private func configureTableView() {
         let detailsTableView = UITableView()
         detailsTableView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(detailsTableView)
-        NSLayoutConstraint.activate([detailsTableView.topAnchor.constraint(equalTo: unbudgetIncomeLabel.bottomAnchor, constant: 20),
-                                     detailsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-                                     detailsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)])
-            
         detailsTableView.delegate = self
         detailsTableView.dataSource = self
         detailsTableView.backgroundColor = .clear
         detailsTableView.register(DetailsTableViewCell.self, forCellReuseIdentifier: "DetailsCell")
         detailsTableView.separatorStyle = .none
-        detailsTableView.allowsSelection = false
+        detailsTableView.allowsSelection = true
         
         self.tableView = detailsTableView
+    }
+    private func configureLabel() {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: fontName, size: 20)
+        view.addSubview(label)
+        self.incomeNotBudgetLabel = label
+    }
+    override func setupUI() {
+        super.setupUI()
         
-        let button2 = UIButton()
-        button2.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(button2)
-        button2.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        button2.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
-        button2.topAnchor.constraint(equalTo: detailsTableView.bottomAnchor, constant: 40).isActive = true
-        button2.setTitle("+ add a category", for: .normal)
-        button2.titleLabel?.font = UIFont(name: fontName, size: 30)
-        button2.setTitleColor(.black, for: .normal)
-        button2.addTarget(self, action: #selector(showVC), for: .touchUpInside)
+        NSLayoutConstraint.activate([incomeNotBudgetLabel.topAnchor.constraint(equalTo: screenTitleLabel.bottomAnchor, constant: 10 * heightRatio),
+                                     incomeNotBudgetLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+                                     incomeNotBudgetLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+                                     ])
         
+        NSLayoutConstraint.activate([tableView.topAnchor.constraint(equalTo: incomeNotBudgetLabel.bottomAnchor, constant: 20),
+                                     tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+                                     tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+                                     tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)])
         
+        addCategoryButton.widthAnchor.constraint(equalToConstant: buttonWidth * heightRatio).isActive = true
+        addCategoryButton.heightAnchor.constraint(equalTo: addCategoryButton.widthAnchor).isActive = true
+        addCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        addCategoryButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5).isActive = true
     }
     func updateViews() {
        
@@ -159,8 +181,7 @@ extension DetailsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         let context = CoreDataStack.shared.mainContext
         
-        context.delete(categories[indexPath.row])
-        categories.remove(at: indexPath.row)
+        context.delete(fetchedResultsController.object(at: indexPath))
         
         //TODO: run delete in controller
         
@@ -187,6 +208,12 @@ extension DetailsViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let category = fetchedResultsController.fetchedObjects?[indexPath.row]
+        let chartVC = ChartViewController()
+        chartVC.category = category
+        self.navigationController?.pushViewController(chartVC, animated: true)
+    }
 }
 
 extension DetailsViewController {
@@ -211,7 +238,7 @@ extension DetailsViewController {
         let addAction = UIAlertAction(title: "Add", style: .default) { _ in
             guard let categoryName = alertController.textFields?[0].text,
                 !categoryName.isEmpty,
-                !self.categories.contains(where: { $0.name == categoryName }),
+                !(self.fetchedResultsController.fetchedObjects ?? []).contains(where: { $0.name == categoryName }) ,
                 let amountString = alertController.textFields?[1].text,
                 let amount = Double(amountString) else { return }
             

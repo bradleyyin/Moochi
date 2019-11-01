@@ -37,7 +37,7 @@ class EditIncomeView: UIView {
     }()
     
     let cancelButton: UIButton = {
-        let btn=UIButton()
+        let btn = UIButton()
         btn.setImage(UIImage(named: "cancel"), for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(dissmissView), for: .touchUpInside)

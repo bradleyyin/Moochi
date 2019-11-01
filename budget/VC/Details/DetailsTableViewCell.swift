@@ -10,13 +10,13 @@ import UIKit
 import CoreData
 
 class DetailsTableViewCell: UITableViewCell {
-
-    var category: Category?{
+    
+    var category: Category? {
         didSet {
             updateViews()
         }
     }
-    var categoryTotal : Double {
+    var categoryTotal: Double {
         guard let category = category else { return 0.0 }
         return category.totalAmount
     }
@@ -26,11 +26,11 @@ class DetailsTableViewCell: UITableViewCell {
         let startOfMonth = currentDate.getThisMonthStart()
         let endOfMonth = currentDate.getThisMonthEnd()
         //print ("start, end", startOfMonth, endOfMonth)
-        //let calender = Calendar.current
         var expenses: [Expense] = []
         
         func loadItem() {
-            let predicate = NSPredicate(format: "category MATCHES %@", (category?.name)!)
+            print("expenses", category?.expenses as? Set<Expense>)
+            let predicate = NSPredicate(format: "parentCategory == %@", (category)!)
             let predicate2 = NSPredicate(format: "(date => %@) AND (date <= %@)", startOfMonth as NSDate, endOfMonth as NSDate)
             
             let request: NSFetchRequest<Expense> = Expense.fetchRequest()
@@ -44,7 +44,7 @@ class DetailsTableViewCell: UITableViewCell {
         loadItem()
         //print(expenses)
         var totalExpenses = 0.0
-        for expense in expenses{
+        for expense in expenses {
             totalExpenses += expense.amount
         }
         
@@ -61,7 +61,22 @@ class DetailsTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUpViews()
-
+        
+    }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setupUIColor()
+    }
+    private func setupUIColor() {
+        if traitCollection.userInterfaceStyle == .light {
+            titleLabel.textColor = .black
+            totalLabel.textColor = .black
+            remainLabel.textColor = .black
+        } else {
+            titleLabel.textColor = .white
+            totalLabel.textColor = .white
+            remainLabel.textColor = .white
+        }
     }
     
     func setUpViews() {
@@ -105,7 +120,7 @@ class DetailsTableViewCell: UITableViewCell {
         
         
         self.backgroundColor = .clear
-
+        
         self.titleLabel = label1
         self.totalLabel = label2
         self.remainLabel = remainLabel
@@ -140,7 +155,7 @@ class DetailsTableViewCell: UITableViewCell {
             blackRatio = 1
         }
         //print (titleLabel.text, blackRatio)
-        guard let blackWidthAnchor = blackBarView.constraints.first(where: { $0.firstAttribute == .width }) else {return}
+        guard let blackWidthAnchor = blackBarView.constraints.first(where: { $0.firstAttribute == .width }) else { return }
         blackWidthAnchor.constant = self.frame.width * blackRatio
         
         blackBarView.layoutIfNeeded()
@@ -167,5 +182,5 @@ class DetailsTableViewCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
 }

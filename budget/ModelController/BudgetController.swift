@@ -29,7 +29,7 @@ extension BudgetController {
     func createNewExpense(name: String,
                           amount: Double,
                           date: Date,
-                          category: String,
+                          category: Category?,
                           image: UIImage?,
                           context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         var imagePath: String?
@@ -37,10 +37,24 @@ extension BudgetController {
             imagePath = imageSaver.saveImage(image: image)
         }
         context.performAndWait {
-            Expense(name: name, imagePath: imagePath, date: date, category: category.uppercased(), amount: amount)
+            Expense(name: name, imagePath: imagePath, date: date, category: category, amount: amount)
             saveToPersistentData()
         }
     }
+    
+//    func readAllExpenses(of category: Category, context:NSManagedObjectContext = CoreDataStack.shared.mainContext) -> [Expense] {
+//        var expenses: [Expense] = []
+//        let request: NSFetchRequest<Expense> = Expense.fetchRequest()
+//        request.predicate = NSPredicate(format: "parentCategory == %@", category)
+//        context.performAndWait {
+//            do {
+//                expenses = try context.fetch(request)
+//            } catch {
+//                print("error loading all expenses")
+//            }
+//        }
+//        return expenses
+//    }
     
     func readMonthlyExpense(context: NSManagedObjectContext = CoreDataStack.shared.mainContext) -> [Expense] {
         let currentDate = Date()

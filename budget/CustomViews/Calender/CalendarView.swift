@@ -1,5 +1,5 @@
 //
-//  CalenderView.swift
+//  CalendarView.swift
 //  budget
 //
 //  Created by Bradley Yin on 7/20/19.
@@ -8,42 +8,11 @@
 
 import UIKit
 
-protocol CalenderDelegate {
+protocol CalendarDelegate: AnyObject {
     func goToSingleDay(date: Date)
 }
 
-
-//struct Style {
-//    static var bgColor = UIColor.white
-//    static var monthViewLblColor = UIColor.white
-//    static var monthViewBtnRightColor = UIColor.white
-//    static var monthViewBtnLeftColor = UIColor.white
-//    static var activeCellLblColor = UIColor.white
-//    static var activeCellLblColorHighlighted = UIColor.black
-//    static var weekdaysLblColor = UIColor.white
-//
-//    static func themeDark(){
-//        bgColor = Colors.darkGray
-//        monthViewLblColor = UIColor.white
-//        monthViewBtnRightColor = UIColor.white
-//        monthViewBtnLeftColor = UIColor.white
-//        activeCellLblColor = UIColor.white
-//        activeCellLblColorHighlighted = UIColor.black
-//        weekdaysLblColor = UIColor.white
-//    }
-//
-//    static func themeLight(){
-//        bgColor = UIColor.white
-//        monthViewLblColor = UIColor.black
-//        monthViewBtnRightColor = UIColor.black
-//        monthViewBtnLeftColor = UIColor.black
-//        activeCellLblColor = UIColor.black
-//        activeCellLblColorHighlighted = UIColor.white
-//        weekdaysLblColor = UIColor.black
-//    }
-//}
-
-class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, MonthViewDelegate {
+class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, MonthViewDelegate {
     
     var numOfDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     var currentMonthIndex: Int = 0
@@ -53,37 +22,13 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
     var todaysDate = 0
     var firstWeekDayOfMonth = 0   //(Sunday-Saturday 1-7)
     
-    var delegate: CalenderDelegate?
+    weak var delegate: CalendarDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         initializeView()
     }
-    
-//    convenience init(theme: MyTheme) {
-//        self.init()
-//
-//        if theme == .dark {
-//            Style.themeDark()
-//        } else {
-//            Style.themeLight()
-//        }
-//
-//        initializeView()
-//    }
-    
-//    func changeTheme() {
-//        myCollectionView.reloadData()
-//
-//        monthView.lblName.textColor = Style.monthViewLblColor
-//        monthView.btnRight.setTitleColor(Style.monthViewBtnRightColor, for: .normal)
-//        monthView.btnLeft.setTitleColor(Style.monthViewBtnLeftColor, for: .normal)
-//
-//        for i in 0..<7 {
-//            (weekdaysView.myStackView.subviews[i] as! UILabel).textColor = Style.weekdaysLblColor
-//        }
-//    }
     
     func initializeView() {
         currentMonthIndex = Calendar.current.component(.month, from: Date())
@@ -93,7 +38,7 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         
         //for leap years, make february month of 29 days
         if currentMonthIndex == 2 && currentYear % 4 == 0 {
-            numOfDaysInMonth[currentMonthIndex-1] = 29
+            numOfDaysInMonth[currentMonthIndex - 1] = 29
         }
         //end
         
@@ -126,37 +71,27 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
             cell.isUserInteractionEnabled = true
             cell.lbl.textColor = .black
         }
-        if cell.lbl.text == "\(todaysDate)" && currentMonthIndex == Calendar.current.component(.month, from: Date()) {
-            
-            cell.isToday = true
-            
-        }
+//        if cell.lbl.text == "\(todaysDate)" && currentMonthIndex == Calendar.current.component(.month, from: Date()) {
+//            cell.isToday = true
+//        }
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath)
-        //cell?.backgroundColor=Colors.darkRed
-        guard let lbl = cell?.subviews[1] as? UILabel else { return }
+        guard let cell = collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell else { return }
+
+        let lbl = cell.lbl
+ 
         let day = lbl.text ?? "01"
         if let date = "\(currentYear)-\(currentMonthIndex)-\(day)".date {
             delegate?.goToSingleDay(date: date)
         }
-        
     }
-    
-//    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-//        let cell=collectionView.cellForItem(at: indexPath)
-//        cell?.backgroundColor=UIColor.clear
-//        let lbl = cell?.subviews[1] as! UILabel
-//        lbl.textColor = .black
-//
-//    }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width / 7 - 8
-        let height: CGFloat = 80 * heightRatio
+        let height: CGFloat = 50
         return CGSize(width: width, height: height)
     }
     
@@ -176,6 +111,12 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         let day = ("\(currentYear)-\(currentMonthIndex)-01".date?.firstDayOfTheMonth.weekday)!
         //return day == 7 ? 1 : day
         return day
+    }
+    func goToToday() {
+        monthView.gotoThisMonth()
+        let day = Calendar.current.component(.day, from: Date())
+        myCollectionView.selectItem(at: IndexPath(item: day - 1 + firstWeekDayOfMonth - 1, section: 0), animated: true, scrollPosition: .top)
+        
     }
     
     func didChangeMonth(monthIndex: Int, year: Int) {
@@ -216,7 +157,11 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         myCollectionView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0).isActive = true
         myCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0).isActive = true
         myCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        
+        let totalNumberOfCells = numOfDaysInMonth[currentMonthIndex - 1] + firstWeekDayOfMonth - 1
+        print("total cells", totalNumberOfCells)
+        let totalRows = (Double(totalNumberOfCells) / 7.0).rounded(.up)
+        print("total row", totalRows)
+        myCollectionView.heightAnchor.constraint(equalToConstant: CGFloat(totalRows * 60)).isActive = true
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(goToLastMonth))
         swipeRight.direction = .right
         self.addGestureRecognizer(swipeRight)
@@ -260,9 +205,6 @@ class CalenderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         fatalError("init(coder:) has not been implemented")
     }
 }
-
-
-
 //get date from string
 extension String {
     static var dateFormatter: DateFormatter = {

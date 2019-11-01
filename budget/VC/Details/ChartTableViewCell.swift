@@ -1,19 +1,19 @@
 //
-//  ExpenseTableViewCell.swift
+//  ChartTableViewCell.swift
 //  budget
 //
-//  Created by Bradley Yin on 7/24/19.
+//  Created by Bradley Yin on 10/28/19.
 //  Copyright © 2019 bradleyyin. All rights reserved.
 //
 
 import UIKit
 
-class ExpenseTableViewCell: UITableViewCell {
-    
-    weak var titleLabel: UILabel!
-    weak var amountLabel: UILabel!
+class ChartTableViewCell: UITableViewCell {
 
-    var expense: Expense? {
+    var monthLabel: UILabel!
+    var amountLabel: UILabel!
+
+    var expenseDataPair: (String, Double)? {
         didSet {
             updateViews()
         }
@@ -32,10 +32,10 @@ class ExpenseTableViewCell: UITableViewCell {
     
     private func setupUIColor() {
         if traitCollection.userInterfaceStyle == .light {
-            titleLabel.textColor = .black
+            monthLabel.textColor = .black
             amountLabel.textColor = .black
         } else {
-            titleLabel.textColor = .white
+            monthLabel.textColor = .white
             amountLabel.textColor = .white
         }
     }
@@ -48,9 +48,9 @@ class ExpenseTableViewCell: UITableViewCell {
         titleLabel.font = UIFont(name: fontName, size: fontSize)
         titleLabel.textAlignment = .left
         self.addSubview(titleLabel)
-        titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 40).isActive = true
         titleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        self.titleLabel = titleLabel
+        self.monthLabel = titleLabel
         
         
         let amountLabel = UILabel()
@@ -58,20 +58,19 @@ class ExpenseTableViewCell: UITableViewCell {
         amountLabel.textAlignment = .right
         amountLabel.font = UIFont(name: fontName, size: fontSize)
         self.addSubview(amountLabel)
-        amountLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20).isActive = true
+        amountLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40).isActive = true
         amountLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         self.amountLabel = amountLabel
         
     }
     func updateViews() {
-        guard let expense = expense else { return }
-        titleLabel.text = expense.name
-        amountLabel.text = NSString(format: "%.2f", expense.amount) as String
+        guard let expenseDataPair = expenseDataPair else { return }
+        monthLabel.text = expenseDataPair.0
+        amountLabel.text = NSString(format: "$%.2f", expenseDataPair.1) as String
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 
 }
