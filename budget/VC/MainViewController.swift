@@ -140,7 +140,9 @@ class MainViewController: UIViewController {
         self.addEntryButton = button
     }
     func setupConstraints() {
-        monthLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        monthLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 20).isActive = true
+        monthLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        
         monthLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
         
         dateNumberLabel.topAnchor.constraint(equalTo: monthLabel.bottomAnchor, constant: 20).isActive = true

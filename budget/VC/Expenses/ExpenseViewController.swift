@@ -244,10 +244,12 @@ extension ExpenseViewController: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        
         if indexPath.section == 0 {
             let singleDayDetailVC = SingleExpenseDetailViewController()
             singleDayDetailVC.expense = fetchedResultsController?.object(at: indexPath)
             singleDayDetailVC.budgetController = budgetController
+            tableView.deselectRow(at: indexPath, animated: false)
             navigationController?.pushViewController(singleDayDetailVC, animated: true)
         }
         
