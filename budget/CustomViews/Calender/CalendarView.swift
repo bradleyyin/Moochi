@@ -71,9 +71,9 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
             cell.isUserInteractionEnabled = true
             cell.lbl.textColor = .black
         }
-//        if cell.lbl.text == "\(todaysDate)" && currentMonthIndex == Calendar.current.component(.month, from: Date()) {
-//            cell.isToday = true
-//        }
+        if cell.lbl.text == "\(todaysDate)" && currentMonthIndex == Calendar.current.component(.month, from: Date()) {
+            cell.isToday = true
+        }
         
         return cell
     }
@@ -114,9 +114,9 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
     }
     func goToToday() {
         monthView.gotoThisMonth()
-        let day = Calendar.current.component(.day, from: Date())
-        let selectedIndexPath = IndexPath(item: day - 1 + firstWeekDayOfMonth - 1, section: 0)
-        myCollectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: .top)
+//        let day = Calendar.current.component(.day, from: Date())
+//        let selectedIndexPath = IndexPath(item: day - 1 + firstWeekDayOfMonth - 1, section: 0)
+//        myCollectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: .top)
     }
     
     func didChangeMonth(monthIndex: Int, year: Int) {
