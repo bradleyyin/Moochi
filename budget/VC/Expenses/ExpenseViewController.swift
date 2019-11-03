@@ -152,17 +152,11 @@ class ExpenseViewController: BasicViewController, CalendarDelegate {
         formatter.dateFormat = "MM/dd/yyyy"
         print(todayString)
         if let today = formatter.date(from: todayString) {
-            goToSingleDay(date: today)
             calendarView.goToToday()
+            goToSingleDay(date: today)
         }
-        
-        
     }
     func goToSingleDay(date: Date) {
-        //let singleDayVC = SingleDayViewController()
-        //singleDayVC.date = date
-        //singleDayVC.budgetController = budgetController
-        //self.navigationController?.pushViewController(singleDayVC, animated: true)
         self.date = date
         refreshFRC()
         tableView.reloadData()
@@ -194,26 +188,6 @@ class ExpenseViewController: BasicViewController, CalendarDelegate {
         }()
         
     }
-//    func loadItem(for date: Date?) {
-//        let context = CoreDataStack.shared.mainContext
-//        let request: NSFetchRequest<Expense> = Expense.fetchRequest()
-//
-//        guard let date = date as NSDate? else { fatalError("cannot convert date for fetching") }
-//        let predicate = NSPredicate(format: "date == %@", date)
-//        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-//
-//
-//        request.predicate = predicate
-//        request.sortDescriptors = [sortDescriptor]
-//
-//        do {
-//            expenses = try context.fetch(request)
-//            print(expenses.count)
-//            updateViews()
-//        } catch {
-//            fatalError("error loading entries: \(error)")
-//        }
-//    }
     @objc func showVC() {
         let addEntryVC = AddEntryViewController()
         addEntryVC.date = date
