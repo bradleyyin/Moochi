@@ -13,20 +13,32 @@ class ReceiptViewController: UIViewController {
     var image: UIImage?
     var scrollView: UIScrollView!
     var imageView: UIImageView!
+    var cancelButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureScrollView()
         setUpView()
+        
         scrollView.delegate = self
-        scrollView.minimumZoomScale = 1.0
+        //scrollView.minimumZoomScale = 1.0
         scrollView.maximumZoomScale = 6.0
+        
 
         // Do any additional setup after loading the view.
     }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        setZoomScale()
+        if view.traitCollection.userInterfaceStyle == .light {
+            self.view.backgroundColor = .white
+            self.cancelButton.tintColor = .black
+        } else {
+            self.view.backgroundColor = .black
+            self.cancelButton.tintColor = .white
+        }
+    }
     func setUpView() {
-        
-        self.view.backgroundColor = .white
         
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -35,8 +47,9 @@ class ReceiptViewController: UIViewController {
         button.widthAnchor.constraint(equalToConstant: buttonWidth * heightRatio).isActive = true
         button.heightAnchor.constraint(equalToConstant: buttonHeight * heightRatio).isActive = true
         button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20 * heightRatio).isActive = true
-        button.setImage(UIImage(named: "cancel"), for: .normal)
+        button.setImage(UIImage(named: "cancel")?.withRenderingMode(.alwaysTemplate), for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        self.cancelButton = button
         
         scrollView.topAnchor.constraint(equalTo: button.bottomAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
@@ -61,6 +74,19 @@ class ReceiptViewController: UIViewController {
         imageView.contentMode = .scaleAspectFit
         self.imageView = imageView
         self.scrollView = scrollView
+    }
+    func setZoomScale() {
+        let imageViewSize = imageView.bounds.size
+        let scrollViewSize = scrollView.bounds.size
+        print("imageView", imageViewSize)
+        print("scrollView", scrollViewSize)
+        let widthScale = scrollViewSize.width / imageViewSize.width
+        let heightScale = scrollViewSize.height / imageViewSize.height
+
+        let minZoomScale = min(widthScale, heightScale)
+        print(minZoomScale)
+        scrollView.minimumZoomScale = minZoomScale
+        scrollView.zoomScale = minZoomScale
     }
     @objc func cancelButtonTapped() {
         self.dismiss(animated: true, completion: nil)
