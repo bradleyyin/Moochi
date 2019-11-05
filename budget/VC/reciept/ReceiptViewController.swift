@@ -21,11 +21,7 @@ class ReceiptViewController: UIViewController {
         setUpView()
         
         scrollView.delegate = self
-        //scrollView.minimumZoomScale = 1.0
         scrollView.maximumZoomScale = 6.0
-        
-
-        // Do any additional setup after loading the view.
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -78,13 +74,10 @@ class ReceiptViewController: UIViewController {
     func setZoomScale() {
         let imageViewSize = imageView.bounds.size
         let scrollViewSize = scrollView.bounds.size
-        print("imageView", imageViewSize)
-        print("scrollView", scrollViewSize)
         let widthScale = scrollViewSize.width / imageViewSize.width
         let heightScale = scrollViewSize.height / imageViewSize.height
 
         let minZoomScale = min(widthScale, heightScale)
-        print(minZoomScale)
         scrollView.minimumZoomScale = minZoomScale
         scrollView.zoomScale = minZoomScale
     }
