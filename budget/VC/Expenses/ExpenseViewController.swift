@@ -229,19 +229,18 @@ extension ExpenseViewController: UITableViewDelegate, UITableViewDataSource {
         
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 {
-            guard let expense = fetchedResultsController?.object(at: indexPath) else { return }
-            budgetController.deleteExpense(expense: expense)
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let delete = UIContextualAction(style: .destructive, title: "delete") { _, _, _ in
+            guard let expense = self.fetchedResultsController?.object(at: indexPath) else { return }
+            self.budgetController.deleteExpense(expense: expense)
             NotificationCenter.default.post(name: Notification.Name("changedEntry"), object: nil)
         }
+        
+        let swipeActions = UISwipeActionsConfiguration(actions: [delete])
+
+        return swipeActions
     }
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        if indexPath.section == 0 {
-            return .delete
-        }
-        return .none
-    }
+    
 }
 extension ExpenseViewController: NSFetchedResultsControllerDelegate {
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
