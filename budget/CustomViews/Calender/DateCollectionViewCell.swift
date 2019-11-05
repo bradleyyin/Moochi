@@ -9,6 +9,7 @@
 import UIKit
 
 class DateCollectionViewCell: UICollectionViewCell {
+    var isToday = false
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor.clear
@@ -23,6 +24,9 @@ class DateCollectionViewCell: UICollectionViewCell {
             lbl.textColor = .black
         } else {
             lbl.textColor = .white
+        }
+        if isToday {
+            lbl.textColor = .orange
         }
     }
     
@@ -51,6 +55,7 @@ class DateCollectionViewCell: UICollectionViewCell {
         if let circleView = self.viewWithTag(1) {
             circleView.removeFromSuperview()
         }
+        isToday = false
     }
     
     let lbl: UILabel = {

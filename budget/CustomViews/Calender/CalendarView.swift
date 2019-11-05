@@ -71,9 +71,9 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
             cell.isUserInteractionEnabled = true
             cell.lbl.textColor = .black
         }
-//        if cell.lbl.text == "\(todaysDate)" && currentMonthIndex == Calendar.current.component(.month, from: Date()) {
-//            cell.isToday = true
-//        }
+        if cell.lbl.text == "\(todaysDate)" && currentMonthIndex == Calendar.current.component(.month, from: Date()) {
+            cell.isToday = true
+        }
         
         return cell
     }
@@ -114,9 +114,9 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
     }
     func goToToday() {
         monthView.gotoThisMonth()
-        let day = Calendar.current.component(.day, from: Date())
-        myCollectionView.selectItem(at: IndexPath(item: day - 1 + firstWeekDayOfMonth - 1, section: 0), animated: true, scrollPosition: .top)
-        
+//        let day = Calendar.current.component(.day, from: Date())
+//        let selectedIndexPath = IndexPath(item: day - 1 + firstWeekDayOfMonth - 1, section: 0)
+//        myCollectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: .top)
     }
     
     func didChangeMonth(monthIndex: Int, year: Int) {
@@ -136,6 +136,18 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         firstWeekDayOfMonth = getFirstWeekDay()
         
         myCollectionView.reloadData()
+        var selectedIndexPath = IndexPath(item: firstWeekDayOfMonth - 1, section: 0)
+        var day = "01"
+        let today = Date()
+        if currentYear == Calendar.current.component(.year, from: today) && currentMonthIndex == Calendar.current.component(.month, from: today) {
+            let dayInt = Calendar.current.component(.day, from: today)
+            day = String(format: "%02d", dayInt)
+            selectedIndexPath = IndexPath(item: dayInt - 1 + firstWeekDayOfMonth - 1, section: 0)
+        }
+        myCollectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: .top)
+        if let date = "\(currentYear)-\(currentMonthIndex)-\(day)".date {
+            delegate?.goToSingleDay(date: date)
+        }
     }
     
     func setupViews() {

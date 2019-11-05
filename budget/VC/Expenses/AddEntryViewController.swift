@@ -55,21 +55,21 @@ class AddEntryViewController: UIViewController {
         setupUI()
         
         loadCategories()
-
-        // Do any additional setup after loading the view.
-    }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.imagePicker = UIImagePickerController()
-        self.imagePicker.delegate = self
-        self.imagePicker.allowsEditing = false
-        
         self.datePicker = UIDatePicker()
         self.categoryPicker = UIPickerView()
         categoryPicker.delegate = self
         categoryPicker.dataSource = self
         showCategoryPicker()
         showDatePicker()
+
+        // Do any additional setup after loading the view.
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("view did appear")
+        self.imagePicker = UIImagePickerController()
+        self.imagePicker.delegate = self
+        self.imagePicker.allowsEditing = false
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()

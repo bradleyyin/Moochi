@@ -13,12 +13,12 @@ protocol ReceiptCollectionDelegate {
 }
 
 class ReceiptCollectionViewCell: UICollectionViewCell {
-    weak var imageView : UIImageView!
+    weak var imageView: UIImageView!
     
-    var delegate : ReceiptCollectionDelegate?
+    var delegate: ReceiptCollectionDelegate?
     
-    var imagePath: String?{
-        didSet{
+    var imagePath: String? {
+        didSet {
             updateViews()
         }
     }
@@ -45,14 +45,14 @@ class ReceiptCollectionViewCell: UICollectionViewCell {
         
     }
     
-    func updateViews(){
-        guard let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {return}
-        if let imagePath = imagePath{
+    func updateViews() {
+        guard let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+        if let imagePath = imagePath {
             let filePath = dir.appendingPathComponent(imagePath).path
             imageView.image = UIImage(contentsOfFile: filePath)
         }
     }
-    @objc func imageTapped(){
+    @objc func imageTapped() {
         if let image = imageView.image{
             delegate?.receiptTapped(image: image)
         }

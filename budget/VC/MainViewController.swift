@@ -140,7 +140,7 @@ class MainViewController: UIViewController {
         self.addEntryButton = button
     }
     func setupConstraints() {
-        monthLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 20).isActive = true
+        monthLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
         monthLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         
         monthLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
@@ -170,8 +170,6 @@ class MainViewController: UIViewController {
         monthLabel.text = monthCalculator.currentMonthString
         
         dateNumberLabel.text = String(format: "%02d", monthCalculator.currentDate)
-        
-        print(remainFund)
         
         if let remain = remainFund {
             moneyLabel.text = "\(String(format: "%.2f", remain))"
