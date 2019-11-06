@@ -25,7 +25,6 @@ class AddEntryViewController: UIViewController {
     var cancelButton: UIButton!
     var checkButton: UIButton!
     var screenTitleLabel: UILabel!
-    var titleOfVC: String = ""
     
     var imagePicker: UIImagePickerController!
     var budgetController: BudgetController!
@@ -33,6 +32,7 @@ class AddEntryViewController: UIViewController {
     var categoryPicker: UIPickerView!
     let formatter = DateFormatter()
     var categories: [Category] = []
+    var expense: Expense?
     
     var categorypickerData: [String] {
         var nameArray: [String] = ["uncategorized"]
@@ -50,7 +50,6 @@ class AddEntryViewController: UIViewController {
     override func viewDidLoad() {
        
         formatter.dateFormat = "MM/dd/yyyy"
-        titleOfVC = "add an entry"
         super.viewDidLoad()
         setupUI()
         
@@ -74,6 +73,16 @@ class AddEntryViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         setupUIColor()
+    }
+    private func updateViews() {
+        guard let expense = expense else {
+            screenTitleLabel.text = "add an entry".uppercased()
+            return
+        }
+        screenTitleLabel.text = "edit entry".uppercased()
+        nameTextField.text = expense.name
+        amountTextField.text = String(format: "%.2f", expense.amount)
+        categoryTextField.text = expense.parentCategory?.name
     }
     private func setupUIColor() {
         if traitCollection.userInterfaceStyle == .light {
@@ -112,8 +121,6 @@ class AddEntryViewController: UIViewController {
     }
     private func setupUI() {
         let label = TitleLabel()
-                
-        label.text = titleOfVC.uppercased()
         label.textAlignment = .left
         self.view.addSubview(label)
         label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50 * heightRatio - buttonHeight / 2).isActive = true

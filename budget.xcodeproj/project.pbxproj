@@ -205,9 +205,9 @@
 			children = (
 				75AEC11B22E3E2480006A057 /* MonthView.swift */,
 				75AEC11D22E3E2700006A057 /* CalendarView.swift */,
-				75AEC11F22E409DE0006A057 /* WeekdayView.swift */,
 				75BCC2CC234ABAC2001CA01A /* CircleView.swift */,
 				75F2FB7E235138B9006007D8 /* DateCollectionViewCell.swift */,
+				75AEC11F22E409DE0006A057 /* WeekdayView.swift */,
 			);
 			path = Calender;
 			sourceTree = "<group>";

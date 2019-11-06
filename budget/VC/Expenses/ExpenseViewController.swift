@@ -235,8 +235,14 @@ extension ExpenseViewController: UITableViewDelegate, UITableViewDataSource {
             self.budgetController.deleteExpense(expense: expense)
             NotificationCenter.default.post(name: Notification.Name("changedEntry"), object: nil)
         }
+        let edit = UIContextualAction(style: .normal, title: "edit") { _, _, _ in
+            guard let expense = self.fetchedResultsController?.object(at: indexPath) else { return }
+//            self.budgetController.deleteExpense(expense: expense)
+//            NotificationCenter.default.post(name: Notification.Name("changedEntry"), object: nil)
+        }
         
-        let swipeActions = UISwipeActionsConfiguration(actions: [delete])
+        
+        let swipeActions = UISwipeActionsConfiguration(actions: [delete, edit])
 
         return swipeActions
     }
