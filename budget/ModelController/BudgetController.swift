@@ -160,6 +160,13 @@ extension BudgetController {
         }
         return categories
     }
+    func updateCategory(category: Category, name: String, totalAmount: Double, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+        context.performAndWait {
+            category.name = name
+            category.totalAmount = totalAmount
+            saveToPersistentData()
+        }
+    }
     
     func deleteCategory(category: Category, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         context.performAndWait {
