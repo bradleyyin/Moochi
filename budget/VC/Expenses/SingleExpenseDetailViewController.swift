@@ -20,6 +20,7 @@ class SingleExpenseDetailViewController: BasicViewController {
     var categoryLabel: UILabel!
     var categoryContentLabel: UILabel!
     var backButton: UIButton!
+    var editButton: UIButton!
     
     var image: UIImage?
     
@@ -33,6 +34,10 @@ class SingleExpenseDetailViewController: BasicViewController {
         
 
         // Do any additional setup after loading the view.
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateViews()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -56,6 +61,7 @@ class SingleExpenseDetailViewController: BasicViewController {
             amountLabel.textColor = .black
             amountContentLabel.textColor = .black
             backButton.tintColor = .black
+            editButton.setTitleColor(.black, for: .normal)
         } else {
             self.view.backgroundColor = .black
             nameLabel.textColor = .white
@@ -67,11 +73,23 @@ class SingleExpenseDetailViewController: BasicViewController {
             amountLabel.textColor = .white
             amountContentLabel.textColor = .white
             backButton.tintColor = .white
+            editButton.setTitleColor(.white, for: .normal)
         }
+    }
+    private func updateViews() {
+        guard let expense = expense else { return }
+        nameContentLabel.text = expense.name
+        amountContentLabel.text = NSString(format: "%.2f", expense.amount) as String
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd/yyyy"
+        dateContentLabel.text = formatter.string(from: expense.date ?? Date())
+        let categoryText = expense.parentCategory?.name ?? "UNCATEGORIZED"
+        categoryContentLabel.text = categoryText.uppercased()
+        
     }
     private func configureLabels() {
         
-        guard let expense = expense else { return }
+        
         
         let nameLabel = UILabel()
         nameLabel.text = "NAME"
@@ -97,29 +115,22 @@ class SingleExpenseDetailViewController: BasicViewController {
         self.categoryLabel = categoryLabel
         
         let nameContentLabel = UILabel()
-        nameContentLabel.text = expense.name
         nameContentLabel.setUpLabelForSingleDayDetailVC()
         nameContentLabel.textAlignment = .center
         nameContentLabel.translatesAutoresizingMaskIntoConstraints = false
         self.nameContentLabel = nameContentLabel
         
         let amountContentLabel = UILabel()
-        amountContentLabel.text = NSString(format: "%.2f", expense.amount) as String
         amountContentLabel.setUpLabelForSingleDayDetailVC()
         amountContentLabel.textAlignment = .center
         self.amountContentLabel = amountContentLabel
         
         let dateContentLabel = UILabel()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MM/dd/yyyy"
-        dateContentLabel.text = formatter.string(from: expense.date!)
         dateContentLabel.setUpLabelForSingleDayDetailVC()
         dateContentLabel.textAlignment = .center
         self.dateContentLabel = dateContentLabel
         
         let categoryContentLabel = UILabel()
-        let categoryText = expense.parentCategory?.name ?? "UNCATEGORIZED"
-        categoryContentLabel.text = categoryText.uppercased()
         categoryContentLabel.setUpLabelForSingleDayDetailVC()
         categoryContentLabel.textAlignment = .center
         self.categoryContentLabel = categoryContentLabel
@@ -140,6 +151,18 @@ class SingleExpenseDetailViewController: BasicViewController {
         button.setTitleColor(superLightGray, for: .highlighted)
         button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         self.backButton = button
+        
+        let button2 = UIButton()
+        button2.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(button2)
+        button2.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
+        button2.widthAnchor.constraint(equalToConstant: buttonWidth * heightRatio).isActive = true
+        button2.heightAnchor.constraint(equalToConstant: buttonHeight * heightRatio).isActive = true
+        button2.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20 * heightRatio - buttonHeight / 2).isActive = true
+        button2.setTitle("Edit", for: .normal)
+        button2.setTitleColor(superLightGray, for: .highlighted)
+        button2.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
+        self.editButton = button2
         
         let nameStackView = UIStackView(arrangedSubviews: [nameLabel, nameContentLabel])
         nameStackView.axis = .horizontal
@@ -215,6 +238,20 @@ class SingleExpenseDetailViewController: BasicViewController {
         let swipeFromLeftGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(swipeFromLeftEdge))
         swipeFromLeftGesture.edges = .left
         self.view.addGestureRecognizer(swipeFromLeftGesture)
+    }
+    @objc func editButtonTapped() {
+        guard let expense = expense else { return }
+        let addEntryVC = AddEntryViewController()
+        addEntryVC.date = expense.date
+        addEntryVC.expense = expense
+        addEntryVC.budgetController = budgetController
+        addEntryVC.modalPresentationStyle = .fullScreen
+        present(addEntryVC, animated: true)
+//        if editButton.titleLabel?.text == "Edit" {
+//            editButton.setTitle("Done", for: .normal)
+//        } else {
+//            editButton.setTitle("Edit", for: .normal)
+//        }
     }
     
     @objc func imageTapped() {

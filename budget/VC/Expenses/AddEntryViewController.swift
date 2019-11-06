@@ -320,9 +320,9 @@ class AddEntryViewController: UIViewController {
             category = categories[categoryPicker.selectedRow(inComponent: 0) - 1]
         }
         if let expense = expense {
-            budgetController.createNewExpense(name: name, amount: amount, date: date, category: category, image: image)
+            budgetController.updateExpense(expense: expense, name: name, amount: amount, date: date, category: category, image: image)
         } else {
-            
+            budgetController.createNewExpense(name: name, amount: amount, date: date, category: category, image: image)
         }
         
         NotificationCenter.default.post(name: Notification.Name("changedEntry"), object: nil)
