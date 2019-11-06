@@ -88,9 +88,6 @@ class SingleExpenseDetailViewController: BasicViewController {
         
     }
     private func configureLabels() {
-        
-        
-        
         let nameLabel = UILabel()
         nameLabel.text = "NAME"
         nameLabel.setUpLabelForSingleDayDetailVC()

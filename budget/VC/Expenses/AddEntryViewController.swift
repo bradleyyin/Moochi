@@ -87,7 +87,27 @@ class AddEntryViewController: UIViewController {
         } else {
             categoryTextField.text = "uncategorized".uppercased()
         }
+        loadImage()
+    }
+    func loadImage() {
+        guard let expense = expense else { return }
         
+        if let filePathComponent = expense.imagePath {
+            print(filePathComponent)
+            let fm = FileManager.default
+            guard let dir = fm.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+            
+            let filePath = dir.appendingPathComponent(filePathComponent).path
+            
+            if FileManager.default.fileExists(atPath: filePath) {
+                
+                imageView.image = UIImage(contentsOfFile: filePath)
+                imageView.contentMode = .scaleAspectFill
+                imageView.clipsToBounds = true
+            }
+        } else {
+            imageView.image = UIImage(named: "addImage")
+        }
     }
     private func setupUIColor() {
         if traitCollection.userInterfaceStyle == .light {
@@ -265,7 +285,7 @@ class AddEntryViewController: UIViewController {
         imageView.topAnchor.constraint(equalTo: totalStackView.bottomAnchor, constant: 30 * heightRatio).isActive = true
         imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         imageView.widthAnchor.constraint(equalToConstant: 300 * heightRatio).isActive = true
-        imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
+        imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
         
         imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100 * heightRatio).isActive = true
         
