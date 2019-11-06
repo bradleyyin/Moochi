@@ -52,7 +52,7 @@ class AddEntryViewController: UIViewController {
         formatter.dateFormat = "MM/dd/yyyy"
         super.viewDidLoad()
         setupUI()
-        
+        updateViews()
         loadCategories()
         self.datePicker = UIDatePicker()
         self.categoryPicker = UIPickerView()
@@ -82,7 +82,12 @@ class AddEntryViewController: UIViewController {
         screenTitleLabel.text = "edit entry".uppercased()
         nameTextField.text = expense.name
         amountTextField.text = String(format: "%.2f", expense.amount)
-        categoryTextField.text = expense.parentCategory?.name
+        if let categoryName = expense.parentCategory?.name {
+            categoryTextField.text = categoryName
+        } else {
+            categoryTextField.text = "uncategorized".uppercased()
+        }
+        
     }
     private func setupUIColor() {
         if traitCollection.userInterfaceStyle == .light {
@@ -303,23 +308,23 @@ class AddEntryViewController: UIViewController {
             let amountString = amountTextField.text, let amount = Double(amountString),
             let dateString = dateTextField.text,
             let date = formatter.date(from: dateString) else { return }
-       
-        print(name)
-        print(amount)
-        print(date)
+        
         var image: UIImage? = imageView.image
         if imageView.image == UIImage(named: "addImage") {
             image = nil
         }
-        print(categoryPicker.selectedRow(inComponent: 0))
-        print(categories)
         var category: Category?
         if categoryPicker.selectedRow(inComponent: 0) == 0 {
             category = nil
         } else {
             category = categories[categoryPicker.selectedRow(inComponent: 0) - 1]
         }
-        budgetController.createNewExpense(name: name, amount: amount, date: date, category: category, image: image)
+        if let expense = expense {
+            budgetController.createNewExpense(name: name, amount: amount, date: date, category: category, image: image)
+        } else {
+            
+        }
+        
         NotificationCenter.default.post(name: Notification.Name("changedEntry"), object: nil)
         dismiss(animated: true, completion: nil)
         

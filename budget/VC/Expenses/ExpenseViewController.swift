@@ -237,7 +237,12 @@ extension ExpenseViewController: UITableViewDelegate, UITableViewDataSource {
         }
         let edit = UIContextualAction(style: .normal, title: "edit") { _, _, _ in
             guard let expense = self.fetchedResultsController?.object(at: indexPath) else { return }
-//            self.budgetController.deleteExpense(expense: expense)
+            let addEntryVC = AddEntryViewController()
+            addEntryVC.date = self.date
+            addEntryVC.expense = expense
+            addEntryVC.budgetController = self.budgetController
+            addEntryVC.modalPresentationStyle = .fullScreen
+            self.present(addEntryVC, animated: true)
 //            NotificationCenter.default.post(name: Notification.Name("changedEntry"), object: nil)
         }
         
