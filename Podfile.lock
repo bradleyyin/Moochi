@@ -7,7 +7,7 @@ DEPENDENCIES:
   - SwiftLint
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - ScrollableGraphView
     - SwiftLint
 
@@ -15,6 +15,6 @@ SPEC CHECKSUMS:
   ScrollableGraphView: 4af35d4ea9ecdec665d34a74da51da161ddff8ac
   SwiftLint: fed9c66336e41fc74dc48a73678380718f0c8b0e
 
-PODFILE CHECKSUM: 85d86568aea20c91f49ccd90a440f98d4658ab3f
+PODFILE CHECKSUM: 35446d2289e6da8d9c74b4f492717d7937727ce6
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.8.4
