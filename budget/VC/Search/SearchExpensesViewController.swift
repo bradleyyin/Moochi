@@ -13,6 +13,7 @@ class SearchExpensesViewController: UIViewController {
     var budgetController: BudgetController!
     
     var tableView: UITableView!
+    var searchBar: UISearchBar!
     
      lazy var fetchedResultsController: NSFetchedResultsController<Expense>? = {
         let fetchRequest: NSFetchRequest<Expense> = Expense.fetchRequest()
@@ -34,8 +35,18 @@ class SearchExpensesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
+        configureSearchBar()
         setConstraint()
         // Do any additional setup after loading the view.
+    }
+    
+    private func configureSearchBar() {
+        let searchBar = UISearchBar()
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(searchBar)
+        searchBar.showsCancelButton = true
+        searchBar.delegate = self
+        self.searchBar = searchBar
     }
     
     private func configureTableView() {
@@ -50,7 +61,10 @@ class SearchExpensesViewController: UIViewController {
     }
     
     private func setConstraint() {
-        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
+        tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
@@ -177,5 +191,16 @@ extension SearchExpensesViewController: NSFetchedResultsControllerDelegate {
         default:
             break
         }
+    }
+}
+extension SearchExpensesViewController: UISearchBarDelegate {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        print("change")
+    }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        print("cancel")
+    }
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        print("search")
     }
 }
