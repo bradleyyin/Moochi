@@ -35,8 +35,8 @@ class MainTabBarController: UITabBarController {
         return expenseVC
     }
     
-    private var searchEntriesViewController: SearchEntriesViewController {
-        let searchVC = SearchEntriesViewController()
+    private var searchEntriesViewController: SearchExpensesViewController {
+        let searchVC = SearchExpensesViewController()
         searchVC.budgetController = budgetController
         searchVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "search"), tag: 3)
         return searchVC
