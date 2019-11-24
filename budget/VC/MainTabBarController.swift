@@ -72,7 +72,7 @@ class MainTabBarController: UITabBarController {
         let searchNav = UINavigationController(rootViewController: searchEntriesViewController)
         searchNav.isNavigationBarHidden = true
    
-        self.viewControllers = [mainViewController, detailsNav, expensesNav,searchNav]
+        self.viewControllers = [mainViewController, detailsNav, expensesNav, searchNav]
     }
     
     private func setupAppearance() {

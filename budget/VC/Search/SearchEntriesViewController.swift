@@ -16,7 +16,7 @@ class SearchEntriesViewController: UIViewController {
     
      lazy var fetchedResultsController: NSFetchedResultsController<Category> = {
         let fetchRequest: NSFetchRequest<Category> = Category.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
         
         let moc = CoreDataStack.shared.mainContext
         let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
