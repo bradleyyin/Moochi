@@ -29,6 +29,10 @@ class MonthView: UIView {
         
         //btnLeft.isEnabled=false
     }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setupUIColor()
+    }
     
     @objc func goToNextMonth(){
         currentMonthIndex += 1
