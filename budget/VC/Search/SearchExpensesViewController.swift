@@ -46,6 +46,7 @@ class SearchExpensesViewController: UIViewController {
         self.view.addSubview(searchBar)
         searchBar.showsCancelButton = true
         searchBar.delegate = self
+        searchBar.placeholder = "Enter name of expense"
         self.searchBar = searchBar
     }
     
@@ -83,33 +84,51 @@ class SearchExpensesViewController: UIViewController {
         }
     }
     
-//    private func refreshFRC(keyword: String) {
-//        fetchedResultsController = nil
-//        fetchedResultsController = {
-//            let request: NSFetchRequest<Expense> = Expense.fetchRequest()
-//
-//            guard let date = date as NSDate? else { fatalError("cannot convert date for fetching") }
-//            let predicate = NSPredicate(format: "date == %@", date)
-//            let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-//
-//
-//            request.predicate = predicate
-//            request.sortDescriptors = [sortDescriptor]
-//
-//            let moc = CoreDataStack.shared.mainContext
-//            let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
-//
-//            frc.delegate = self
-//
-//         do {
-//             try frc.performFetch()
-//         } catch {
-//             fatalError("cant fetch expense")
-//         }
-//            return frc
-//        }()
-//
-//    }
+    private func refreshFRC(keyword: String) {
+        fetchedResultsController = nil
+        if keyword == "" {
+            fetchedResultsController = {
+                let fetchRequest: NSFetchRequest<Expense> = Expense.fetchRequest()
+                   fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
+                   
+                   let moc = CoreDataStack.shared.mainContext
+                   let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+                   
+                   frc.delegate = self
+                   
+                do {
+                    try frc.performFetch()
+                } catch {
+                    fatalError("cant fetch category")
+                }
+                   return frc
+            }()
+            return
+        }
+        fetchedResultsController = {
+            let request: NSFetchRequest<Expense> = Expense.fetchRequest()
+
+            let predicate = NSPredicate(format: "name CONTAINS[c] %@", keyword)
+            let sortDescriptor = NSSortDescriptor(key: "date", ascending: true)
+
+
+            request.predicate = predicate
+            request.sortDescriptors = [sortDescriptor]
+
+            let moc = CoreDataStack.shared.mainContext
+            let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+
+            frc.delegate = self
+
+         do {
+             try frc.performFetch()
+         } catch {
+             fatalError("cant fetch expense")
+         }
+            return frc
+        }()
+
+    }
 
 }
 
@@ -194,11 +213,17 @@ extension SearchExpensesViewController: NSFetchedResultsControllerDelegate {
     }
 }
 extension SearchExpensesViewController: UISearchBarDelegate {
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        print("change")
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print(searchText)
+        refreshFRC(keyword: searchText)
+        tableView.reloadData()
     }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         print("cancel")
+        refreshFRC(keyword: "")
+        tableView.reloadData()
+        searchBar.text = ""
+        searchBar.endEditing(true)
     }
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         print("search")
