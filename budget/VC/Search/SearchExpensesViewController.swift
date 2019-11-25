@@ -47,6 +47,8 @@ class SearchExpensesViewController: UIViewController {
         searchBar.showsCancelButton = true
         searchBar.delegate = self
         searchBar.placeholder = "Enter name of expense"
+        searchBar.returnKeyType = .done
+        searchBar.enablesReturnKeyAutomatically = false
         self.searchBar = searchBar
     }
     
@@ -227,5 +229,7 @@ extension SearchExpensesViewController: UISearchBarDelegate {
     }
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         print("search")
+        searchBar.endEditing(true)
     }
+    
 }
