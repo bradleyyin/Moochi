@@ -85,6 +85,14 @@ class SingleExpenseDetailViewController: BasicViewController {
         dateContentLabel.text = formatter.string(from: expense.date ?? Date())
         let categoryText = expense.parentCategory?.name ?? "UNCATEGORIZED"
         categoryContentLabel.text = categoryText.uppercased()
+        loadImage()
+        imageView.image = image
+        if imageView.image == UIImage(named: "addImage") {
+            imageView.contentMode = .center
+        } else {
+            imageView.contentMode = .scaleAspectFill
+            imageView.clipsToBounds = true
+        }
         
     }
     private func configureLabels() {
@@ -134,8 +142,6 @@ class SingleExpenseDetailViewController: BasicViewController {
     }
 
     override func setupUI() {
-        
-        loadImage()
         
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -214,15 +220,6 @@ class SingleExpenseDetailViewController: BasicViewController {
         imageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10 * heightRatio).isActive = true
         
         imageView.isUserInteractionEnabled = true
-        
-        
-        imageView.image = image
-        if imageView.image == UIImage(named: "addImage") {
-            imageView.contentMode = .center
-        } else {
-            imageView.contentMode = .scaleAspectFill
-            imageView.clipsToBounds = true
-        }
         
         imageView.backgroundColor = superLightGray
         

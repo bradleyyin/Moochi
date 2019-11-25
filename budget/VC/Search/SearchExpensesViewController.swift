@@ -17,7 +17,7 @@ class SearchExpensesViewController: UIViewController {
     
      lazy var fetchedResultsController: NSFetchedResultsController<Expense>? = {
         let fetchRequest: NSFetchRequest<Expense> = Expense.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
         
         let moc = CoreDataStack.shared.mainContext
         let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
@@ -91,7 +91,7 @@ class SearchExpensesViewController: UIViewController {
         if keyword == "" {
             fetchedResultsController = {
                 let fetchRequest: NSFetchRequest<Expense> = Expense.fetchRequest()
-                   fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
+                   fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
                    
                    let moc = CoreDataStack.shared.mainContext
                    let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
@@ -111,7 +111,7 @@ class SearchExpensesViewController: UIViewController {
             let request: NSFetchRequest<Expense> = Expense.fetchRequest()
 
             let predicate = NSPredicate(format: "name CONTAINS[c] %@", keyword)
-            let sortDescriptor = NSSortDescriptor(key: "date", ascending: true)
+            let sortDescriptor = NSSortDescriptor(key: "date", ascending: false)
 
 
             request.predicate = predicate
