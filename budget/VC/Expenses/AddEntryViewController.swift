@@ -334,14 +334,15 @@ class AddEntryViewController: UIViewController {
             image = nil
         }
         var category: Category?
-        if categoryPicker.selectedRow(inComponent: 0) == 0 {
-            category = nil
-        } else {
-            category = categories[categoryPicker.selectedRow(inComponent: 0) - 1]
-        }
         if let expense = expense {
+            category = expense.parentCategory
             budgetController.updateExpense(expense: expense, name: name, amount: amount, date: date, category: category, image: image)
         } else {
+            if categoryPicker.selectedRow(inComponent: 0) == 0 {
+                category = nil
+            } else {
+                category = categories[categoryPicker.selectedRow(inComponent: 0) - 1]
+            }
             budgetController.createNewExpense(name: name, amount: amount, date: date, category: category, image: image)
         }
         
