@@ -136,6 +136,8 @@ class DetailsTableViewCell: UITableViewCell {
         
         titleLabel.text = category.name?.uppercased()
         titleLabel.textColor = .black
+        titleLabel.adjustsFontSizeToFitWidth = true
+        titleLabel.minimumScaleFactor = 0.5
         titleLabel.font = UIFont(name: fontName, size: fontSize)
         titleLabel.textAlignment = .left
         
