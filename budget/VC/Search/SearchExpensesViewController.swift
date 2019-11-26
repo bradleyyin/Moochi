@@ -161,6 +161,28 @@ extension SearchExpensesViewController: UITableViewDelegate, UITableViewDataSour
         
     }
     
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+            let delete = UIContextualAction(style: .destructive, title: "delete") { _, _, _ in
+                guard let expense = self.fetchedResultsController?.object(at: indexPath) else { return }
+                self.budgetController.deleteExpense(expense: expense)
+                NotificationCenter.default.post(name: Notification.Name("changedEntry"), object: nil)
+            }
+            let edit = UIContextualAction(style: .normal, title: "edit") { _, _, _ in
+                guard let expense = self.fetchedResultsController?.object(at: indexPath) else { return }
+                let addEntryVC = AddEntryViewController()
+                addEntryVC.expense = expense
+                addEntryVC.date = expense.date
+                addEntryVC.budgetController = self.budgetController
+                addEntryVC.modalPresentationStyle = .fullScreen
+                self.present(addEntryVC, animated: true)
+            }
+            
+            
+            let swipeActions = UISwipeActionsConfiguration(actions: [delete, edit])
+
+            return swipeActions
+        }
+    
     
 }
 

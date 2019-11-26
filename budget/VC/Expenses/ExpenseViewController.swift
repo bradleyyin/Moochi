@@ -243,7 +243,6 @@ extension ExpenseViewController: UITableViewDelegate, UITableViewDataSource {
             addEntryVC.budgetController = self.budgetController
             addEntryVC.modalPresentationStyle = .fullScreen
             self.present(addEntryVC, animated: true)
-//            NotificationCenter.default.post(name: Notification.Name("changedEntry"), object: nil)
         }
         
         
