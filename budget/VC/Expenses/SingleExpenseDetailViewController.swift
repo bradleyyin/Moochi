@@ -37,6 +37,9 @@ class SingleExpenseDetailViewController: BasicViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if expense?.name == nil {
+            self.navigationController?.popViewController(animated: true)
+        }
         updateViews()
     }
     
