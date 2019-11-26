@@ -35,6 +35,13 @@ class MainTabBarController: UITabBarController {
         return expenseVC
     }
     
+    private var searchEntriesViewController: SearchExpensesViewController {
+        let searchVC = SearchExpensesViewController()
+        searchVC.budgetController = budgetController
+        searchVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "search"), tag: 3)
+        return searchVC
+    }
+    
 //    private var receiptAlbumViewController: ReceiptAlbumViewController {
 //        let receiptAlbumVC = ReceiptAlbumViewController()
 //        receiptAlbumVC.budgetController = budgetController
@@ -62,8 +69,10 @@ class MainTabBarController: UITabBarController {
         
         let detailsNav = UINavigationController(rootViewController: detailsViewController)
         detailsNav.isNavigationBarHidden = true
+        let searchNav = UINavigationController(rootViewController: searchEntriesViewController)
+        searchNav.isNavigationBarHidden = true
    
-        self.viewControllers = [mainViewController, detailsNav, expensesNav]
+        self.viewControllers = [mainViewController, detailsNav, expensesNav, searchNav]
     }
     
     private func setupAppearance() {

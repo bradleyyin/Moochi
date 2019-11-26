@@ -79,6 +79,26 @@ extension BudgetController {
             saveToPersistentData()
         }
     }
+    func updateExpense(expense: Expense,
+                       name: String,
+                       amount: Double,
+                       date: Date,
+                       category: Category?,
+                       image: UIImage?,
+                       context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+        var imagePath: String?
+        if let image = image {
+            imagePath = imageSaver.saveImage(image: image)
+        }
+        context.performAndWait {
+            expense.name = name
+            expense.amount = amount
+            expense.date = date
+            expense.parentCategory = category
+            expense.imagePath = imagePath
+            saveToPersistentData()
+        }
+    }
     
     func deleteExpense(expense: Expense, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         context.performAndWait {
@@ -139,6 +159,13 @@ extension BudgetController {
             }
         }
         return categories
+    }
+    func updateCategory(category: Category, name: String, totalAmount: Double, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+        context.performAndWait {
+            category.name = name
+            category.totalAmount = totalAmount
+            saveToPersistentData()
+        }
     }
     
     func deleteCategory(category: Category, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {

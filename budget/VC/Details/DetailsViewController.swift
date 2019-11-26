@@ -188,9 +188,20 @@ extension DetailsViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.reloadData()
         
     }
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-       return .delete
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let delete = UIContextualAction(style: .destructive, title: "delete") { _, _, _ in
+            let category = self.fetchedResultsController.object(at: indexPath)
+            self.budgetController.deleteCategory(category: category)
+        }
+        let edit = UIContextualAction(style: .normal, title: "edit") { _, _, _ in
+            let category = self.fetchedResultsController.object(at: indexPath)
+            self.showEditCategory(for: category)
+        }
+        let swipeActions = UISwipeActionsConfiguration(actions: [delete, edit])
+
+        return swipeActions
     }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70 * heightRatio
     }
@@ -221,7 +232,6 @@ extension DetailsViewController {
     
    @objc func showVC() {
         showAddCategory()
-        
     }
     func showAddCategory() {
         let alertController = UIAlertController(title: "Add a Category", message: nil, preferredStyle: .alert)
@@ -247,7 +257,42 @@ extension DetailsViewController {
             alertController.textFields?[1].text = ""
             self.amountTypedString = ""
         }
-        let cancelAction = UIAlertAction(title: "cancel", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "cancel", style: .cancel, handler: { _ in
+            self.amountTypedString = ""
+        })
+        
+        alertController.addAction(addAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true)
+        
+    }
+    func showEditCategory(for category: Category) {
+        let alertController = UIAlertController(title: "Edit Category", message: nil, preferredStyle: .alert)
+        alertController.addTextField { textField in
+            textField.text = category.name
+        }
+        alertController.addTextField { textField in
+            textField.text = String(format: "%.2f", category.totalAmount)
+            textField.keyboardType = .numberPad
+            textField.delegate = self
+            textField.tag = 1
+            
+        }
+        let addAction = UIAlertAction(title: "Save", style: .default) { _ in
+            guard let categoryName = alertController.textFields?[0].text,
+                !categoryName.isEmpty,
+                let amountString = alertController.textFields?[1].text,
+                let amount = Double(amountString) else { return }
+            
+            
+            self.editCategory(category: category, name: categoryName, amount: amount)
+            alertController.textFields?[1].text = ""
+            self.amountTypedString = ""
+        }
+        let cancelAction = UIAlertAction(title: "cancel", style: .cancel, handler: { _ in
+            self.amountTypedString = ""
+        })
         
         alertController.addAction(addAction)
         alertController.addAction(cancelAction)
@@ -257,6 +302,12 @@ extension DetailsViewController {
     }
     func createCategory(name: String, amount: Double) {
         budgetController.createCategory(name: name, totalAmount: amount)
+        calcRemainingBudget()
+        updateViews()
+        tableView.reloadData()
+    }
+    func editCategory(category: Category, name: String, amount: Double) {
+        budgetController.updateCategory(category: category, name: name, totalAmount: amount)
         calcRemainingBudget()
         updateViews()
         tableView.reloadData()

@@ -25,7 +25,6 @@ class AddEntryViewController: UIViewController {
     var cancelButton: UIButton!
     var checkButton: UIButton!
     var screenTitleLabel: UILabel!
-    var titleOfVC: String = ""
     
     var imagePicker: UIImagePickerController!
     var budgetController: BudgetController!
@@ -33,6 +32,7 @@ class AddEntryViewController: UIViewController {
     var categoryPicker: UIPickerView!
     let formatter = DateFormatter()
     var categories: [Category] = []
+    var expense: Expense?
     
     var categorypickerData: [String] {
         var nameArray: [String] = ["uncategorized"]
@@ -50,10 +50,9 @@ class AddEntryViewController: UIViewController {
     override func viewDidLoad() {
        
         formatter.dateFormat = "MM/dd/yyyy"
-        titleOfVC = "add an entry"
         super.viewDidLoad()
         setupUI()
-        
+        updateViews()
         loadCategories()
         self.datePicker = UIDatePicker()
         self.categoryPicker = UIPickerView()
@@ -74,6 +73,41 @@ class AddEntryViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         setupUIColor()
+    }
+    private func updateViews() {
+        guard let expense = expense else {
+            screenTitleLabel.text = "add an entry".uppercased()
+            return
+        }
+        screenTitleLabel.text = "edit entry".uppercased()
+        nameTextField.text = expense.name
+        amountTextField.text = String(format: "%.2f", expense.amount)
+        if let categoryName = expense.parentCategory?.name {
+            categoryTextField.text = categoryName
+        } else {
+            categoryTextField.text = "uncategorized".uppercased()
+        }
+        loadImage()
+    }
+    func loadImage() {
+        guard let expense = expense else { return }
+        
+        if let filePathComponent = expense.imagePath {
+            print(filePathComponent)
+            let fm = FileManager.default
+            guard let dir = fm.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+            
+            let filePath = dir.appendingPathComponent(filePathComponent).path
+            
+            if FileManager.default.fileExists(atPath: filePath) {
+                
+                imageView.image = UIImage(contentsOfFile: filePath)
+                imageView.contentMode = .scaleAspectFill
+                imageView.clipsToBounds = true
+            }
+        } else {
+            imageView.image = UIImage(named: "addImage")
+        }
     }
     private func setupUIColor() {
         if traitCollection.userInterfaceStyle == .light {
@@ -112,8 +146,6 @@ class AddEntryViewController: UIViewController {
     }
     private func setupUI() {
         let label = TitleLabel()
-                
-        label.text = titleOfVC.uppercased()
         label.textAlignment = .left
         self.view.addSubview(label)
         label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50 * heightRatio - buttonHeight / 2).isActive = true
@@ -253,7 +285,7 @@ class AddEntryViewController: UIViewController {
         imageView.topAnchor.constraint(equalTo: totalStackView.bottomAnchor, constant: 30 * heightRatio).isActive = true
         imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         imageView.widthAnchor.constraint(equalToConstant: 300 * heightRatio).isActive = true
-        imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
+        imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
         
         imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100 * heightRatio).isActive = true
         
@@ -296,23 +328,23 @@ class AddEntryViewController: UIViewController {
             let amountString = amountTextField.text, let amount = Double(amountString),
             let dateString = dateTextField.text,
             let date = formatter.date(from: dateString) else { return }
-       
-        print(name)
-        print(amount)
-        print(date)
+        
         var image: UIImage? = imageView.image
         if imageView.image == UIImage(named: "addImage") {
             image = nil
         }
-        print(categoryPicker.selectedRow(inComponent: 0))
-        print(categories)
-        var category: Category?
-        if categoryPicker.selectedRow(inComponent: 0) == 0 {
+        var category: Category? = expense?.parentCategory
+        if categoryPicker.selectedRow(inComponent: 0) == 0 && category != nil && categoryTextField.text == "UNCATEGORIZED" {
             category = nil
-        } else {
+        } else if categoryPicker.selectedRow(inComponent: 0) != 0 {
             category = categories[categoryPicker.selectedRow(inComponent: 0) - 1]
         }
-        budgetController.createNewExpense(name: name, amount: amount, date: date, category: category, image: image)
+        if let expense = expense {
+            budgetController.updateExpense(expense: expense, name: name, amount: amount, date: date, category: category, image: image)
+        } else {
+            budgetController.createNewExpense(name: name, amount: amount, date: date, category: category, image: image)
+        }
+        
         NotificationCenter.default.post(name: Notification.Name("changedEntry"), object: nil)
         dismiss(animated: true, completion: nil)
         

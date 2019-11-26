@@ -27,7 +27,6 @@ class EditIncomeView: UIView {
     let lblName: UILabel = {
         let lbl = UILabel()
         lbl.text="current income"
-        lbl.textColor = .black
         lbl.textAlignment = .center
         lbl.font = UIFont(name: fontName, size: 30)
         lbl.adjustsFontSizeToFitWidth = true
@@ -38,7 +37,7 @@ class EditIncomeView: UIView {
     
     let cancelButton: UIButton = {
         let btn = UIButton()
-        btn.setImage(UIImage(named: "cancel"), for: .normal)
+        btn.setImage(UIImage(named: "cancel")?.withRenderingMode(.alwaysOriginal), for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(dissmissView), for: .touchUpInside)
         return btn
@@ -47,8 +46,6 @@ class EditIncomeView: UIView {
     let updateButton: UIButton = {
         let btn = UIButton()
         btn.setTitle("Update", for: .normal)
-        btn.setTitleColor(.white, for: .normal)
-        btn.backgroundColor = .black
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(updateIncome), for: .touchUpInside)
         btn.setTitleColor(UIColor.lightGray, for: .disabled)
@@ -59,7 +56,6 @@ class EditIncomeView: UIView {
     let addLabel: UILabel = {
         let label = UILabel()
         label.text = "add"
-        label.textColor = .black
         label.font = UIFont(name: fontName, size: 20)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -72,14 +68,12 @@ class EditIncomeView: UIView {
         textField.text = "0.00"
         textField.font = UIFont(name: fontName, size: 25)
         textField.textAlignment = .center
-        textField.textColor = .black
         return textField
     }()
     
     let subtractLabel: UILabel = {
         let label = UILabel()
         label.text = "subtract"
-        label.textColor = .black
         label.font = UIFont(name: fontName, size: 20)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -92,7 +86,6 @@ class EditIncomeView: UIView {
         textField.text = "0.00"
         textField.textAlignment = .center
         textField.font = UIFont(name: fontName, size: 25)
-        textField.textColor = .black
         return textField
     }()
     let incomeTextField: UITextField = {
@@ -102,7 +95,6 @@ class EditIncomeView: UIView {
         textField.placeholder = "enter income here"
         textField.font = UIFont(name: fontName, size: 25)
         textField.textAlignment = .center
-        textField.textColor = .black
         return textField
     }()
     
@@ -112,6 +104,37 @@ class EditIncomeView: UIView {
         self.backgroundColor = UIColor.white
         self.layer.cornerRadius = 20
         //setupViews()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setupUIColor()
+    }
+    
+    private func setupUIColor() {
+        if self.traitCollection.userInterfaceStyle == .light {
+            self.backgroundColor = .white
+            lblName.textColor = .black
+            cancelButton.tintColor = .black
+            updateButton.setTitleColor(.white, for: .normal)
+            updateButton.backgroundColor = .black
+            addLabel.textColor = .black
+            addTextField.textColor = .black
+            subtractLabel.textColor = .black
+            subtractTextField.textColor = .black
+            incomeTextField.textColor = .black
+        } else {
+            self.backgroundColor = .black
+            lblName.textColor = .white
+            cancelButton.tintColor = .white
+            updateButton.setTitleColor(.black, for: .normal)
+            updateButton.backgroundColor = .lightGray
+            addLabel.textColor = .white
+            addTextField.textColor = .white
+            subtractLabel.textColor = .white
+            subtractTextField.textColor = .white
+            incomeTextField.textColor = .white
+        }
     }
 
     

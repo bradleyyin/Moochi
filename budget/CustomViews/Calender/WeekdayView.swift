@@ -16,6 +16,11 @@ class WeekdaysView: UIView {
         setupViews()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setupUIColor()
+    }
+    
     func setupViews() {
         addSubview(myStackView)
         myStackView.topAnchor.constraint(equalTo: topAnchor).isActive = true
@@ -44,10 +49,11 @@ class WeekdaysView: UIView {
             label.textColor = textColor
         }
     }
+    
     let myStackView: UIStackView = {
-        let stackView=UIStackView()
+        let stackView = UIStackView()
         stackView.distribution = .fillEqually
-        stackView.translatesAutoresizingMaskIntoConstraints=false
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
@@ -55,4 +61,3 @@ class WeekdaysView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 }
-

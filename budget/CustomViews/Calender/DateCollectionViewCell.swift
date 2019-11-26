@@ -25,9 +25,9 @@ class DateCollectionViewCell: UICollectionViewCell {
         } else {
             lbl.textColor = .white
         }
-        if isToday {
-            lbl.textColor = .orange
-        }
+//        if isToday {
+//            lbl.textColor = .lightGray
+//        }
     }
     
     func setupViews() {
