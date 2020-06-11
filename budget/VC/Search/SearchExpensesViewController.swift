@@ -8,12 +8,15 @@
 
 import UIKit
 import CoreData
+import RealmSwift
 
 class SearchExpensesViewController: UIViewController {
     var budgetController: BudgetController!
     
     var tableView: UITableView!
     var searchBar: UISearchBar!
+    
+    let realm = try! Realm()
     
      lazy var fetchedResultsController: NSFetchedResultsController<Expense>? = {
         let fetchRequest: NSFetchRequest<Expense> = Expense.fetchRequest()
@@ -83,6 +86,22 @@ class SearchExpensesViewController: UIViewController {
             self.view.backgroundColor = .white
         } else {
             self.view.backgroundColor = .black
+        }
+    }
+    
+    private func setupBinding() {
+        realm.objects(Expense.self)
+        .sort(byKeyPath: "date", ascending: false)
+        .observe { [weak self] changes in
+            switch changes {
+            case .initial(let messages):
+                // initial collection
+                break
+            case .update(_, let deletions, let insertions, let modifications):
+                break
+            case .error(let error):
+                print(error)
+            }
         }
     }
     

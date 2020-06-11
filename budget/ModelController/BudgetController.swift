@@ -9,19 +9,11 @@
 import Foundation
 import CoreData
 import UIKit
+import RealmSwift
 
 class BudgetController {
     let imageSaver = ImageSaver()
-    
-    func saveToPersistentData(context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
-        context.performAndWait {
-            do {
-                try context.save()
-            } catch {
-                print("error saving to persistent data : \(error)")
-            }
-        }
-    }
+    let realm = try! Realm()
 }
 
 //- MARK: expense
@@ -30,15 +22,19 @@ extension BudgetController {
                           amount: Double,
                           date: Date,
                           category: Category?,
-                          image: UIImage?,
-                          context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+                          image: UIImage?) {
         var imagePath: String?
         if let image = image {
             imagePath = imageSaver.saveImage(image: image)
         }
-        context.performAndWait {
-            Expense(name: name, imagePath: imagePath, date: date, category: category, amount: amount)
-            saveToPersistentData()
+        let expense = Expense()
+        expense.name = name
+        expense.amount = amount
+        expense.date = date
+        expense.parentCategory = category
+        expense.imagePath = imagePath
+        try! realm.write {
+            realm.add(expense)
         }
     }
     
@@ -56,27 +52,19 @@ extension BudgetController {
 //        return expenses
 //    }
     
-    func readMonthlyExpense(context: NSManagedObjectContext = CoreDataStack.shared.mainContext) -> [Expense] {
+    func readMonthlyExpense() -> [Expense] {
         let currentDate = Date()
         let startOfMonth = currentDate.getThisMonthStart()
         let endOfMonth = currentDate.getThisMonthEnd()
         var expenses: [Expense] = []
-        let request: NSFetchRequest<Expense> = Expense.fetchRequest()
-        request.predicate = NSPredicate(format: "(date => %@) AND (date <= %@)", startOfMonth as NSDate, endOfMonth as NSDate)
-        context.performAndWait {
-            do {
-                expenses = try context.fetch(request)
-            } catch {
-                print("error loading income")
-            }
-        }
+        let results = realm.objects(Expense.self).filter("(date => %@) AND (date <= %@)", startOfMonth as NSDate, endOfMonth as NSDate)
+        expenses = Array(results)
         return expenses
     }
     
-    func updateExpense(expense: Expense, imagePath: String, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
-        context.performAndWait {
+    func updateExpense(expense: Expense, imagePath: String) {
+        try! realm.write {
             expense.imagePath = imagePath
-            saveToPersistentData()
         }
     }
     func updateExpense(expense: Expense,
@@ -84,94 +72,79 @@ extension BudgetController {
                        amount: Double,
                        date: Date,
                        category: Category?,
-                       image: UIImage?,
-                       context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+                       image: UIImage?) {
         var imagePath: String?
         if let image = image {
             imagePath = imageSaver.saveImage(image: image)
         }
-        context.performAndWait {
+        try! realm.write {
             expense.name = name
             expense.amount = amount
             expense.date = date
             expense.parentCategory = category
             expense.imagePath = imagePath
-            saveToPersistentData()
         }
     }
     
-    func deleteExpense(expense: Expense, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
-        context.performAndWait {
-            context.delete(expense)
-            saveToPersistentData()
+    func deleteExpense(expense: Expense) {
+        try! realm.write {
+            realm.delete(expense)
         }
     }
 }
+
 //- MARK: income
 extension BudgetController {
-    func createIncome(amount: Double, monthYear: String, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
-        context.performAndWait {
-            Income(monthYear: monthYear, amount: amount)
-            saveToPersistentData()
+    func createIncome(amount: Double, monthYear: String) {
+        let income = Income()
+        income.amount = amount
+        income.monthYear = monthYear
+        try! realm.write {
+            realm.add(income)
         }
     }
     
-    func readIncome(monthYear: String, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) -> Income? {
+    func readIncome(monthYear: String) -> Income? {
         var income: Income?
-        context.performAndWait {
-            let request: NSFetchRequest<Income> = Income.fetchRequest()
-            let predicate = NSPredicate(format: "monthYear == %@", monthYear)
-            request.predicate = predicate
-            
-            do {
-                income = try context.fetch(request).first
-            } catch {
-                fatalError("Error loading income: \(error)")
-            }
-        }
+        income = realm.objects(Income.self).filter("monthYear == %@", monthYear).first
         return income
     }
     
-    func updateIncome(income: Income, amount: Double, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
-        context.performAndWait {
+    func updateIncome(income: Income, amount: Double) {
+        try! realm.write {
             income.amount = amount
-            saveToPersistentData()
         }
     }
 }
 
 //- MARK: category
 extension BudgetController {
-    func createCategory(name: String, totalAmount: Double, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
-        context.performAndWait {
-            Category(name: name, totalAmount: totalAmount)
-            saveToPersistentData()
-        }
-    }
-    func readCategories(context: NSManagedObjectContext = CoreDataStack.shared.mainContext) -> [Category] {
-        var categories: [Category] = []
-        context.performAndWait {
-            let request: NSFetchRequest<Category> = Category.fetchRequest()
-            do {
-                categories = try context.fetch(request)
-            } catch {
-                print("error loading categories: \(error)")
-            }
-        }
-        return categories
-    }
-    func updateCategory(category: Category, name: String, totalAmount: Double, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
-        context.performAndWait {
-            category.name = name
-            category.totalAmount = totalAmount
-            saveToPersistentData()
+    func createCategory(name: String, totalAmount: Double) {
+        let category = Category()
+        category.name = name
+        category.totalAmount = totalAmount
+        try! realm.write {
+            realm.add(category)
         }
     }
     
-    func deleteCategory(category: Category, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
-        context.performAndWait {
-            context.delete(category)
-            saveToPersistentData()
+    func readCategories() -> [Category] {
+        var categories: [Category] = []
+        let results = realm.objects(Category.self)
+        categories = Array(results)
+        return categories
+    }
+    
+    func updateCategory(category: Category, name: String, totalAmount: Double) {
+        try! realm.write {
+            category.name = name
+            category.totalAmount = totalAmount
+        }
+    }
+    
+    func deleteCategory(category: Category) {
+        try! realm.write {
+            realm.delete(category)
         }
     }
 }
