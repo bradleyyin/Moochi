@@ -1,8 +1,14 @@
 PODS:
+  - Realm (4.4.1):
+    - Realm/Headers (= 4.4.1)
+  - Realm/Headers (4.4.1)
+  - RealmSwift (4.4.1):
+    - Realm (= 4.4.1)
   - ScrollableGraphView (4.0.6)
   - SwiftLint (0.33.0)
 
 DEPENDENCIES:
+  - RealmSwift
   - ScrollableGraphView
   - SwiftLint
 
@@ -10,11 +16,16 @@ SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - ScrollableGraphView
     - SwiftLint
+  trunk:
+    - Realm
+    - RealmSwift
 
 SPEC CHECKSUMS:
+  Realm: 4eb04d7487bd43c0581256f40b424eafb711deff
+  RealmSwift: 3eb8924ff7100df5928c7602f71d0fec51e7c9c5
   ScrollableGraphView: 4af35d4ea9ecdec665d34a74da51da161ddff8ac
   SwiftLint: fed9c66336e41fc74dc48a73678380718f0c8b0e
 
-PODFILE CHECKSUM: 35446d2289e6da8d9c74b4f492717d7937727ce6
+PODFILE CHECKSUM: 8f92013aa28b255a12c94857af98ec93d113ce61
 
 COCOAPODS: 1.8.4

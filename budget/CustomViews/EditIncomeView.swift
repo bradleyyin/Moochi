@@ -10,6 +10,12 @@ import UIKit
 protocol EditIncomeDelegate {
     func enterIncome(amount: Double)
     func dismissView()
+    func test()
+}
+extension EditIncomeDelegate {
+    func test() {
+    print("test")
+    }
 }
 
 class EditIncomeView: UIView {

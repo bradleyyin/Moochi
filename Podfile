@@ -8,6 +8,7 @@ target 'budget' do
   # Pods for budget
 pod 'SwiftLint'
 pod 'ScrollableGraphView'
+pod 'RealmSwift'
 
 end
 target 'BudgetTests' do
@@ -17,5 +18,6 @@ target 'BudgetTests' do
   # Pods for budget
 pod 'SwiftLint'
 pod 'ScrollableGraphView'
+pod 'RealmSwift'
 
 end
