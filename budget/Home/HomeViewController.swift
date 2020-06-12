@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  HomeViewController.swift
 //  budget
 //
 //  Created by Bradley Yin on 6/27/19.
@@ -9,7 +9,18 @@
 import UIKit
 import CoreData
 
-class MainViewController: UIViewController {
+protocol HomeViewControllerDelegate: class {
+}
+
+class HomeViewController: UIViewController {
+    typealias Dependency = HasBudgetController
+    let dependency: Dependency
+    
+    weak var delegate: HomeViewControllerDelegate?
+    
+    
+    
+    
     var income: Income?
     var remainFund: Double?
     
@@ -28,7 +39,15 @@ class MainViewController: UIViewController {
     weak var addEntryButton: UIButton!
     weak var backgroundView: UIView!
     
-
+    init(dependency: Dependency) {
+        self.dependency = dependency
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         income = budgetController.readIncome(monthYear: monthCalculator.monthYear)

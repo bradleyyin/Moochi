@@ -11,6 +11,10 @@ import CoreData
 import UIKit
 import RealmSwift
 
+protocol HasBudgetController {
+    var budgetController: BudgetController { get }
+}
+
 class BudgetController {
     let imageSaver = ImageSaver()
     let realm = try! Realm()

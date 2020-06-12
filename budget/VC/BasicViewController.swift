@@ -15,22 +15,9 @@ class BasicViewController: UIViewController {
     var titleOfVC: String = ""
     weak var screenTitleLabel: TitleLabel!
     var budgetController: BudgetController!
-    //auto layout
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
-    }
-    func setupUI() {
-        let label = TitleLabel()
-        
-        label.text = titleOfVC.uppercased()
-        self.view.addSubview(label)
-        label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        label.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        //label.heightAnchor.constraint(equalToConstant: 100 * heightRatio).isActive = true
-        self.screenTitleLabel = label
     }
     
     @objc func backButtonTapped () {
@@ -39,5 +26,4 @@ class BasicViewController: UIViewController {
     @objc func homeButtonTapped() {
         self.navigationController?.popToRootViewController(animated: true)
     }
-
 }
