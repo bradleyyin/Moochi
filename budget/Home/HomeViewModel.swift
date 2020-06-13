@@ -8,6 +8,8 @@
 
 import RxRelay
 import RealmSwift
+import RxRealm
+import RxSwift
 
 final class HomeViewModel: NSObject {
     typealias Dependency = HasBudgetController & HasBudgetCalculator & HasMonthCalculator
@@ -20,17 +22,24 @@ final class HomeViewModel: NSObject {
     init(dependency: Dependency) {
         self.dependency = dependency
         super.init()
-        fetchIncome()
+        fetchAndBindIncome()
         convertDate()
     }
 
     func refresh() {
-        fetchIncome()
+        fetchAndBindIncome()
         convertDate()
+        getRemainingFunds()
     }
     
-    private func fetchIncome() {
-        income.accept(dependency.budgetController.readIncome(monthYear: dependency.monthCalculator.monthYear))
+    private func fetchAndBindIncome() {
+        let realmIncome = dependency.budgetController.readIncome(monthYear: dependency.monthCalculator.monthYear)
+        self.income.accept(realmIncome)
+        if let realmIncome = realmIncome {
+            Observable.from(object: realmIncome).subscribe(onNext: { realmIncome in
+                self.income.accept(realmIncome)
+            })
+        }
     }
     
     private func convertDate() {

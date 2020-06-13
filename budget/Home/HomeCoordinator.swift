@@ -25,5 +25,8 @@ class HomeCoordinator: Coordinator {
         self.dependency = dependency
         super.init(with: presenter)
     }
+}
 
+extension HomeCoordinator: HomeViewControllerDelegate {
+    
 }

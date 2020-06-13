@@ -35,7 +35,7 @@ class ReceiptAlbumViewController : BasicViewController {
         recieptTableView.reloadData()
         
     }
-    override func setupUI() {
+    func setupUI() {
         self.view.backgroundColor = .white
         
         let titleLabel = TitleLabel()
