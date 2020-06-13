@@ -8,6 +8,10 @@
 
 import Foundation
 
+protocol HasBudgetCalculator {
+    var budgetCalculator: BudgetCalculator { get }
+}
+
 class BudgetCalculator {
     func calculateRemainingFunds(income: Income, expenses: [Expense]) -> Double {
         var remain = income.amount

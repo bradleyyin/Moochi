@@ -7,26 +7,18 @@
 //
 
 import UIKit
-import CoreData
+import RxSwift
 
 protocol HomeViewControllerDelegate: class {
 }
 
 class HomeViewController: UIViewController {
-    typealias Dependency = HasBudgetController
+    typealias Dependency = HasBudgetController & HasBudgetCalculator & HasMonthCalculator
     let dependency: Dependency
     
     weak var delegate: HomeViewControllerDelegate?
-    
-    
-    
-    
-    var income: Income?
-    var remainFund: Double?
-    
-    let monthCalculator = MonthCalculator()
-    var budgetController: BudgetController!
-    var budgetCalculator:  BudgetCalculator!
+    private var viewModel: HomeViewModel
+    private var disposeBag = DisposeBag()
     
     var amountTypedString = ""
     
@@ -41,6 +33,7 @@ class HomeViewController: UIViewController {
     
     init(dependency: Dependency) {
         self.dependency = dependency
+        self.viewModel = HomeViewModel(dependency: dependency)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -50,17 +43,10 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        income = budgetController.readIncome(monthYear: monthCalculator.monthYear)
         configureLabels()
         configureMoneyCircle()
         configureButton()
         setupConstraints()
-        
-        //check for file
-        //TODO: remove this later
-        let fm = FileManager.default
-        let filePath = fm.urls(for: .documentDirectory, in: .userDomainMask)
-        print(filePath)
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -158,52 +144,22 @@ class HomeViewController: UIViewController {
         button.addTarget(self, action: #selector(addEntry), for: .touchUpInside)
         self.addEntryButton = button
     }
-    func setupConstraints() {
-        monthLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        monthLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        
-        monthLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
-        
-        dateNumberLabel.topAnchor.constraint(equalTo: monthLabel.bottomAnchor, constant: 20).isActive = true
-        dateNumberLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
-        dotLabel1.topAnchor.constraint(equalTo: dateNumberLabel.bottomAnchor, constant: 10).isActive = true
-        dotLabel1.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
-        dotLabel1.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
-        
-        moneyCircle.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        moneyCircle.heightAnchor.constraint(equalToConstant: 300 * heightRatio).isActive = true
-        moneyCircle.widthAnchor.constraint(equalTo: moneyCircle.heightAnchor).isActive = true
-        moneyCircle.topAnchor.constraint(equalTo: dotLabel1.bottomAnchor, constant: 10).isActive = true
-        
-        dotLabel2.topAnchor.constraint(equalTo: moneyCircle.bottomAnchor, constant: 10).isActive = true
-        dotLabel2.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
-        dotLabel2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
-        
-        addEntryButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        addEntryButton.widthAnchor.constraint(equalToConstant: buttonWidth * heightRatio).isActive = true
-        addEntryButton.heightAnchor.constraint(equalToConstant: buttonHeight * heightRatio).isActive = true
-        addEntryButton.topAnchor.constraint(equalTo: dotLabel2.bottomAnchor).isActive = true
+    private func setupConstraints() {
     }
-    func updateView() {
-        monthLabel.text = monthCalculator.currentMonthString
-        
-        dateNumberLabel.text = String(format: "%02d", monthCalculator.currentDate)
-        
-        if let remain = remainFund {
-            moneyLabel.text = "\(String(format: "%.2f", remain))"
-        } else {
-            moneyLabel.text = "Tap to add income"
-        }
-        
-    }
-    func getRemainingFunds() {
-        guard let income = income else { return }
-        let expenses = budgetController.readMonthlyExpense()
-        remainFund = budgetCalculator.calculateRemainingFunds(income: income, expenses: expenses)
-    }
-
     
+    private func setupBinding() {
+        viewModel.currentMonthString.asObservable().subscribe(onNext: { [weak self] (currentMonth) in
+            guard let self = self else { return }
+            self.monthLabel.text = currentMonth
+        }).disposed(by: disposeBag)
+        
+        viewModel.currentDateString.asObservable().subscribe(onNext: { [weak self] (currentDate) in
+            guard let self = self else { return }
+            self.dateNumberLabel.text = currentMonth
+        }).disposed(by: disposeBag)
+    }
+    
+    //MARK: Action
     @objc func addEntry () {
         let addEntryVC = AddEntryViewController()
         addEntryVC.modalPresentationStyle = .fullScreen
@@ -240,10 +196,15 @@ class HomeViewController: UIViewController {
         }
         backGroundView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(touchToDismiss)))
         backGroundView.gestureRecognizers?[0].delegate = self
-    
     }
+    
+    //MARK: UI
+    private lazy var dateLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
 }
-extension MainViewController: EditIncomeDelegate {
+extension HomeViewController: EditIncomeDelegate {
     func enterIncome(amount: Double) {
         if let income = income {
             let newamount = income.amount + amount
@@ -266,7 +227,7 @@ extension MainViewController: EditIncomeDelegate {
         dismissView()
     }
 }
-extension MainViewController: UIGestureRecognizerDelegate {
+extension HomeViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if touch.view != backgroundView {
             return false

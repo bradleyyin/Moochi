@@ -12,11 +12,9 @@ import RealmSwift
 import RxSwift
 
 struct AppDependency: HasBudgetController {
-    let budgetController: BudgetController
-    
-    init() {
-        self.budgetController = BudgetController()
-    }
+    let budgetController = BudgetController()
+    let monthCalculator = MonthCalculator()
+    let budgetCalculator =  BudgetCalculator()
 }
 
 class AppCoordinator: Coordinator {

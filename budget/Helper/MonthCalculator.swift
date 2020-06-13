@@ -8,8 +8,11 @@
 
 import Foundation
 
+protocol HasMonthCalculator {
+    var monthCalculator: MonthCalculator { get }
+}
+
 class MonthCalculator {
-    
     var monthsArr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     
     var currentMonth: Int {
@@ -38,5 +41,4 @@ class MonthCalculator {
     var currentMonthString: String {
         monthsArr[currentMonth - 1]
     }
-
 }

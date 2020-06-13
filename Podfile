@@ -11,6 +11,7 @@ pod 'ScrollableGraphView'
 pod 'RealmSwift'
 pod 'RxSwift'
 pod 'SnapKit'
+pod 'RxRelay'
 
 end
 target 'BudgetTests' do

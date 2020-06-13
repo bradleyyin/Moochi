@@ -29,6 +29,7 @@
 		75ADCEAE2491F9A600320593 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ADCEAD2491F9A600320593 /* AppCoordinator.swift */; };
 		75ADCEB02491FD9D00320593 /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ADCEAF2491FD9D00320593 /* HomeCoordinator.swift */; };
 		75ADCEB32492035E00320593 /* SharedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ADCEB22492035E00320593 /* SharedUI.swift */; };
+		75ADCEB52493414C00320593 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ADCEB42493414C00320593 /* HomeViewModel.swift */; };
 		75AEC11722E3D7170006A057 /* SharedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC11622E3D7170006A057 /* SharedView.swift */; };
 		75AEC11922E3DC8A0006A057 /* BasicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC11822E3DC8A0006A057 /* BasicViewController.swift */; };
 		75AEC11C22E3E2480006A057 /* MonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC11B22E3E2480006A057 /* MonthView.swift */; };
@@ -100,6 +101,7 @@
 		75ADCEAD2491F9A600320593 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		75ADCEAF2491FD9D00320593 /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
 		75ADCEB22492035E00320593 /* SharedUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedUI.swift; sourceTree = "<group>"; };
+		75ADCEB42493414C00320593 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		75AEC11622E3D7170006A057 /* SharedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedView.swift; sourceTree = "<group>"; };
 		75AEC11822E3DC8A0006A057 /* BasicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicViewController.swift; sourceTree = "<group>"; };
 		75AEC11B22E3E2480006A057 /* MonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthView.swift; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 			isa = PBXGroup;
 			children = (
 				75CD180F22C5DD6800E2FB12 /* HomeViewController.swift */,
+				75ADCEB42493414C00320593 /* HomeViewModel.swift */,
 				75ADCEAF2491FD9D00320593 /* HomeCoordinator.swift */,
 			);
 			path = Home;
@@ -604,6 +607,7 @@
 				75F2FB8223513C9F006007D8 /* Date+Utility.swift in Sources */,
 				75ADCEB32492035E00320593 /* SharedUI.swift in Sources */,
 				75E6F65D23666A8B002F3BF3 /* ChartViewController.swift in Sources */,
+				75ADCEB52493414C00320593 /* HomeViewModel.swift in Sources */,
 				75AEC11722E3D7170006A057 /* SharedView.swift in Sources */,
 				75373B4522ED747600113E81 /* RecietAlbumViewController.swift in Sources */,
 				75373B4722ED792D00113E81 /* ReceiptAlbumTableViewCell.swift in Sources */,

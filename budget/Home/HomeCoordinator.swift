@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class HomeCoordinator: Coordinator {
-    typealias Dependency = HasBudgetController
+    typealias Dependency = HasBudgetController & HasBudgetCalculator & HasMonthCalculator
     let dependency: Dependency
 
     var navigationController: UINavigationController?
