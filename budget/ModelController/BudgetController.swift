@@ -39,6 +39,7 @@ extension BudgetController {
         expense.imagePath = imagePath
         try! realm.write {
             realm.add(expense)
+            category?.expenses.insert(expense)
         }
     }
     
@@ -123,10 +124,11 @@ extension BudgetController {
 
 //- MARK: category
 extension BudgetController {
-    func createCategory(name: String, totalAmount: Double) {
+    func createCategory(name: String, totalAmount: Double, isGoal: Bool) {
         let category = Category()
         category.name = name
         category.totalAmount = totalAmount
+        category.isGoal = isGoal
         try! realm.write {
             realm.add(category)
         }

@@ -50,8 +50,6 @@ class HomeViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        getRemainingFunds()
-        updateView()
     }
     
     override func viewDidLayoutSubviews() {
@@ -78,77 +76,13 @@ class HomeViewController: UIViewController {
             view.backgroundColor = .black
         }
     }
-    private func configureLabels() {
-        let monthLabel = UILabel()
-        self.view.addSubview(monthLabel)
-        monthLabel.mainScreenLabel(fontSize: 100)
-        self.monthLabel = monthLabel
-        
-        let dateNumberLabel = UILabel()
-        self.view.addSubview(dateNumberLabel)
-        dateNumberLabel.mainScreenLabel(fontSize: 50)
-        self.dateNumberLabel = dateNumberLabel
-        
-        let dotLabel1 = UILabel()
-        dotLabel1.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(dotLabel1)
-        dotLabel1.font = dateNumberLabel.font.withSize(50)
-        dotLabel1.text = "•  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •"
-        dotLabel1.lineBreakMode = .byClipping
-        self.dotLabel1 = dotLabel1
-        
-        let dotLabel2 = UILabel()
-        dotLabel2.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(dotLabel2)
-        dotLabel2.font = dateNumberLabel.font.withSize(50)
-        dotLabel2.text = "•  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •  •"
-        dotLabel2.lineBreakMode = .byClipping
-        self.dotLabel2 = dotLabel2
-    }
-    private func configureMoneyCircle() {
-        let moneyCircle = UIView()
-        moneyCircle.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(moneyCircle)
-        moneyCircle.backgroundColor = superLightGray
-        moneyCircle.layer.masksToBounds = true
-        moneyCircle.layer.cornerRadius = 150 * heightRatio
-        moneyCircle.isUserInteractionEnabled = true
-        let tap = UITapGestureRecognizer(target: self, action: #selector(moneyCircleTapped))
-        moneyCircle.addGestureRecognizer(tap)
-        self.moneyCircle = moneyCircle
-        
-        let moneyLabel = UILabel()
-        moneyLabel.translatesAutoresizingMaskIntoConstraints = false
-        moneyCircle.addSubview(moneyLabel)
-        moneyLabel.centerXAnchor.constraint(equalTo: moneyCircle.centerXAnchor).isActive = true
-        moneyLabel.centerYAnchor.constraint(equalTo: moneyCircle.centerYAnchor).isActive = true
-        moneyLabel.widthAnchor.constraint(equalTo: moneyCircle.widthAnchor, multiplier: 0.8).isActive = true
-        moneyLabel.backgroundColor = .clear
-        moneyLabel.textAlignment = .center
-        moneyLabel.textColor = .black
-        moneyLabel.font = moneyLabel.font.withSize(80 * heightRatio)
-        moneyLabel.adjustsFontSizeToFitWidth = true
-        moneyLabel.minimumScaleFactor = 0.3
-        moneyLabel.baselineAdjustment = .alignCenters
-        self.moneyLabel = moneyLabel
-    }
-    
-    private func configureButton() {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(button)
-        button.setTitle("+", for: .normal)
-        button.titleLabel?.font = UIFont(name: fontName, size: 40)
-        button.setTitleColor(.black, for: .normal)
-        button.setTitleColor(superLightGray, for: .highlighted)
-        button.addTarget(self, action: #selector(addEntry), for: .touchUpInside)
-        self.addEntryButton = button
-    }
+
+
     private func setupConstraints() {
     }
     
     private func setupBinding() {
-        viewModel.currentMonthString.asObservable().subscribe(onNext: { [weak self] (currentMonth) in
+        viewModel.currentDate.asObservable().subscribe(onNext: { [weak self] (currentDate) in
             guard let self = self else { return }
             self.monthLabel.text = currentMonth
         }).disposed(by: disposeBag)

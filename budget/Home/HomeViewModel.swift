@@ -18,6 +18,9 @@ final class HomeViewModel: NSObject {
     let income = BehaviorRelay<Income?>(value: nil)
     let remainFund = BehaviorRelay<Double?>(value: nil)
     let currentDate = BehaviorRelay<String?>(value: nil)
+    let categories = BehaviorRelay<[Category]>(value: [])
+    let goals = BehaviorRelay<[Category]>(value: [])
+    let monthlyExpense = BehaviorRelay<[Expense]>(value: [])
     
     init(dependency: Dependency) {
         self.dependency = dependency
@@ -52,5 +55,19 @@ final class HomeViewModel: NSObject {
         guard let income = income.value else { return }
         let expenses = dependency.budgetController.readMonthlyExpense()
         remainFund.accept(dependency.budgetCalculator.calculateRemainingFunds(income: income, expenses: expenses))
+    }
+    
+    private func fetchCategories() {
+        let realmCategories = dependency.budgetController.readCategories()
+        categories.accept(realmCategories.filter{ !$0.isGoal })
+        goals.accept(realmCategories.filter{ $0.isGoal })
+    }
+    
+    private func fetchExpenses() {
+        monthlyExpense.accept(dependency.budgetController.readMonthlyExpense())
+    }
+    
+    func getExpenses(of category: Category) -> [Expense] {
+        return monthlyExpense.value.filter { $0.parentCategory == category }
     }
 }
