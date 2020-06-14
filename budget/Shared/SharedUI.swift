@@ -14,6 +14,5 @@ class SharedUI {
     
     static let horizontalPadding: CGFloat = 8
     
-    static let borderWidth: CGFloat = 0.5
-    
+    static let borderWidth: CGFloat = 2.5
 }

@@ -14,20 +14,19 @@ import RealmSwift
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var appCoordinator: AppCoordinator?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        window = UIWindow(frame: UIScreen.main.bounds)
-        
-        let tabBarController = MainTabBarController()
         setUpDatabase()
+        
+        window = UIWindow(frame: UIScreen.main.bounds)
+        let rootNavigationController = UINavigationController()
+        window?.rootViewController = rootNavigationController
+        window?.makeKeyAndVisible()
         
         let coordinator = AppCoordinator(with: rootNavigationController)
         coordinator.start()
         appCoordinator = coordinator
-      
-        window?.rootViewController = tabBarController
-        window?.makeKeyAndVisible()
-        
         return true
     }
 

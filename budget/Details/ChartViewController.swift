@@ -43,15 +43,15 @@ class ChartViewController: UIViewController {
     private func sortExpenses() {
         var dictionary: [String: Double] = [:]
         for expense in expenses {
-            guard let date = expense.date else { continue }
-            let month = Calendar.current.component(.month, from: date)
-            let year = Calendar.current.component(.year, from: date)
-            let monthYear = "\(year)/\(month)"
-            if dictionary[monthYear] == nil {
-                dictionary[monthYear] = expense.amount
-            } else {
-                dictionary[monthYear]! += expense.amount
-            }
+//            guard let date = expense.date else { continue }
+//            let month = Calendar.current.component(.month, from: date)
+//            let year = Calendar.current.component(.year, from: date)
+//            let monthYear = "\(year)/\(month)"
+//            if dictionary[monthYear] == nil {
+//                dictionary[monthYear] = expense.amount
+//            } else {
+//                dictionary[monthYear]! += expense.amount
+//            }
         }
         expensesDictionary = dictionary
         sortedKey = dictionary.keys.sorted(by: {

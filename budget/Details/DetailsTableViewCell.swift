@@ -21,7 +21,7 @@ class DetailsTableViewCell: UITableViewCell {
         return category.totalAmount
     }
     var categoryRemaining: Double {
-        let context = CoreDataStack.shared.mainContext
+        //let context = CoreDataStack.shared.mainContext
         let currentDate = Date()
         let startOfMonth = currentDate.getThisMonthStart()
         let endOfMonth = currentDate.getThisMonthEnd()
@@ -29,17 +29,17 @@ class DetailsTableViewCell: UITableViewCell {
         var expenses: [Expense] = []
         
         func loadItem() {
-            print("expenses", category?.expenses as? Set<Expense>)
-            let predicate = NSPredicate(format: "parentCategory == %@", (category)!)
-            let predicate2 = NSPredicate(format: "(date => %@) AND (date <= %@)", startOfMonth as NSDate, endOfMonth as NSDate)
-            
-            let request: NSFetchRequest<Expense> = Expense.fetchRequest()
-            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicate2])
-            do {
-                expenses = try context.fetch(request)
-            } catch {
-                print("error loading expenses: \(error)")
-            }
+//            print("expenses", category?.expenses as? Set<Expense>)
+//            let predicate = NSPredicate(format: "parentCategory == %@", (category)!)
+//            let predicate2 = NSPredicate(format: "(date => %@) AND (date <= %@)", startOfMonth as NSDate, endOfMonth as NSDate)
+//
+//            let request: NSFetchRequest<Expense> = Expense.fetchRequest()
+//            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicate2])
+//            do {
+//                expenses = try context.fetch(request)
+//            } catch {
+//                print("error loading expenses: \(error)")
+//            }
         }
         loadItem()
         //print(expenses)
@@ -134,7 +134,7 @@ class DetailsTableViewCell: UITableViewCell {
         guard let category = category else { return }
         print(categoryTotal, categoryRemaining)
         
-        titleLabel.text = category.name?.uppercased()
+        //titleLabel.text = category.name?.uppercased()
         titleLabel.textColor = .black
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.minimumScaleFactor = 0.5

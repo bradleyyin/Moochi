@@ -37,7 +37,7 @@ class AddEntryViewController: UIViewController {
     var categorypickerData: [String] {
         var nameArray: [String] = ["uncategorized"]
         for category in categories {
-            nameArray.append(category.name!)
+            nameArray.append(category.name)
         }
         return nameArray
     }

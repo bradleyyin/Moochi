@@ -208,8 +208,8 @@ class TabBarController: UITabBarController {
         return button
     }()
 
-    private lazy var homeImage: UIImage =
-        UIImage(named: "eos_tab_home")!
+    private lazy var homeImage: UIImage? =
+        UIImage(named: "eos_tab_home")
 
     private lazy var homeImageView: UIImageView = {
         let view = UIImageView()
@@ -226,8 +226,8 @@ class TabBarController: UITabBarController {
         return button
     }()
 
-    private lazy var detailsImage: UIImage =
-        UIImage(named: "eos_tab_your_studio")!
+    private lazy var detailsImage: UIImage? =
+        UIImage(named: "eos_tab_your_studio")
 
     private lazy var detailsImageView: UIImageView = {
         let view = UIImageView()
@@ -244,8 +244,8 @@ class TabBarController: UITabBarController {
         return button
     }()
 
-    private lazy var addImage: UIImage =
-        UIImage(named: "eos_tab_your_studio")!
+    private lazy var addImage: UIImage? =
+        UIImage(named: "eos_tab_your_studio")
 
     private lazy var addImageView: UIImageView = {
         let view = UIImageView()
@@ -262,8 +262,8 @@ class TabBarController: UITabBarController {
         return button
     }()
 
-    private lazy var calendarImage: UIImage =
-        UIImage(named: "eos_tab_your_studio")!
+    private lazy var calendarImage: UIImage? =
+        UIImage(named: "eos_tab_your_studio")
 
     private lazy var calendarImageView: UIImageView = {
         let view = UIImageView()
@@ -281,8 +281,8 @@ class TabBarController: UITabBarController {
         return button
     }()
 
-    private lazy var goalImage: UIImage =
-        UIImage(named: "eos_tab_settings")!
+    private lazy var goalImage: UIImage? =
+        UIImage(named: "eos_tab_settings")
 
     private lazy var goalImageView: UIImageView = {
         let view = UIImageView()

@@ -12,6 +12,6 @@ import RealmSwift
 class Category: Object {
     @objc dynamic var name = ""
     @objc dynamic var totalAmount: Double = 0.0
-    @objc dynamic var expenses: Set<Expense> = []
+    let expenses = List<Expense>()
     @objc dynamic var isGoal: Bool = false
 }

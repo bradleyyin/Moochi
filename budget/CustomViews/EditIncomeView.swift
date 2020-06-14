@@ -20,7 +20,7 @@ extension EditIncomeDelegate {
 
 class EditIncomeView: UIView {
     var delegate: EditIncomeDelegate?
-    var parenController: MainViewController?
+    var parenController: HomeViewController?
     var hasIncome = false {
         didSet{
             setupViews()

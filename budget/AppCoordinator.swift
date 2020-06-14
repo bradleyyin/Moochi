@@ -11,7 +11,7 @@ import UIKit
 import RealmSwift
 import RxSwift
 
-struct AppDependency: HasBudgetController {
+struct AppDependency: HasBudgetController, HasBudgetCalculator, HasMonthCalculator {
     let budgetController = BudgetController()
     let monthCalculator = MonthCalculator()
     let budgetCalculator =  BudgetCalculator()

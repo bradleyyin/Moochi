@@ -39,7 +39,7 @@ extension BudgetController {
         expense.imagePath = imagePath
         try! realm.write {
             realm.add(expense)
-            category?.expenses.insert(expense)
+            category?.expenses.append(expense)
         }
     }
     
