@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import SnapKit
 
 protocol HomeViewControllerDelegate: class {
 }
@@ -35,6 +36,13 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .red
+        view.addSubview(dateLabel)
+        view.addSubview(remainingBalanceLabel)
+        view.addSubview(remainingBalanceNumberLabel)
+        view.addSubview(tabView)
+        view.addSubview(tableView)
+        view.addSubview(dateLabel)
         setupConstraints()
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -68,7 +76,20 @@ class HomeViewController: UIViewController {
 
 
     private func setupConstraints() {
+        dateLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(top).inset(SharedUI.verticalPadding * 3)
+            make.centerX.equalToSuperview()
+        }
         
+        remainingBalanceLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(dateLabel.snp.bottom).offset(SharedUI.verticalPadding * 5)
+            make.centerX.equalToSuperview()
+        }
+        
+        remainingBalanceNumberLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(remainingBalanceLabel.snp.bottom).offset(SharedUI.verticalPadding * 2)
+            make.centerX.equalToSuperview()
+        }
     }
     
     private func setupBinding() {
@@ -120,16 +141,21 @@ class HomeViewController: UIViewController {
     //MARK: UI
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
+        label.font = FontPalette.font(size: 30, fontType: .regular)
         return label
     }()
     
     private lazy var remainingBalanceLabel: UILabel = {
         let label = UILabel()
+        label.font = FontPalette.font(size: 14, fontType: .regular)
+        label.text = "Remaining Balance"
+        label.backgroundColor = .blue
         return label
     }()
     
     private lazy var remainingBalanceNumberLabel: UILabel = {
         let label = UILabel()
+        label.font = FontPalette.font(size: 40, fontType: .regular)
         return label
     }()
     

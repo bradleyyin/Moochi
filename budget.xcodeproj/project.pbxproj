@@ -31,6 +31,12 @@
 		75ADCEB32492035E00320593 /* SharedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ADCEB22492035E00320593 /* SharedUI.swift */; };
 		75ADCEB52493414C00320593 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ADCEB42493414C00320593 /* HomeViewModel.swift */; };
 		75ADCEB92495C27D00320593 /* TabHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ADCEB82495C27D00320593 /* TabHeaderView.swift */; };
+		75ADCEC02495F41000320593 /* FontPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ADCEBF2495F41000320593 /* FontPalette.swift */; };
+		75ADCEC32495F47A00320593 /* Montserrat-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 75ADCEC22495F47A00320593 /* Montserrat-Medium.otf */; };
+		75ADCEC42495F48300320593 /* Montserrat-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 75ADCEC12495F46200320593 /* Montserrat-LightItalic.otf */; };
+		75ADCEC62495F49400320593 /* Montserrat-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 75ADCEC52495F49400320593 /* Montserrat-Regular.otf */; };
+		75ADCEC82495F4A000320593 /* Montserrat-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 75ADCEC72495F4A000320593 /* Montserrat-SemiBold.otf */; };
+		75ADCECA2495F96D00320593 /* UIViewController+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ADCEC92495F96D00320593 /* UIViewController+extension.swift */; };
 		75AEC11722E3D7170006A057 /* SharedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC11622E3D7170006A057 /* SharedView.swift */; };
 		75AEC11922E3DC8A0006A057 /* BasicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC11822E3DC8A0006A057 /* BasicViewController.swift */; };
 		75AEC11C22E3E2480006A057 /* MonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AEC11B22E3E2480006A057 /* MonthView.swift */; };
@@ -104,6 +110,12 @@
 		75ADCEB22492035E00320593 /* SharedUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedUI.swift; sourceTree = "<group>"; };
 		75ADCEB42493414C00320593 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		75ADCEB82495C27D00320593 /* TabHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabHeaderView.swift; sourceTree = "<group>"; };
+		75ADCEBF2495F41000320593 /* FontPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontPalette.swift; sourceTree = "<group>"; };
+		75ADCEC12495F46200320593 /* Montserrat-LightItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-LightItalic.otf"; sourceTree = "<group>"; };
+		75ADCEC22495F47A00320593 /* Montserrat-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.otf"; sourceTree = "<group>"; };
+		75ADCEC52495F49400320593 /* Montserrat-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.otf"; sourceTree = "<group>"; };
+		75ADCEC72495F4A000320593 /* Montserrat-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.otf"; sourceTree = "<group>"; };
+		75ADCEC92495F96D00320593 /* UIViewController+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+extension.swift"; sourceTree = "<group>"; };
 		75AEC11622E3D7170006A057 /* SharedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedView.swift; sourceTree = "<group>"; };
 		75AEC11822E3DC8A0006A057 /* BasicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicViewController.swift; sourceTree = "<group>"; };
 		75AEC11B22E3E2480006A057 /* MonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthView.swift; sourceTree = "<group>"; };
@@ -206,6 +218,10 @@
 		755FFBE82345BC790085C5E5 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				75ADCEC72495F4A000320593 /* Montserrat-SemiBold.otf */,
+				75ADCEC52495F49400320593 /* Montserrat-Regular.otf */,
+				75ADCEC12495F46200320593 /* Montserrat-LightItalic.otf */,
+				75ADCEC22495F47A00320593 /* Montserrat-Medium.otf */,
 				75CD181422C5DD6B00E2FB12 /* Assets.xcassets */,
 				75CD181622C5DD6B00E2FB12 /* LaunchScreen.storyboard */,
 				754248BC234949A0004B6ECF /* Info.plist */,
@@ -249,6 +265,8 @@
 			children = (
 				75ADCEB22492035E00320593 /* SharedUI.swift */,
 				75ADCEB82495C27D00320593 /* TabHeaderView.swift */,
+				75ADCEBF2495F41000320593 /* FontPalette.swift */,
+				75ADCEC92495F96D00320593 /* UIViewController+extension.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -500,8 +518,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				7550A3FD23493FA40063FE3E /* .swiftlint.yml in Resources */,
+				75ADCEC82495F4A000320593 /* Montserrat-SemiBold.otf in Resources */,
+				75ADCEC42495F48300320593 /* Montserrat-LightItalic.otf in Resources */,
+				75ADCEC32495F47A00320593 /* Montserrat-Medium.otf in Resources */,
 				75CD181822C5DD6B00E2FB12 /* LaunchScreen.storyboard in Resources */,
 				7550A3FA23493D730063FE3E /* .gitignore in Resources */,
+				75ADCEC62495F49400320593 /* Montserrat-Regular.otf in Resources */,
 				75CD181522C5DD6B00E2FB12 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -621,6 +643,7 @@
 			files = (
 				75B4D3BA22E9854E00438A7A /* ExpenseTableViewCell.swift in Sources */,
 				75373B4922ED842000113E81 /* ReceiptCollectionViewCell.swift in Sources */,
+				75ADCECA2495F96D00320593 /* UIViewController+extension.swift in Sources */,
 				75AEC11C22E3E2480006A057 /* MonthView.swift in Sources */,
 				7514AEE8238B366000D9D436 /* SearchExpensesViewController.swift in Sources */,
 				75CD181022C5DD6800E2FB12 /* HomeViewController.swift in Sources */,
@@ -651,6 +674,7 @@
 				754248BF234A8A55004B6ECF /* MonthCalculator.swift in Sources */,
 				75E0BD6222CDBCC000FE0F6C /* GlobalStuffs.swift in Sources */,
 				75ADCEA52491DBDF00320593 /* Income.swift in Sources */,
+				75ADCEC02495F41000320593 /* FontPalette.swift in Sources */,
 				75E0BD6422CDC63500FE0F6C /* DetailsViewController.swift in Sources */,
 				75AEC12422E446600006A057 /* SegueDirection.swift in Sources */,
 				756A644023700E19000BCBF3 /* UIImage+Scaling.swift in Sources */,

@@ -62,7 +62,7 @@ class AppCoordinator: Coordinator {
                 
                 homeCoordinator = home
 
-                let tabBar = TabBarController(viewControllers: [home.homeViewController])
+                let tabBar = TabBarController(viewControllers: [home.homeViewController, home.homeViewController, home.homeViewController, home.homeViewController, home.homeViewController])
                 tabBar.actionDelegate = self
                 tabBarController = tabBar
 

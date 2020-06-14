@@ -11,6 +11,7 @@ import UIKit
 
 class HomeCoordinator: Coordinator {
     typealias Dependency = HasBudgetController & HasBudgetCalculator & HasMonthCalculator
+    
     let dependency: Dependency
 
     var navigationController: UINavigationController?
