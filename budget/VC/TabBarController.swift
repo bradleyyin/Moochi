@@ -144,30 +144,32 @@ class TabBarController: UITabBarController {
 
     //MARK: Actions
     @objc func tabButtonTapped(sender: UIButton) {
+        print(sender.tag)
         didSelect(index: sender.tag, isCurrentTab: self.selectedIndex == sender.tag)
         self.selectedIndex = sender.tag
     }
 
     private func didSelect(index: Int, isCurrentTab: Bool) {
+        print(index)
         if let tab = TabItem(rawValue: index) {
             //reset
-            homeImageView.image = homeImage
-            detailsImageView.image = detailsImage
-            addImageView.image = addImage
-            calendarImageView.image = calendarImage
-            goalImageView.image = goalImage
+            homeImageView.image = unselectedHomeImage
+            detailsImageView.image = unselectedDetailsImage
+            addImageView.image = unselectedAddImage
+            calendarImageView.image = unselectedCalendarImage
+            goalImageView.image = unselectedGoalImage
             
             switch tab {
             case .home:
-                homeImageView.image = homeImage
+                homeImageView.image = selectedHomeImage
             case .details:
-                detailsImageView.image = detailsImage
+                detailsImageView.image = selectedDetailsImage
             case .add:
-                addImageView.image = addImage
+                addImageView.image = selectedAddImage
             case .calendar:
-                calendarImageView.image = calendarImage
+                calendarImageView.image = selectedCalendarImage
             case .goal:
-                goalImageView.image = goalImage
+                goalImageView.image = selectedGoalImage
             }
 
             actionDelegate?.didTapTab(item: tab, isCurrentTab: isCurrentTab)
@@ -208,13 +210,16 @@ class TabBarController: UITabBarController {
         return button
     }()
 
-    private lazy var homeImage: UIImage? =
-        UIImage(named: "eos_tab_home")
+    private lazy var unselectedHomeImage: UIImage? =
+        UIImage(named: "unselected_home")
+    
+    private lazy var selectedHomeImage: UIImage? =
+    UIImage(named: "selected_home")
 
     private lazy var homeImageView: UIImageView = {
         let view = UIImageView()
         view.isUserInteractionEnabled = true
-        view.image = homeImage
+        view.image = unselectedHomeImage
         view.contentMode = .scaleAspectFit
         return view
     }()
@@ -226,13 +231,16 @@ class TabBarController: UITabBarController {
         return button
     }()
 
-    private lazy var detailsImage: UIImage? =
-        UIImage(named: "eos_tab_your_studio")
+    private lazy var unselectedDetailsImage: UIImage? =
+        UIImage(named: "unselected_details")
+    
+    private lazy var selectedDetailsImage: UIImage? =
+    UIImage(named: "selected_details")
 
     private lazy var detailsImageView: UIImageView = {
         let view = UIImageView()
         view.isUserInteractionEnabled = true
-        view.image = detailsImage
+        view.image = unselectedDetailsImage
         view.contentMode = .scaleAspectFit
         return view
     }()
@@ -244,13 +252,16 @@ class TabBarController: UITabBarController {
         return button
     }()
 
-    private lazy var addImage: UIImage? =
-        UIImage(named: "eos_tab_your_studio")
+    private lazy var unselectedAddImage: UIImage? =
+        UIImage(named: "unselected_add")
+    
+    private lazy var selectedAddImage: UIImage? =
+    UIImage(named: "selected_add")
 
     private lazy var addImageView: UIImageView = {
         let view = UIImageView()
         view.isUserInteractionEnabled = true
-        view.image = addImage
+        view.image = unselectedAddImage
         view.contentMode = .scaleAspectFit
         return view
     }()
@@ -262,17 +273,19 @@ class TabBarController: UITabBarController {
         return button
     }()
 
-    private lazy var calendarImage: UIImage? =
-        UIImage(named: "eos_tab_your_studio")
+    private lazy var unselectedCalendarImage: UIImage? =
+        UIImage(named: "unselected_calendar")
+    
+    private lazy var selectedCalendarImage: UIImage? =
+    UIImage(named: "selected_calendar")
 
     private lazy var calendarImageView: UIImageView = {
         let view = UIImageView()
         view.isUserInteractionEnabled = true
-        view.image = calendarImage
+        view.image = unselectedCalendarImage
         view.contentMode = .scaleAspectFit
         return view
     }()
-
 
     private lazy var goalButton: UIButton = {
         let button = UIButton()
@@ -281,13 +294,16 @@ class TabBarController: UITabBarController {
         return button
     }()
 
-    private lazy var goalImage: UIImage? =
-        UIImage(named: "eos_tab_settings")
+    private lazy var unselectedGoalImage: UIImage? =
+        UIImage(named: "unselected_goal")
+    
+    private lazy var selectedGoalImage: UIImage? =
+    UIImage(named: "selected_goal")
 
     private lazy var goalImageView: UIImageView = {
         let view = UIImageView()
         view.isUserInteractionEnabled = true
-        view.image = goalImage
+        view.image = unselectedGoalImage
         view.contentMode = .scaleAspectFit
         return view
     }()

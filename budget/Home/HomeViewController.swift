@@ -14,6 +14,7 @@ protocol HomeViewControllerDelegate: class {
 
 class HomeViewController: UIViewController {
     typealias Dependency = HasBudgetController & HasBudgetCalculator & HasMonthCalculator
+    
     let dependency: Dependency
     
     weak var delegate: HomeViewControllerDelegate?
@@ -71,7 +72,7 @@ class HomeViewController: UIViewController {
     }
     
     private func setupBinding() {
-        viewModel.currentDate.asObservable().subscribe(onNext: { [weak self] (currentDate) in
+        viewModel.currentDate.asObservable().subscribe(onNext: { [weak self] currentDate in
             guard let self = self else { return }
             self.dateLabel.text = currentDate
         }).disposed(by: disposeBag)
