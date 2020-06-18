@@ -27,6 +27,7 @@ final class HomeViewModel: NSObject {
         super.init()
         fetchAndBindIncome()
         convertDate()
+        getRemainingFunds()
     }
 
     func refresh() {
@@ -41,6 +42,7 @@ final class HomeViewModel: NSObject {
         if let realmIncome = realmIncome {
             Observable.from(object: realmIncome).subscribe(onNext: { realmIncome in
                 self.income.accept(realmIncome)
+                self.getRemainingFunds()
             })
         }
     }
@@ -59,8 +61,8 @@ final class HomeViewModel: NSObject {
     
     private func fetchCategories() {
         let realmCategories = dependency.budgetController.readCategories()
-        categories.accept(realmCategories.filter{ !$0.isGoal })
-        goals.accept(realmCategories.filter{ $0.isGoal })
+        categories.accept(realmCategories.filter { !$0.isGoal })
+        goals.accept(realmCategories.filter { $0.isGoal })
     }
     
     private func fetchExpenses() {

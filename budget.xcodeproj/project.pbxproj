@@ -266,7 +266,6 @@
 				75ADCEB22492035E00320593 /* SharedUI.swift */,
 				75ADCEB82495C27D00320593 /* TabHeaderView.swift */,
 				75ADCEBF2495F41000320593 /* FontPalette.swift */,
-				75ADCEC92495F96D00320593 /* UIViewController+extension.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -418,6 +417,7 @@
 		75F2FB8023513C72006007D8 /* extension */ = {
 			isa = PBXGroup;
 			children = (
+				75ADCEC92495F96D00320593 /* UIViewController+extension.swift */,
 				756A643F23700E19000BCBF3 /* UIImage+Scaling.swift */,
 				75F2FB8123513C9F006007D8 /* Date+Utility.swift */,
 			);

@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import SnapKit
 
 extension UIViewController {
-    var top: CGFloat {
-        return view.safeAreaInsets.top
+    var top: ConstraintItem {
+        return view.safeAreaLayoutGuide.snp.top
     }
     
-    var bottom: CGFloat {
-        return view.safeAreaInsets.bottom
+    var bottom: ConstraintItem {
+        return view.safeAreaLayoutGuide.snp.bottom
     }
 }

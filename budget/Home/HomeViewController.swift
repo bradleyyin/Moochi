@@ -36,14 +36,14 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
+        view.backgroundColor = .white
         view.addSubview(dateLabel)
         view.addSubview(remainingBalanceLabel)
         view.addSubview(remainingBalanceNumberLabel)
         view.addSubview(tabView)
         view.addSubview(tableView)
-        view.addSubview(dateLabel)
         setupConstraints()
+        setupBinding()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -88,7 +88,7 @@ class HomeViewController: UIViewController {
         
         remainingBalanceNumberLabel.snp.makeConstraints { (make) in
             make.top.equalTo(remainingBalanceLabel.snp.bottom).offset(SharedUI.verticalPadding * 2)
-            make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(SharedUI.horizontalPadding * 12)
         }
     }
     
@@ -97,15 +97,27 @@ class HomeViewController: UIViewController {
             guard let self = self else { return }
             self.dateLabel.text = currentDate
         }).disposed(by: disposeBag)
+        
+        viewModel.remainFund.asObservable().subscribe(onNext: { [weak self] remainFund in
+            guard let self = self else { return }
+            if let remainFund = remainFund {
+                self.remainingBalanceLabel.text = "Remaining Balanc"
+                self.remainingBalanceNumberLabel.text = "$\(remainFund)"
+                self.remainingBalanceNumberLabel.isHidden = false
+            } else {
+                self.remainingBalanceLabel.text = "Tap to add income"
+                self.remainingBalanceNumberLabel.isHidden = true
+            }
+        }).disposed(by: disposeBag)
     }
     
     //MARK: Action
-//    @objc func addEntry () {
-//        let addEntryVC = AddEntryViewController()
-//        addEntryVC.modalPresentationStyle = .fullScreen
-//        addEntryVC.budgetController = budgetController
-//        self.present(addEntryVC, animated: true)
-//    }
+    @objc func addEntry () {
+        let addEntryVC = AddEntryViewController()
+        addEntryVC.modalPresentationStyle = .fullScreen
+        addEntryVC.budgetController = budgetController
+        self.present(addEntryVC, animated: true)
+    }
     
 //    @objc func moneyCircleTapped() {
 //        let backGroundView = UIView()
@@ -148,8 +160,8 @@ class HomeViewController: UIViewController {
     private lazy var remainingBalanceLabel: UILabel = {
         let label = UILabel()
         label.font = FontPalette.font(size: 14, fontType: .regular)
+        label.textColor = UIColor.black.withAlphaComponent(0.5)
         label.text = "Remaining Balance"
-        label.backgroundColor = .blue
         return label
     }()
     
