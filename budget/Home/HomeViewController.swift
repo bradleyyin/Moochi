@@ -103,21 +103,20 @@ class HomeViewController: UIViewController {
             if let remainFund = remainFund {
                 self.remainingBalanceLabel.text = "Remaining Balanc"
                 self.remainingBalanceNumberLabel.text = "$\(remainFund)"
-                self.remainingBalanceNumberLabel.isHidden = false
             } else {
                 self.remainingBalanceLabel.text = "Tap to add income"
-                self.remainingBalanceNumberLabel.isHidden = true
+                self.remainingBalanceNumberLabel.text = "$0.00"
             }
         }).disposed(by: disposeBag)
     }
     
     //MARK: Action
-    @objc func addEntry () {
-        let addEntryVC = AddEntryViewController()
-        addEntryVC.modalPresentationStyle = .fullScreen
-        addEntryVC.budgetController = budgetController
-        self.present(addEntryVC, animated: true)
-    }
+//    @objc func addEntry () {
+//        let addEntryVC = AddEntryViewController()
+//        addEntryVC.modalPresentationStyle = .fullScreen
+//        addEntryVC.budgetController = budgetController
+//        self.present(addEntryVC, animated: true)
+//    }
     
 //    @objc func moneyCircleTapped() {
 //        let backGroundView = UIView()

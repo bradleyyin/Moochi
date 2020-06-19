@@ -13,8 +13,8 @@ protocol HasBudgetCalculator {
 }
 
 class BudgetCalculator {
-    func calculateRemainingFunds(income: Income, expenses: [Expense]) -> Double {
-        var remain = income.amount
+    func calculateRemainingFunds(totalIncome: Double, expenses: [Expense]) -> Double {
+        var remain = totalIncome
         for expense in expenses{
             remain -= expense.amount
         }

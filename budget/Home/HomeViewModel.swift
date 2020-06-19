@@ -15,7 +15,7 @@ final class HomeViewModel: NSObject {
     typealias Dependency = HasBudgetController & HasBudgetCalculator & HasMonthCalculator
     private let dependency: Dependency
 
-    let income = BehaviorRelay<Income?>(value: nil)
+    let income = BehaviorRelay<Double?>(value: nil)
     let remainFund = BehaviorRelay<Double?>(value: nil)
     let currentDate = BehaviorRelay<String?>(value: nil)
     let categories = BehaviorRelay<[Category]>(value: [])
@@ -25,26 +25,21 @@ final class HomeViewModel: NSObject {
     init(dependency: Dependency) {
         self.dependency = dependency
         super.init()
-        fetchAndBindIncome()
+        fetchIncomes()
         convertDate()
         getRemainingFunds()
     }
 
     func refresh() {
-        fetchAndBindIncome()
+        fetchIncomes()
         convertDate()
         getRemainingFunds()
     }
     
-    private func fetchAndBindIncome() {
-        let realmIncome = dependency.budgetController.readIncome(monthYear: dependency.monthCalculator.monthYear)
-        self.income.accept(realmIncome)
-        if let realmIncome = realmIncome {
-            Observable.from(object: realmIncome).subscribe(onNext: { realmIncome in
-                self.income.accept(realmIncome)
-                self.getRemainingFunds()
-            })
-        }
+    private func fetchIncomes() {
+        let realmIncomes = dependency.budgetController.readMonthlyIncomes().map { $0.amount }
+        let totalIncome = realmIncomes.reduce(0, +)
+        self.income.accept(totalIncome)
     }
     
     private func convertDate() {
@@ -56,7 +51,7 @@ final class HomeViewModel: NSObject {
     private func getRemainingFunds() {
         guard let income = income.value else { return }
         let expenses = dependency.budgetController.readMonthlyExpense()
-        remainFund.accept(dependency.budgetCalculator.calculateRemainingFunds(income: income, expenses: expenses))
+        remainFund.accept(dependency.budgetCalculator.calculateRemainingFunds(totalIncome: income, expenses: expenses))
     }
     
     private func fetchCategories() {

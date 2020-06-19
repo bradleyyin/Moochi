@@ -10,6 +10,6 @@ import Foundation
 import RealmSwift
 
 class Income: Object {
-    @objc dynamic var monthYear = ""
+    @objc dynamic var date: Date = Date()
     @objc dynamic var amount: Double = 0
 }

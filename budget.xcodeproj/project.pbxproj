@@ -61,6 +61,7 @@
 		75E0BD6422CDC63500FE0F6C /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0BD6322CDC63500FE0F6C /* DetailsViewController.swift */; };
 		75E0BD6722CDD1BA00FE0F6C /* DetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0BD6622CDD1BA00FE0F6C /* DetailsTableViewCell.swift */; };
 		75E6F65D23666A8B002F3BF3 /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E6F65C23666A8B002F3BF3 /* ChartViewController.swift */; };
+		75F227E9249B2CAD000F21A0 /* IncomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F227E8249B2CAD000F21A0 /* IncomeViewModel.swift */; };
 		75F2FB7F235138B9006007D8 /* DateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F2FB7E235138B9006007D8 /* DateCollectionViewCell.swift */; };
 		75F2FB8223513C9F006007D8 /* Date+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F2FB8123513C9F006007D8 /* Date+Utility.swift */; };
 		75F2FB842352E296006007D8 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F2FB832352E296006007D8 /* TabBarController.swift */; };
@@ -141,6 +142,7 @@
 		75E0BD6322CDC63500FE0F6C /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		75E0BD6622CDD1BA00FE0F6C /* DetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsTableViewCell.swift; sourceTree = "<group>"; };
 		75E6F65C23666A8B002F3BF3 /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
+		75F227E8249B2CAD000F21A0 /* IncomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeViewModel.swift; sourceTree = "<group>"; };
 		75F2FB7E235138B9006007D8 /* DateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCollectionViewCell.swift; sourceTree = "<group>"; };
 		75F2FB8123513C9F006007D8 /* Date+Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Utility.swift"; sourceTree = "<group>"; };
 		75F2FB832352E296006007D8 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -256,6 +258,7 @@
 				75CD180F22C5DD6800E2FB12 /* HomeViewController.swift */,
 				75ADCEB42493414C00320593 /* HomeViewModel.swift */,
 				75ADCEAF2491FD9D00320593 /* HomeCoordinator.swift */,
+				75F227E8249B2CAD000F21A0 /* IncomeViewModel.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -284,6 +287,8 @@
 		75ADCEBB2495CAC300320593 /* Add */ = {
 			isa = PBXGroup;
 			children = (
+				75AEC12A22E577590006A057 /* AddEntryViewController.swift */,
+				75BB936F22EAC77E002C57AF /* AddEntryTableViewCell.swift */,
 			);
 			path = Add;
 			sourceTree = "<group>";
@@ -352,8 +357,6 @@
 				75AEC12122E413290006A057 /* ExpenseViewController.swift */,
 				75AEC12822E54F1B0006A057 /* SingleDayViewController.swift */,
 				75B4D3B922E9854E00438A7A /* ExpenseTableViewCell.swift */,
-				75AEC12A22E577590006A057 /* AddEntryViewController.swift */,
-				75BB936F22EAC77E002C57AF /* AddEntryTableViewCell.swift */,
 				75373B3F22ECF70500113E81 /* SingleExpenseDetailViewController.swift */,
 			);
 			path = Expenses;
@@ -680,6 +683,7 @@
 				756A644023700E19000BCBF3 /* UIImage+Scaling.swift in Sources */,
 				75AEC12B22E577590006A057 /* AddEntryViewController.swift in Sources */,
 				75ADCEAC2491F91E00320593 /* Coordinator.swift in Sources */,
+				75F227E9249B2CAD000F21A0 /* IncomeViewModel.swift in Sources */,
 				75C2BF80236819050028720B /* ChartTableViewCell.swift in Sources */,
 				755FFBE12345AA4D0085C5E5 /* BudgetController.swift in Sources */,
 				75ADCEB92495C27D00320593 /* TabHeaderView.swift in Sources */,

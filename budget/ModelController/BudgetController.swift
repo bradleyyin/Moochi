@@ -100,25 +100,23 @@ extension BudgetController {
 
 //- MARK: income
 extension BudgetController {
-    func createIncome(amount: Double, monthYear: String) {
+    func createIncome(amount: Double, date: Date) {
         let income = Income()
         income.amount = amount
-        income.monthYear = monthYear
+        income.date = date
         try! realm.write {
             realm.add(income)
         }
     }
     
-    func readIncome(monthYear: String) -> Income? {
-        var income: Income?
-        income = realm.objects(Income.self).filter("monthYear == %@", monthYear).first
-        return income
-    }
-    
-    func updateIncome(income: Income, amount: Double) {
-        try! realm.write {
-            income.amount = amount
-        }
+    func readMonthlyIncomes() -> [Income] {
+        let currentDate = Date()
+        let startOfMonth = currentDate.getThisMonthStart()
+        let endOfMonth = currentDate.getThisMonthEnd()
+        var incomes: [Income] = []
+        let results = realm.objects(Income.self).filter("(date => %@) AND (date <= %@)", startOfMonth as NSDate, endOfMonth as NSDate)
+        incomes = Array(results)
+        return incomes
     }
 }
 
