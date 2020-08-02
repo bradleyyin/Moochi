@@ -9,6 +9,10 @@ target 'budget' do
 pod 'SwiftLint'
 pod 'ScrollableGraphView'
 pod 'RealmSwift'
+pod 'RxSwift'
+pod 'SnapKit'
+pod 'RxRelay'
+pod 'RxRealm'
 
 end
 target 'BudgetTests' do

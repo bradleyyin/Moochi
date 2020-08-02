@@ -11,7 +11,7 @@ import CoreData
 
 //TODO: use FRC
 
-class ExpenseViewController: BasicViewController, CalendarDelegate {
+class ExpenseViewController: UIViewController, CalendarDelegate {
     let calendarView: CalendarView = {
         let v = CalendarView()
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -23,37 +23,36 @@ class ExpenseViewController: BasicViewController, CalendarDelegate {
     //var expenses: [Expense] = []
     var date: Date?
     
-    lazy var fetchedResultsController: NSFetchedResultsController<Expense>? = {
-        let request: NSFetchRequest<Expense> = Expense.fetchRequest()
-        
-        guard let date = date as NSDate? else { fatalError("cannot convert date for fetching") }
-        let predicate = NSPredicate(format: "date == %@", date)
-        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-        
-
-        request.predicate = predicate
-        request.sortDescriptors = [sortDescriptor]
-        
-        let moc = CoreDataStack.shared.mainContext
-        let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
-        
-        frc.delegate = self
-        
-     do {
-         try frc.performFetch()
-     } catch {
-         fatalError("cant fetch expense")
-     }
-        return frc
-    }()
+//    lazy var fetchedResultsController: NSFetchedResultsController<Expense>? = {
+//        let request: NSFetchRequest<Expense> = Expense.fetchRequest()
+//
+//        guard let date = date as NSDate? else { fatalError("cannot convert date for fetching") }
+//        let predicate = NSPredicate(format: "date == %@", date)
+//        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+//
+//
+//        request.predicate = predicate
+//        request.sortDescriptors = [sortDescriptor]
+//
+//        let moc = CoreDataStack.shared.mainContext
+//        let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+//
+//        frc.delegate = self
+//
+//     do {
+//         try frc.performFetch()
+//     } catch {
+//         fatalError("cant fetch expense")
+//     }
+//        return frc
+//    }()
     
     override func viewDidLoad() {
-        titleOfVC = "expenses"
         super.viewDidLoad()
         configureTableView()
         configureCalendarView()
         configureButtons()
-        setupConstraints()
+        //setupConstraints()
         goToToday()
     }
     private func configureCalendarView() {
@@ -94,12 +93,12 @@ class ExpenseViewController: BasicViewController, CalendarDelegate {
     }
     private func setupUIColor() {
         if traitCollection.userInterfaceStyle == .light {
-            screenTitleLabel.textColor = .black
+            //screenTitleLabel.textColor = .black
             self.view.backgroundColor = .white
             addEntryButton.setTitleColor(.black, for: .normal)
             todayButton.setTitleColor(.black, for: .normal)
         } else {
-            screenTitleLabel.textColor = .white
+            //screenTitleLabel.textColor = .white
             self.view.backgroundColor = .black
             addEntryButton.setTitleColor(.white, for: .normal)
             todayButton.setTitleColor(.white, for: .normal)
@@ -112,27 +111,6 @@ class ExpenseViewController: BasicViewController, CalendarDelegate {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         setupUIColor()
-    }
-    private func setupConstraints() {
-        addEntryButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        addEntryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12).isActive = true
-        addEntryButton.widthAnchor.constraint(equalToConstant: buttonWidth * heightRatio).isActive = true
-        addEntryButton.heightAnchor.constraint(equalToConstant: buttonHeight * heightRatio).isActive = true
-        
-        
-        todayButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12).isActive = true
-        todayButton.topAnchor.constraint(equalTo: screenTitleLabel.topAnchor).isActive = true
-        todayButton.widthAnchor.constraint(equalToConstant: 60 * heightRatio).isActive = true
-        todayButton.heightAnchor.constraint(equalToConstant: 40 * heightRatio).isActive = true
-        
-        calendarView.topAnchor.constraint(equalTo: screenTitleLabel.bottomAnchor, constant: 10 * heightRatio).isActive = true
-        calendarView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -12).isActive = true
-        calendarView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 12).isActive = true
-        
-        tableView.topAnchor.constraint(equalTo: calendarView.bottomAnchor).isActive = true
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     private func updateViews() {
         let dateFormatter = DateFormatter()
@@ -162,36 +140,36 @@ class ExpenseViewController: BasicViewController, CalendarDelegate {
         tableView.reloadData()
     }
     private func refreshFRC() {
-        fetchedResultsController = nil
-        fetchedResultsController = {
-            let request: NSFetchRequest<Expense> = Expense.fetchRequest()
-            
-            guard let date = date as NSDate? else { fatalError("cannot convert date for fetching") }
-            let predicate = NSPredicate(format: "date == %@", date)
-            let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-            
-
-            request.predicate = predicate
-            request.sortDescriptors = [sortDescriptor]
-            
-            let moc = CoreDataStack.shared.mainContext
-            let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
-            
-            frc.delegate = self
-            
-         do {
-             try frc.performFetch()
-         } catch {
-             fatalError("cant fetch expense")
-         }
-            return frc
-        }()
+        //fetchedResultsController = nil
+//        fetchedResultsController = {
+//            let request: NSFetchRequest<Expense> = Expense.fetchRequest()
+//            
+//            guard let date = date as NSDate? else { fatalError("cannot convert date for fetching") }
+//            let predicate = NSPredicate(format: "date == %@", date)
+//            let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+//            
+//
+//            request.predicate = predicate
+//            request.sortDescriptors = [sortDescriptor]
+//            
+//            let moc = CoreDataStack.shared.mainContext
+//            let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+//            
+//            frc.delegate = self
+//            
+//         do {
+//             try frc.performFetch()
+//         } catch {
+//             fatalError("cant fetch expense")
+//         }
+//            return frc
+//        }()
         
     }
     @objc func showVC() {
         let addEntryVC = AddEntryViewController()
         addEntryVC.date = date
-        addEntryVC.budgetController = budgetController
+        //addEntryVC.budgetController = budgetController
         addEntryVC.modalPresentationStyle = .fullScreen
         present(addEntryVC, animated: true)
     }
@@ -199,7 +177,7 @@ class ExpenseViewController: BasicViewController, CalendarDelegate {
 
 extension ExpenseViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultsController?.fetchedObjects?.count ?? 0
+        return 1
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -211,7 +189,7 @@ extension ExpenseViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExpenseCell", for: indexPath) as? ExpenseTableViewCell else {
             fatalError("cant make ExpenseTableViewCell")
         }
-        cell.expense = fetchedResultsController?.object(at: indexPath)
+        //cell.expense = fetchedResultsController?.object(at: indexPath)
         
         return cell
        
@@ -221,8 +199,8 @@ extension ExpenseViewController: UITableViewDelegate, UITableViewDataSource {
         
         if indexPath.section == 0 {
             let singleDayDetailVC = SingleExpenseDetailViewController()
-            singleDayDetailVC.expense = fetchedResultsController?.object(at: indexPath)
-            singleDayDetailVC.budgetController = budgetController
+            //singleDayDetailVC.expense = fetchedResultsController?.object(at: indexPath)
+            //singleDayDetailVC.budgetController = budgetController
             tableView.deselectRow(at: indexPath, animated: false)
             navigationController?.pushViewController(singleDayDetailVC, animated: true)
         }
@@ -231,18 +209,18 @@ extension ExpenseViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let delete = UIContextualAction(style: .destructive, title: "delete") { _, _, _ in
-            guard let expense = self.fetchedResultsController?.object(at: indexPath) else { return }
-            self.budgetController.deleteExpense(expense: expense)
-            NotificationCenter.default.post(name: Notification.Name("changedEntry"), object: nil)
+//            guard let expense = self.fetchedResultsController?.object(at: indexPath) else { return }
+//            self.budgetController.deleteExpense(expense: expense)
+//            NotificationCenter.default.post(name: Notification.Name("changedEntry"), object: nil)
         }
         let edit = UIContextualAction(style: .normal, title: "edit") { _, _, _ in
-            guard let expense = self.fetchedResultsController?.object(at: indexPath) else { return }
-            let addEntryVC = AddEntryViewController()
-            addEntryVC.date = self.date
-            addEntryVC.expense = expense
-            addEntryVC.budgetController = self.budgetController
-            addEntryVC.modalPresentationStyle = .fullScreen
-            self.present(addEntryVC, animated: true)
+//            guard let expense = self.fetchedResultsController?.object(at: indexPath) else { return }
+//            let addEntryVC = AddEntryViewController()
+//            addEntryVC.date = self.date
+//            addEntryVC.expense = expense
+//            addEntryVC.budgetController = self.budgetController
+//            addEntryVC.modalPresentationStyle = .fullScreen
+//            self.present(addEntryVC, animated: true)
         }
         
         

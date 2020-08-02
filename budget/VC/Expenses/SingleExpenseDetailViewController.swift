@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class SingleExpenseDetailViewController: BasicViewController {
+class SingleExpenseDetailViewController: UIViewController {
     var imageView: UIImageView!
     var nameLabel: UILabel!
     var nameContentLabel: UILabel!
@@ -144,136 +144,44 @@ class SingleExpenseDetailViewController: BasicViewController {
         self.categoryContentLabel = categoryContentLabel
     }
 
-    override func setupUI() {
-        
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(button)
-        button.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
-        button.widthAnchor.constraint(equalToConstant: buttonWidth * heightRatio).isActive = true
-        button.heightAnchor.constraint(equalToConstant: buttonHeight * heightRatio).isActive = true
-        button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20 * heightRatio - buttonHeight / 2).isActive = true
-        button.setImage(UIImage(named: "back")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        button.setTitleColor(superLightGray, for: .highlighted)
-        button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-        self.backButton = button
-        
-        let button2 = UIButton()
-        button2.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(button2)
-        button2.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
-        button2.widthAnchor.constraint(equalToConstant: buttonWidth * heightRatio).isActive = true
-        button2.heightAnchor.constraint(equalToConstant: buttonHeight * heightRatio).isActive = true
-        button2.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20 * heightRatio - buttonHeight / 2).isActive = true
-        button2.setTitle("Edit", for: .normal)
-        button2.setTitleColor(superLightGray, for: .highlighted)
-        button2.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
-        self.editButton = button2
-        
-        let nameStackView = UIStackView(arrangedSubviews: [nameLabel, nameContentLabel])
-        nameStackView.axis = .horizontal
-        nameStackView.distribution = .fillEqually
-        nameStackView.alignment = .fill
-        nameStackView.spacing = 16
-        
-        let amountStackView = UIStackView(arrangedSubviews: [amountLabel, amountContentLabel])
-        amountStackView.axis = .horizontal
-        amountStackView.distribution = .fillEqually
-        amountStackView.alignment = .fill
-        amountStackView.spacing = 16.0
-        
-        let dateStackView = UIStackView(arrangedSubviews: [dateLabel, dateContentLabel])
-        dateStackView.axis = .horizontal
-        dateStackView.distribution = .fillEqually
-        dateStackView.alignment = .fill
-        dateStackView.spacing = 16.0
-        
-        let categoryStackView = UIStackView(arrangedSubviews: [categoryLabel, categoryContentLabel])
-        categoryStackView.axis = .horizontal
-        categoryStackView.distribution = .fillEqually
-        categoryStackView.alignment = .fill
-        categoryStackView.spacing = 16.0
-        
-        let totalStackView = UIStackView(arrangedSubviews: [nameStackView, amountStackView, dateStackView, categoryStackView])
-        totalStackView.axis = .vertical
-        totalStackView.distribution = .fillEqually
-        totalStackView.alignment = .fill
-        totalStackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        //amountContentLabel.leadingAnchor.constraint(equalTo: categoryContentLabel.leadingAnchor).isActive = true
-        //nameContentLabel.leadingAnchor.constraint(equalTo: categoryContentLabel.leadingAnchor).isActive = true
-        //dateContentLabel.leadingAnchor.constraint(equalTo: categoryContentLabel.leadingAnchor).isActive = true
-        
-        self.view.addSubview(totalStackView)
-        
-        totalStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        totalStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        
-        totalStackView.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 0).isActive = true
-        
-        
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(imageView)
-        imageView.topAnchor.constraint(equalTo: totalStackView.bottomAnchor, constant: 30 * heightRatio).isActive = true
-        imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: 300 * heightRatio).isActive = true
-        imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
-        
-        imageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10 * heightRatio).isActive = true
-        
-        imageView.isUserInteractionEnabled = true
-        
-        imageView.backgroundColor = superLightGray
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
-        imageView.addGestureRecognizer(tapGesture)
-        
-        self.imageView = imageView
-        
-        
-        let swipeFromLeftGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(swipeFromLeftEdge))
-        swipeFromLeftGesture.edges = .left
-        self.view.addGestureRecognizer(swipeFromLeftGesture)
-    }
     @objc func editButtonTapped() {
-        guard let expense = expense else { return }
-        let addEntryVC = AddEntryViewController()
-        addEntryVC.date = expense.date
-        addEntryVC.expense = expense
-        addEntryVC.budgetController = budgetController
-        addEntryVC.modalPresentationStyle = .fullScreen
-        present(addEntryVC, animated: true)
-//        if editButton.titleLabel?.text == "Edit" {
-//            editButton.setTitle("Done", for: .normal)
-//        } else {
-//            editButton.setTitle("Edit", for: .normal)
-//        }
+//        guard let expense = expense else { return }
+//        let addEntryVC = AddEntryViewController()
+//        addEntryVC.date = expense.date
+//        addEntryVC.expense = expense
+//        addEntryVC.budgetController = budgetController
+//        addEntryVC.modalPresentationStyle = .fullScreen
+//        present(addEntryVC, animated: true)
+////        if editButton.titleLabel?.text == "Edit" {
+////            editButton.setTitle("Done", for: .normal)
+////        } else {
+////            editButton.setTitle("Edit", for: .normal)
+////        }
     }
     
     @objc func imageTapped() {
-        if imageView.image == UIImage(named: "addImage") {
-            let alertController = UIAlertController(title: "select source", message: nil, preferredStyle: .actionSheet)
-            
-            let choseCam = UIAlertAction(title: "Camera", style: .default) { _ in
-                self.imagePicker.sourceType = .camera
-                self.present(self.imagePicker, animated: true)
-            }
-            let choseLibrary = UIAlertAction(title: "Photo", style: .default) { _ in
-                self.imagePicker.sourceType = .photoLibrary
-                self.present(self.imagePicker, animated: true)
-            }
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            alertController.addAction(choseCam)
-            alertController.addAction(choseLibrary)
-            alertController.addAction(cancelAction)
-            self.present(alertController, animated: true)
-            
-        } else {
-            let recieptVC = ReceiptViewController()
-            recieptVC.image = imageView.image
-            present(recieptVC, animated: true)
-        }
+//        if imageView.image == UIImage(named: "addImage") {
+//            let alertController = UIAlertController(title: "select source", message: nil, preferredStyle: .actionSheet)
+//
+//            let choseCam = UIAlertAction(title: "Camera", style: .default) { _ in
+//                self.imagePicker.sourceType = .camera
+//                self.present(self.imagePicker, animated: true)
+//            }
+//            let choseLibrary = UIAlertAction(title: "Photo", style: .default) { _ in
+//                self.imagePicker.sourceType = .photoLibrary
+//                self.present(self.imagePicker, animated: true)
+//            }
+//            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+//            alertController.addAction(choseCam)
+//            alertController.addAction(choseLibrary)
+//            alertController.addAction(cancelAction)
+//            self.present(alertController, animated: true)
+//
+//        } else {
+//            let recieptVC = ReceiptViewController()
+//            recieptVC.image = imageView.image
+//            present(recieptVC, animated: true)
+//        }
     }
     func loadImage() {
         guard let expense = expense else { return }
@@ -296,7 +204,7 @@ class SingleExpenseDetailViewController: BasicViewController {
         
     }
     @objc func swipeFromLeftEdge() {
-        backButtonTapped()
+        //backButtonTapped()
     }
 
 }
@@ -305,20 +213,20 @@ extension SingleExpenseDetailViewController: UIImagePickerControllerDelegate, UI
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
-    func imagePickerController(_ picker: UIImagePickerController,
-                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        if let userPickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage,
-            let expense = expense,
-            let imagePath = budgetController.imageSaver.saveImage(image: userPickedImage) {
-            imageView.image = userPickedImage
-            imageView.contentMode = .scaleAspectFill
-            imageView.clipsToBounds = true
-            
-            budgetController.updateExpense(expense: expense, imagePath: imagePath)
-            
-            imagePicker.dismiss(animated: true, completion: nil)
-        }
-    }
+//    func imagePickerController(_ picker: UIImagePickerController,
+//                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+//        if let userPickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage,
+//            let expense = expense,
+//            let imagePath = budgetController.imageSaver.saveImage(image: userPickedImage) {
+//            imageView.image = userPickedImage
+//            imageView.contentMode = .scaleAspectFill
+//            imageView.clipsToBounds = true
+//
+//            budgetController.updateExpense(expense: expense, imagePath: imagePath)
+//
+//            imagePicker.dismiss(animated: true, completion: nil)
+//        }
+//    }
 }
 extension UILabel {
     func setUpLabelForSingleDayDetailVC() {
