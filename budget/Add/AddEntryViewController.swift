@@ -31,16 +31,8 @@ class AddEntryViewController: UIViewController {
     var datePicker: UIDatePicker!
     var categoryPicker: UIPickerView!
     let formatter = DateFormatter()
-    var categories: [Category] = []
     var expense: Expense?
-    
-    var categorypickerData: [String] {
-        var nameArray: [String] = ["uncategorized"]
-        for category in categories {
-            nameArray.append(category.name)
-        }
-        return nameArray
-    }
+
     var selectedCategory: String = "uncategorized"
     
     var date: Date?
@@ -300,7 +292,7 @@ class AddEntryViewController: UIViewController {
         self.imageView = imageView
     }
     private func loadCategories() {
-        categories = budgetController.readCategories()
+        //categories = budgetController.readCategories()
     }
     @objc func imageTapped() {
         let alertController = UIAlertController(title: "select source", message: nil, preferredStyle: .actionSheet)
@@ -337,7 +329,7 @@ class AddEntryViewController: UIViewController {
         if categoryPicker.selectedRow(inComponent: 0) == 0 && category != nil && categoryTextField.text == "UNCATEGORIZED" {
             category = nil
         } else if categoryPicker.selectedRow(inComponent: 0) != 0 {
-            category = categories[categoryPicker.selectedRow(inComponent: 0) - 1]
+            //category = categories[categoryPicker.selectedRow(inComponent: 0) - 1]
         }
         if let expense = expense {
             budgetController.updateExpense(expense: expense, name: name, amount: amount, date: date, category: category, image: image)
@@ -493,22 +485,30 @@ extension AddEntryViewController: UITextFieldDelegate {
 
 
 extension AddEntryViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        1
+    }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return categorypickerData.count
-    }
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
+        1
     }
     
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return categorypickerData[row].uppercased()
-    }
-    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-        return 200
-    }
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        selectedCategory = categorypickerData[row]
-    }
+    
+//    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+//        return categorypickerData.count
+//    }
+//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+//        return 1
+//    }
+//
+//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+//        return categorypickerData[row].uppercased()
+//    }
+//    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+//        return 200
+//    }
+//    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+//        selectedCategory = categorypickerData[row]
+//    }
     
 }

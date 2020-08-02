@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		3E7565EB3EE97495293EAEC0 /* Pods_budget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E7129ADDBEE30393855BB67 /* Pods_budget.framework */; };
 		7514AEE8238B366000D9D436 /* SearchExpensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7514AEE7238B366000D9D436 /* SearchExpensesViewController.swift */; };
+		751DE0BB24D628D500AD04C9 /* SliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751DE0BA24D628D500AD04C9 /* SliderView.swift */; };
+		751DE0BD24D6833600AD04C9 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751DE0BC24D6833600AD04C9 /* CategoryCell.swift */; };
 		75373B4022ECF70500113E81 /* SingleExpenseDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75373B3F22ECF70500113E81 /* SingleExpenseDetailViewController.swift */; };
 		75373B4222ED144500113E81 /* ReceiptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75373B4122ED144500113E81 /* ReceiptViewController.swift */; };
 		75373B4522ED747600113E81 /* RecietAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75373B4422ED747600113E81 /* RecietAlbumViewController.swift */; };
@@ -62,6 +64,7 @@
 		75E0BD6722CDD1BA00FE0F6C /* DetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0BD6622CDD1BA00FE0F6C /* DetailsTableViewCell.swift */; };
 		75E6F65D23666A8B002F3BF3 /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E6F65C23666A8B002F3BF3 /* ChartViewController.swift */; };
 		75F227E9249B2CAD000F21A0 /* IncomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F227E8249B2CAD000F21A0 /* IncomeViewModel.swift */; };
+		75F227EB249D4EE8000F21A0 /* AddEntryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F227EA249D4EE8000F21A0 /* AddEntryViewModel.swift */; };
 		75F2FB7F235138B9006007D8 /* DateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F2FB7E235138B9006007D8 /* DateCollectionViewCell.swift */; };
 		75F2FB8223513C9F006007D8 /* Date+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F2FB8123513C9F006007D8 /* Date+Utility.swift */; };
 		75F2FB842352E296006007D8 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F2FB832352E296006007D8 /* TabBarController.swift */; };
@@ -85,6 +88,8 @@
 		4EE3F533650DB3661115FAAA /* Pods-BudgetTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BudgetTests.debug.xcconfig"; path = "Target Support Files/Pods-BudgetTests/Pods-BudgetTests.debug.xcconfig"; sourceTree = "<group>"; };
 		559E746410EB15F9655A2C81 /* Pods-budget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-budget.debug.xcconfig"; path = "Target Support Files/Pods-budget/Pods-budget.debug.xcconfig"; sourceTree = "<group>"; };
 		7514AEE7238B366000D9D436 /* SearchExpensesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchExpensesViewController.swift; sourceTree = "<group>"; };
+		751DE0BA24D628D500AD04C9 /* SliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderView.swift; sourceTree = "<group>"; };
+		751DE0BC24D6833600AD04C9 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		75373B3F22ECF70500113E81 /* SingleExpenseDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleExpenseDetailViewController.swift; sourceTree = "<group>"; };
 		75373B4122ED144500113E81 /* ReceiptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptViewController.swift; sourceTree = "<group>"; };
 		75373B4422ED747600113E81 /* RecietAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecietAlbumViewController.swift; sourceTree = "<group>"; };
@@ -143,6 +148,7 @@
 		75E0BD6622CDD1BA00FE0F6C /* DetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsTableViewCell.swift; sourceTree = "<group>"; };
 		75E6F65C23666A8B002F3BF3 /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
 		75F227E8249B2CAD000F21A0 /* IncomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeViewModel.swift; sourceTree = "<group>"; };
+		75F227EA249D4EE8000F21A0 /* AddEntryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEntryViewModel.swift; sourceTree = "<group>"; };
 		75F2FB7E235138B9006007D8 /* DateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCollectionViewCell.swift; sourceTree = "<group>"; };
 		75F2FB8123513C9F006007D8 /* Date+Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Utility.swift"; sourceTree = "<group>"; };
 		75F2FB832352E296006007D8 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -266,9 +272,12 @@
 		75ADCEB12492034E00320593 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				75AEC11422E3D6010006A057 /* CustomViews */,
 				75ADCEB22492035E00320593 /* SharedUI.swift */,
+				751DE0BC24D6833600AD04C9 /* CategoryCell.swift */,
 				75ADCEB82495C27D00320593 /* TabHeaderView.swift */,
 				75ADCEBF2495F41000320593 /* FontPalette.swift */,
+				751DE0BA24D628D500AD04C9 /* SliderView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -289,6 +298,7 @@
 			children = (
 				75AEC12A22E577590006A057 /* AddEntryViewController.swift */,
 				75BB936F22EAC77E002C57AF /* AddEntryTableViewCell.swift */,
+				75F227EA249D4EE8000F21A0 /* AddEntryViewModel.swift */,
 			);
 			path = Add;
 			sourceTree = "<group>";
@@ -397,7 +407,6 @@
 				75ADCEAA2491F4D500320593 /* Home */,
 				755FFBDF2345AA360085C5E5 /* ModelController */,
 				75AEC11522E3D6110006A057 /* Model */,
-				75AEC11422E3D6010006A057 /* CustomViews */,
 				75E0BD6522CDC63D00FE0F6C /* VC */,
 				755FFBE92345BCAE0085C5E5 /* Helper */,
 				755FFBE82345BC790085C5E5 /* Resource */,
@@ -661,6 +670,7 @@
 				75F2FB842352E296006007D8 /* TabBarController.swift in Sources */,
 				75E0BD6022CDB91600FE0F6C /* MenuTableViewCell.swift in Sources */,
 				75BB937022EAC77E002C57AF /* AddEntryTableViewCell.swift in Sources */,
+				751DE0BD24D6833600AD04C9 /* CategoryCell.swift in Sources */,
 				75ADCEAE2491F9A600320593 /* AppCoordinator.swift in Sources */,
 				75373B4222ED144500113E81 /* ReceiptViewController.swift in Sources */,
 				75AEC12222E413290006A057 /* ExpenseViewController.swift in Sources */,
@@ -668,10 +678,12 @@
 				75F2FB8223513C9F006007D8 /* Date+Utility.swift in Sources */,
 				75ADCEB32492035E00320593 /* SharedUI.swift in Sources */,
 				75E6F65D23666A8B002F3BF3 /* ChartViewController.swift in Sources */,
+				75F227EB249D4EE8000F21A0 /* AddEntryViewModel.swift in Sources */,
 				75ADCEB52493414C00320593 /* HomeViewModel.swift in Sources */,
 				75AEC11722E3D7170006A057 /* SharedView.swift in Sources */,
 				75373B4522ED747600113E81 /* RecietAlbumViewController.swift in Sources */,
 				75373B4722ED792D00113E81 /* ReceiptAlbumTableViewCell.swift in Sources */,
+				751DE0BB24D628D500AD04C9 /* SliderView.swift in Sources */,
 				75CD180E22C5DD6800E2FB12 /* AppDelegate.swift in Sources */,
 				75ADCEA72491DE3400320593 /* Expense.swift in Sources */,
 				754248BF234A8A55004B6ECF /* MonthCalculator.swift in Sources */,

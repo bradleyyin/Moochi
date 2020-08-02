@@ -106,7 +106,7 @@ class TabHeaderView: UIView {
         view.backgroundColor = .white
         view.axis = .horizontal
         view.alignment = .bottom
-        view.distribution = .fillEqually
+        view.distribution = .fillProportionally
         return view
     }()
 }
@@ -125,7 +125,7 @@ class TabPageTitleView: UIView {
             case .center:
                 titleLabel.textAlignment = .center
                 titleLabel.snp.remakeConstraints { (make) -> Void in
-                    make.top.centerX.equalToSuperview()
+                    make.edges.equalToSuperview()
                 }
             case .left:
                 titleLabel.textAlignment = .left
@@ -183,17 +183,18 @@ class TabPageTitleView: UIView {
         super.init(frame: .zero)
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) -> Void in
-            make.centerX.equalToSuperview()
+            //make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
         }
 
-        addSubview(selectedView)
-        selectedView.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(titleLabel.snp.bottom).offset(SharedUI.verticalPadding * 2)
-            make.centerX.equalTo(titleLabel.snp.centerX)
-            make.width.equalTo(70)
-            make.height.equalTo(SharedUI.borderWidth)
-            make.bottom.equalToSuperview()
-        }
+//        addSubview(selectedView)
+//        selectedView.snp.makeConstraints { (make) -> Void in
+//            make.top.equalTo(titleLabel.snp.bottom).offset(SharedUI.verticalPadding * 2)
+//            make.centerX.equalTo(titleLabel.snp.centerX)
+//            make.width.equalTo(70)
+//            make.height.equalTo(SharedUI.borderWidth)
+//            make.bottom.equalToSuperview()
+//        }
     }
 
     required init?(coder aDecoder: NSCoder) {

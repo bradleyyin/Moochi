@@ -40,7 +40,7 @@ class HomeViewController: UIViewController {
         view.addSubview(dateLabel)
         view.addSubview(remainingBalanceLabel)
         view.addSubview(remainingBalanceNumberLabel)
-        view.addSubview(tabView)
+        view.addSubview(sliderView)
         view.addSubview(tableView)
         setupConstraints()
         setupBinding()
@@ -90,6 +90,17 @@ class HomeViewController: UIViewController {
             make.top.equalTo(remainingBalanceLabel.snp.bottom).offset(SharedUI.verticalPadding * 2)
             make.leading.trailing.equalToSuperview().inset(SharedUI.horizontalPadding * 12)
         }
+        
+        sliderView.snp.makeConstraints { (make) in
+            make.top.equalTo(remainingBalanceLabel.snp.bottom).offset(SharedUI.verticalPadding * 8)
+            make.leading.trailing.equalToSuperview().inset(SharedUI.horizontalPadding * 14)
+            make.height.equalTo(29)
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        sliderView.setSelectedIndex(0)
     }
     
     private func setupBinding() {
@@ -101,7 +112,7 @@ class HomeViewController: UIViewController {
         viewModel.remainFund.asObservable().subscribe(onNext: { [weak self] remainFund in
             guard let self = self else { return }
             if let remainFund = remainFund {
-                self.remainingBalanceLabel.text = "Remaining Balanc"
+                self.remainingBalanceLabel.text = "Remaining Balance"
                 self.remainingBalanceNumberLabel.text = "$\(remainFund)"
             } else {
                 self.remainingBalanceLabel.text = "Tap to add income"
@@ -167,12 +178,14 @@ class HomeViewController: UIViewController {
     private lazy var remainingBalanceNumberLabel: UILabel = {
         let label = UILabel()
         label.font = FontPalette.font(size: 40, fontType: .regular)
+        label.textAlignment = .center
         return label
     }()
     
-    private lazy var tabView: TabHeaderView = {
-        let view = TabHeaderView()
-        view.titles = [NSAttributedString(string: "test1"), NSAttributedString(string: "test2")]
+    private lazy var sliderView: SliderView = {
+        let view = SliderView()
+        view.titles = [NSAttributedString(string: "Category"), NSAttributedString(string: "Goal")]
+        view.layer.cornerRadius = 15
         return view
     }()
     
