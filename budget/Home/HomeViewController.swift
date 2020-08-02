@@ -96,6 +96,11 @@ class HomeViewController: UIViewController {
             make.leading.trailing.equalToSuperview().inset(SharedUI.horizontalPadding * 14)
             make.height.equalTo(29)
         }
+        
+        tableView.snp.makeConstraints { (make) in
+            make.top.equalTo(sliderView.snp.bottom)
+            make.bottom.leading.trailing.equalToSuperview()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -190,13 +195,12 @@ class HomeViewController: UIViewController {
     }()
     
     private lazy var tableView: UITableView = {
-        let view = UITableView()
+        let view = UITableView(frame: .zero, style: .plain)
         view.dataSource = self
         view.delegate = self
-        view.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        view.register(CategoryCell.self, forCellReuseIdentifier: "categoryCell")
         return view
     }()
-    
 }
 //extension HomeViewController: EditIncomeDelegate {
 //    func enterIncome(amount: Double) {
@@ -237,8 +241,13 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath) as? CategoryCell else { fatalError("no category cell")}
+        cell.setupWith(title: "Grocery", icon: UIImage(named: "cart"), remainingMoney: 100.0, totalMoney: 200.0)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 70
     }
 }
 

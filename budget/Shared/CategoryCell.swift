@@ -9,43 +9,114 @@
 import UIKit
 
 class CategoryCell: UITableViewCell {
-    
-    weak var titleLabel: UILabel!
-    weak var amountLabel: UILabel!
-
-    var expense: Expense? {
-        didSet {
-            //updateViews()
-        }
-    }
-    
-    var fontSize: CGFloat = 25 * heightRatio
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        //setUpViews()
+        
+        contentView.addSubview(iconContainerView)
+        iconContainerView.addSubview(iconImageView)
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(numberLabel)
     }
     override func layoutSubviews() {
         super.layoutSubviews()
         setupConstraints()
     }
     
-    func setupWith(title: String?, icon: UIImage?, remainingPercent: Double?) {
+    func setupWith(title: String?, icon: UIImage?, remainingMoney: Double?, totalMoney: Double?) {
+        if let title = title {
+            titleLabel.text = title
+        }
         
+        if let icon = icon {
+            iconImageView.image = icon
+        }
+        
+        if let remain = remainingMoney, let total = totalMoney {
+            numberLabel.text = String(format: "%.2f", remain)
+            //draw circle
+            setupCircle(percent: 0.5)
+        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//            print(self.iconContainerView.center)
+//        }
     }
     
-    private func setupUIColor() {
-        if traitCollection.userInterfaceStyle == .light {
-            titleLabel.textColor = .black
-            amountLabel.textColor = .black
-        } else {
-            titleLabel.textColor = .white
-            amountLabel.textColor = .white
-        }
+//    private func setupUIColor() {
+//        if traitCollection.userInterfaceStyle == .light {
+//            titleLabel.textColor = .black
+//            amountLabel.textColor = .black
+//        } else {
+//            titleLabel.textColor = .white
+//            amountLabel.textColor = .white
+//        }
+//    }
+    
+    private func setupCircle(percent: Double) {
+        print(iconContainerView.center)
+        let center = CGPoint(x: 25, y: 25)
+        
+        // create my track layer
+        let trackLayer = CAShapeLayer()
+        
+        let trackCircularPath = UIBezierPath(arcCenter: center, radius: 25, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
+        trackLayer.path = trackCircularPath.cgPath
+        
+        trackLayer.strokeColor = UIColor.lightGray.cgColor
+        trackLayer.lineWidth = 2.5
+        trackLayer.fillColor = UIColor.clear.cgColor
+        trackLayer.lineCap = CAShapeLayerLineCap.round
+        iconContainerView.layer.addSublayer(trackLayer)
+        
+        
+        let shapeLayer = CAShapeLayer()
+        let circularPath = UIBezierPath(arcCenter: center, radius: 25, startAngle: -CGFloat.pi / 2, endAngle: CGFloat.pi * CGFloat(2 * percent - 0.5), clockwise: true)
+        shapeLayer.path = circularPath.cgPath
+        
+        shapeLayer.strokeColor = UIColor.black.cgColor
+        shapeLayer.lineWidth = 2.5
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.lineCap = CAShapeLayerLineCap.round
+        
+        //shapeLayer.strokeEnd = 0
+        
+        iconContainerView.layer.addSublayer(shapeLayer)
+        
+//        let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
+//
+//        basicAnimation.toValue = 1
+//
+//        basicAnimation.duration = 1
+//
+//        basicAnimation.fillMode = CAMediaTimingFillMode.forwards
+//        basicAnimation.isRemovedOnCompletion = false
+//
+//        shapeLayer.add(basicAnimation, forKey: "urSoBasic")
+        
+        //iconContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
     }
     
     private func setupConstraints() {
+        titleLabel.snp.remakeConstraints { (make) in
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(iconContainerView.snp.trailing).offset(24)
+            make.trailing.lessThanOrEqualTo(numberLabel.snp.leading)
+        }
         
+        numberLabel.snp.remakeConstraints { (make) in
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().inset(24)
+        }
+        
+        iconContainerView.snp.remakeConstraints { (make) in
+            make.centerY.equalToSuperview()
+            //make.height.width.equalTo(50)
+            make.top.bottom.equalToSuperview().inset(10)
+            make.leading.equalToSuperview().inset(24)
+        }
+        
+        iconImageView.snp.remakeConstraints { (make) in
+            make.edges.equalToSuperview().inset(15)
+        }
     }
     
 //    func updateViews() {
@@ -58,7 +129,24 @@ class CategoryCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private lazy var iconImageView: UIImageView = {}()
-
-
+    private lazy var iconContainerView: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
+    private lazy var iconImageView: UIImageView = {
+        let view = UIImageView()
+        view.contentMode = .scaleAspectFill
+        return view
+    }()
+    
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    private lazy var numberLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
 }
