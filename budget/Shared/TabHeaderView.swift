@@ -171,6 +171,12 @@ class TabPageTitleView: UIView {
         label.textAlignment = .center
         return label
     }()
+    
+    private lazy var containerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        return view
+    }()
 
     private lazy var selectedView: UIView = {
         let view = UIView()
@@ -181,11 +187,18 @@ class TabPageTitleView: UIView {
 
     init() {
         super.init(frame: .zero)
-        addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { (make) -> Void in
-            //make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview()
-        }
+        containerView.addSubview(titleLabel)
+        addSubview(containerView)
+//
+//        containerView.snp.makeConstraints { (make) -> Void in
+//            //make.centerX.equalToSuperview()
+//            make.edges.equalToSuperview()
+//        }
+//
+//        titleLabel.snp.makeConstraints { (make) -> Void in
+//            //make.centerX.equalToSuperview()
+//            make.leading.trailing.equalToSuperview().inset(16)
+//        }
 
 //        addSubview(selectedView)
 //        selectedView.snp.makeConstraints { (make) -> Void in
@@ -195,6 +208,18 @@ class TabPageTitleView: UIView {
 //            make.height.equalTo(SharedUI.borderWidth)
 //            make.bottom.equalToSuperview()
 //        }
+    }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        containerView.snp.remakeConstraints { (make) -> Void in
+            make.edges.equalToSuperview()
+        }
+        
+        titleLabel.snp.remakeConstraints { (make) -> Void in
+            make.centerY.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(16)
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {

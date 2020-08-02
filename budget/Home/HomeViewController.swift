@@ -82,19 +82,20 @@ class HomeViewController: UIViewController {
         }
         
         remainingBalanceLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(dateLabel.snp.bottom).offset(SharedUI.verticalPadding * 5)
+            make.top.equalTo(dateLabel.snp.bottom).offset(SharedUI.verticalPadding * 6.5)
             make.centerX.equalToSuperview()
         }
         
         remainingBalanceNumberLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(remainingBalanceLabel.snp.bottom).offset(SharedUI.verticalPadding * 2)
-            make.leading.trailing.equalToSuperview().inset(SharedUI.horizontalPadding * 12)
+            make.top.equalTo(remainingBalanceLabel.snp.bottom)
+            make.centerX.equalToSuperview()
         }
         
         sliderView.snp.makeConstraints { (make) in
             make.top.equalTo(remainingBalanceLabel.snp.bottom).offset(SharedUI.verticalPadding * 8)
-            make.leading.trailing.equalToSuperview().inset(SharedUI.horizontalPadding * 14)
+            //make.leading.trailing.equalToSuperview().inset(SharedUI.horizontalPadding * 14)
             make.height.equalTo(29)
+            make.centerX.equalToSuperview()
         }
         
         tableView.snp.makeConstraints { (make) in
