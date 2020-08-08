@@ -42,8 +42,8 @@ class TabBarController: UITabBarController {
         self.viewControllers = viewControllers
         self.tabBar.isTranslucent = true
         self.tabBar.shadowImage = UIImage()
-        self.tabBar.backgroundImage = UIImage()
-        self.tabBar.backgroundColor = UIColor.white.withAlphaComponent(0.9)
+        //self.tabBar.backgroundImage = UIImage()
+        self.tabBar.backgroundColor = .red
         switchTo(.home)
     }
 
@@ -134,7 +134,7 @@ class TabBarController: UITabBarController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        addGradient()
+        //addGradient()
     }
 
     func switchTo(_ tab: TabItem) {
@@ -175,19 +175,19 @@ class TabBarController: UITabBarController {
             actionDelegate?.didTapTab(item: tab, isCurrentTab: isCurrentTab)
         }
     }
-
-    private func addGradient() {
-        let gradient: CAGradientLayer = CAGradientLayer()
-        gradient.colors = [
-            UIColor(red: 1, green: 1, blue: 1, alpha: 0.7).cgColor,
-            UIColor(red: 1, green: 1, blue: 1, alpha: 0.9).cgColor
-        ]
-        gradient.locations = [0.0 , 0.76]
-        gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
-        gradient.endPoint = CGPoint(x: 0.0, y: 1.0)
-        gradient.frame = CGRect(x: 0.0, y: 0.0, width: tabBar.frame.size.width, height: tabBar.frame.height)
-        tabBar.layer.insertSublayer(gradient, at: 0)
-    }
+//
+//    private func addGradient() {
+//        let gradient: CAGradientLayer = CAGradientLayer()
+//        gradient.colors = [
+//            UIColor(red: 1, green: 1, blue: 1, alpha: 0.7).cgColor,
+//            UIColor(red: 1, green: 1, blue: 1, alpha: 0.9).cgColor
+//        ]
+//        gradient.locations = [0.0 , 0.76]
+//        gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
+//        gradient.endPoint = CGPoint(x: 0.0, y: 1.0)
+//        gradient.frame = CGRect(x: 0.0, y: 0.0, width: tabBar.frame.size.width, height: tabBar.frame.height)
+//        tabBar.layer.insertSublayer(gradient, at: 0)
+//    }
 
     // MARK: UI
     private let tabButtonWidth: CGFloat = (UIScreen.main.bounds.width - SharedUI.horizontalPadding * 6) / CGFloat(TabItem.allCases.count)
