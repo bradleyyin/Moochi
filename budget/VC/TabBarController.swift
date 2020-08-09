@@ -42,8 +42,8 @@ class TabBarController: UITabBarController {
         self.viewControllers = viewControllers
         self.tabBar.isTranslucent = true
         self.tabBar.shadowImage = UIImage()
-        //self.tabBar.backgroundImage = UIImage()
-        self.tabBar.backgroundColor = .red
+        self.tabBar.backgroundImage = UIImage()
+        self.tabBar.backgroundColor = .clear
         switchTo(.home)
     }
 
@@ -53,13 +53,19 @@ class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        tabBar.addSubview(tabBarSeperator)
-        tabBarSeperator.snp.makeConstraints { (make) in
-            make.height.equalTo(SharedUI.borderWidth)
-            make.leading.trailing.equalToSuperview().inset(SharedUI.horizontalPadding)
-            make.top.equalToSuperview()
+        
+        tabBar.addSubview(tabBarContainerView)
+        tabBarContainerView.snp.makeConstraints { (make) in
+            make.top.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().offset(20)
         }
+
+        //tabBar.addSubview(tabBarSeperator)
+//        tabBarSeperator.snp.makeConstraints { (make) in
+//            make.height.equalTo(SharedUI.borderWidth)
+//            make.leading.trailing.equalToSuperview().inset(SharedUI.horizontalPadding)
+//            make.top.equalToSuperview()
+//        }
 
         tabBar.addSubview(homeButton)
         homeButton.snp.makeConstraints { (make) in
@@ -196,6 +202,13 @@ class TabBarController: UITabBarController {
     var tabButtonBottomInset: CGFloat {
         return view.safeAreaInsets.bottom
     }
+    
+    private lazy var tabBarContainerView: UIView  = {
+        let view = UIView()
+        view.backgroundColor = ColorPalette.tabBarGray
+        view.layer.cornerRadius = 20
+        return view
+    }()
 
     private lazy var tabBarSeperator: UIView = {
         let view = UIView()
