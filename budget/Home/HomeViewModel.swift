@@ -28,12 +28,35 @@ final class HomeViewModel: NSObject {
         fetchIncomes()
         convertDate()
         getRemainingFunds()
+        fetchCategories()
+    }
+
+    var numberOfCategory: Int {
+        return categories.value.count
+    }
+
+    var remainingBalanceText: String {
+        if let remainFund = remainFund.value {
+            return "Remaining Balance"
+        } else {
+            return "Tap to add income"
+        }
+    }
+
+    var remainingBalanceNumberText: String {
+        if let remainFund = remainFund.value {
+            let num = String(format: "%.2f", remainFund)
+            return "$\(num)"
+        } else {
+            return "$0.00"
+        }
     }
 
     func refresh() {
         fetchIncomes()
         convertDate()
         getRemainingFunds()
+        fetchCategories()
     }
     
     private func fetchIncomes() {
