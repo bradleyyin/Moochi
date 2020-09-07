@@ -114,16 +114,16 @@ class HomeViewController: UIViewController {
             guard let self = self else { return }
             self.dateLabel.text = currentDate
         }).disposed(by: disposeBag)
+
+        viewModel.categories.asObservable().subscribe(onNext: { [weak self] _ in
+            guard let self = self else { return }
+            self.tableView.reloadData()
+        }).disposed(by: disposeBag)
         
         viewModel.remainFund.asObservable().subscribe(onNext: { [weak self] remainFund in
             guard let self = self else { return }
-            if let remainFund = remainFund {
-                self.remainingBalanceLabel.text = "Remaining Balance"
-                self.remainingBalanceNumberLabel.text = "$\(remainFund)"
-            } else {
-                self.remainingBalanceLabel.text = "Tap to add income"
-                self.remainingBalanceNumberLabel.text = "$0.00"
-            }
+            self.remainingBalanceLabel.text = self.viewModel.remainingBalanceText
+            self.remainingBalanceNumberLabel.text = self.viewModel.remainingBalanceNumberText
         }).disposed(by: disposeBag)
     }
     
@@ -199,7 +199,7 @@ class HomeViewController: UIViewController {
         let view = UITableView(frame: .zero, style: .plain)
         view.dataSource = self
         view.delegate = self
-        view.register(CategoryCell.self, forCellReuseIdentifier: "categoryCell")
+        view.register(HomeCategoryCell.self, forCellReuseIdentifier: "categoryCell")
         return view
     }()
 }
@@ -238,12 +238,14 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return viewModel.numberOfCategory
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath) as? CategoryCell else { fatalError("no category cell")}
-        cell.setupWith(title: "Grocery", icon: UIImage(named: "cart"), remainingMoney: 100.0, totalMoney: 200.0)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath) as? HomeCategoryCell else { fatalError("no category cell")}
+        let category = viewModel.categories.value[indexPath.row]
+        let viewModel = HomeCategoryCellViewModel(category: category)
+        cell.setupWith(viewModel: viewModel)
         return cell
     }
     

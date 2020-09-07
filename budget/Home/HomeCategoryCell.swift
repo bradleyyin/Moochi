@@ -1,5 +1,5 @@
 //
-//  CategoryCell.swift
+//  HomeCategoryCell.swift
 //  budget
 //
 //  Created by Bradley Yin on 8/1/20.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CategoryCell: UITableViewCell {
+class HomeCategoryCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -22,20 +22,11 @@ class CategoryCell: UITableViewCell {
         setupConstraints()
     }
     
-    func setupWith(title: String?, icon: UIImage?, remainingMoney: Double?, totalMoney: Double?) {
-        if let title = title {
-            titleLabel.text = title
-        }
-        
-        if let icon = icon {
-            iconImageView.image = icon
-        }
-        
-        if let remain = remainingMoney, let total = totalMoney {
-            numberLabel.text = String(format: "%.2f", remain)
-            //draw circle
-            setupCircle(percent: 0.5)
-        }
+    func setupWith(viewModel: HomeCategoryCellViewModel) {
+        titleLabel.text = viewModel.title
+        iconImageView.image = viewModel.icon
+        numberLabel.text = viewModel.remainingMoneyText
+        setupCircle(percent: 0.5)
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
 //            print(self.iconContainerView.center)
 //        }
@@ -52,7 +43,6 @@ class CategoryCell: UITableViewCell {
 //    }
     
     private func setupCircle(percent: Double) {
-        print(iconContainerView.center)
         let center = CGPoint(x: 25, y: 25)
         
         // create my track layer
