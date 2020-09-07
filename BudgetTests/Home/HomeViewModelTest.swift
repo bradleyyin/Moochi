@@ -19,7 +19,6 @@ class HomeViewModelTest: XCTestCase {
         Realm.Configuration.defaultConfiguration =
             Realm.Configuration(inMemoryIdentifier: UUID().uuidString)
 
-        //task = Task()
         realm = try! Realm()
         let income = Income()
         income.amount = 5000.00
@@ -29,7 +28,6 @@ class HomeViewModelTest: XCTestCase {
         category1.totalAmount = 100
         category1.isGoal = false
         try! realm.write {
-            //realm.add([task])
             realm.add(income)
             realm.add(category1)
         }

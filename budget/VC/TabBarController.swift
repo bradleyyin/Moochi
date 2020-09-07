@@ -60,13 +60,6 @@ class TabBarController: UITabBarController {
             make.bottom.equalToSuperview().offset(20)
         }
 
-        //tabBar.addSubview(tabBarSeperator)
-//        tabBarSeperator.snp.makeConstraints { (make) in
-//            make.height.equalTo(SharedUI.borderWidth)
-//            make.leading.trailing.equalToSuperview().inset(SharedUI.horizontalPadding)
-//            make.top.equalToSuperview()
-//        }
-
         tabBar.addSubview(homeButton)
         homeButton.snp.makeConstraints { (make) in
             make.width.equalTo(tabButtonWidth)
@@ -181,19 +174,6 @@ class TabBarController: UITabBarController {
             actionDelegate?.didTapTab(item: tab, isCurrentTab: isCurrentTab)
         }
     }
-//
-//    private func addGradient() {
-//        let gradient: CAGradientLayer = CAGradientLayer()
-//        gradient.colors = [
-//            UIColor(red: 1, green: 1, blue: 1, alpha: 0.7).cgColor,
-//            UIColor(red: 1, green: 1, blue: 1, alpha: 0.9).cgColor
-//        ]
-//        gradient.locations = [0.0 , 0.76]
-//        gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
-//        gradient.endPoint = CGPoint(x: 0.0, y: 1.0)
-//        gradient.frame = CGRect(x: 0.0, y: 0.0, width: tabBar.frame.size.width, height: tabBar.frame.height)
-//        tabBar.layer.insertSublayer(gradient, at: 0)
-//    }
 
     // MARK: UI
     private let tabButtonWidth: CGFloat = (UIScreen.main.bounds.width - SharedUI.horizontalPadding * 6) / CGFloat(TabItem.allCases.count)

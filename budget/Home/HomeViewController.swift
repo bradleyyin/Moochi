@@ -93,7 +93,6 @@ class HomeViewController: UIViewController {
         
         sliderView.snp.makeConstraints { (make) in
             make.top.equalTo(remainingBalanceLabel.snp.bottom).offset(SharedUI.verticalPadding * 8)
-            //make.leading.trailing.equalToSuperview().inset(SharedUI.horizontalPadding * 14)
             make.height.equalTo(29)
             make.centerX.equalToSuperview()
         }

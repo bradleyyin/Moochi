@@ -27,9 +27,6 @@ class HomeCategoryCell: UITableViewCell {
         iconImageView.image = viewModel.icon
         numberLabel.text = viewModel.remainingMoneyText
         setupCircle(percent: 0.5)
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-//            print(self.iconContainerView.center)
-//        }
     }
     
 //    private func setupUIColor() {
@@ -99,7 +96,6 @@ class HomeCategoryCell: UITableViewCell {
         
         iconContainerView.snp.remakeConstraints { (make) in
             make.centerY.equalToSuperview()
-            //make.height.width.equalTo(50)
             make.top.bottom.equalToSuperview().inset(10)
             make.leading.equalToSuperview().inset(24)
         }
@@ -108,12 +104,6 @@ class HomeCategoryCell: UITableViewCell {
             make.edges.equalToSuperview().inset(15)
         }
     }
-    
-//    func updateViews() {
-//        guard let expense = expense else { return }
-//        titleLabel.text = expense.name
-//        amountLabel.text = NSString(format: "%.2f", expense.amount) as String
-//    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
