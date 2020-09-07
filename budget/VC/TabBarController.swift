@@ -43,7 +43,7 @@ class TabBarController: UITabBarController {
         self.tabBar.isTranslucent = true
         self.tabBar.shadowImage = UIImage()
         self.tabBar.backgroundImage = UIImage()
-        self.tabBar.backgroundColor = .clear
+        self.tabBar.backgroundColor = UIColor.white.withAlphaComponent(0.9)
         switchTo(.home)
     }
 
@@ -53,11 +53,12 @@ class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tabBar.addSubview(tabBarContainerView)
-        tabBarContainerView.snp.makeConstraints { (make) in
-            make.top.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().offset(20)
+
+        tabBar.addSubview(tabBarSeperator)
+        tabBarSeperator.snp.makeConstraints { (make) in
+            make.height.equalTo(SharedUI.borderWidth)
+            make.leading.trailing.equalToSuperview().inset(SharedUI.horizontalPadding)
+            make.top.equalToSuperview()
         }
 
         tabBar.addSubview(homeButton)
@@ -133,7 +134,7 @@ class TabBarController: UITabBarController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //addGradient()
+        addGradient()
     }
 
     func switchTo(_ tab: TabItem) {
@@ -175,6 +176,19 @@ class TabBarController: UITabBarController {
         }
     }
 
+    private func addGradient() {
+        let gradient: CAGradientLayer = CAGradientLayer()
+        gradient.colors = [
+            UIColor(red: 1, green: 1, blue: 1, alpha: 0.7).cgColor,
+            UIColor(red: 1, green: 1, blue: 1, alpha: 0.9).cgColor
+        ]
+        gradient.locations = [0.0 , 0.76]
+        gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
+        gradient.endPoint = CGPoint(x: 0.0, y: 1.0)
+        gradient.frame = CGRect(x: 0.0, y: 0.0, width: tabBar.frame.size.width, height: tabBar.frame.height)
+        tabBar.layer.insertSublayer(gradient, at: 0)
+    }
+
     // MARK: UI
     private let tabButtonWidth: CGFloat = (UIScreen.main.bounds.width - SharedUI.horizontalPadding * 6) / CGFloat(TabItem.allCases.count)
     private let tabButtonImageSize: CGFloat = 42.5
@@ -182,13 +196,6 @@ class TabBarController: UITabBarController {
     var tabButtonBottomInset: CGFloat {
         return view.safeAreaInsets.bottom
     }
-    
-    private lazy var tabBarContainerView: UIView  = {
-        let view = UIView()
-        view.backgroundColor = ColorPalette.tabBarGray
-        view.layer.cornerRadius = 20
-        return view
-    }()
 
     private lazy var tabBarSeperator: UIView = {
         let view = UIView()
