@@ -82,19 +82,24 @@ class HomeViewController: UIViewController {
         }
         
         remainingBalanceLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(dateLabel.snp.bottom).offset(SharedUI.verticalPadding * 5)
+            make.top.equalTo(dateLabel.snp.bottom).offset(SharedUI.verticalPadding * 6.5)
             make.centerX.equalToSuperview()
         }
         
         remainingBalanceNumberLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(remainingBalanceLabel.snp.bottom).offset(SharedUI.verticalPadding * 2)
-            make.leading.trailing.equalToSuperview().inset(SharedUI.horizontalPadding * 12)
+            make.top.equalTo(remainingBalanceLabel.snp.bottom)
+            make.centerX.equalToSuperview()
         }
         
         sliderView.snp.makeConstraints { (make) in
             make.top.equalTo(remainingBalanceLabel.snp.bottom).offset(SharedUI.verticalPadding * 8)
-            make.leading.trailing.equalToSuperview().inset(SharedUI.horizontalPadding * 14)
             make.height.equalTo(29)
+            make.centerX.equalToSuperview()
+        }
+        
+        tableView.snp.makeConstraints { (make) in
+            make.top.equalTo(sliderView.snp.bottom)
+            make.bottom.leading.trailing.equalToSuperview()
         }
     }
     
@@ -108,16 +113,16 @@ class HomeViewController: UIViewController {
             guard let self = self else { return }
             self.dateLabel.text = currentDate
         }).disposed(by: disposeBag)
+
+        viewModel.categories.asObservable().subscribe(onNext: { [weak self] _ in
+            guard let self = self else { return }
+            self.tableView.reloadData()
+        }).disposed(by: disposeBag)
         
         viewModel.remainFund.asObservable().subscribe(onNext: { [weak self] remainFund in
             guard let self = self else { return }
-            if let remainFund = remainFund {
-                self.remainingBalanceLabel.text = "Remaining Balance"
-                self.remainingBalanceNumberLabel.text = "$\(remainFund)"
-            } else {
-                self.remainingBalanceLabel.text = "Tap to add income"
-                self.remainingBalanceNumberLabel.text = "$0.00"
-            }
+            self.remainingBalanceLabel.text = self.viewModel.remainingBalanceText
+            self.remainingBalanceNumberLabel.text = self.viewModel.remainingBalanceNumberText
         }).disposed(by: disposeBag)
     }
     
@@ -190,13 +195,12 @@ class HomeViewController: UIViewController {
     }()
     
     private lazy var tableView: UITableView = {
-        let view = UITableView()
+        let view = UITableView(frame: .zero, style: .plain)
         view.dataSource = self
         view.delegate = self
-        view.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        view.register(HomeCategoryCell.self, forCellReuseIdentifier: "categoryCell")
         return view
     }()
-    
 }
 //extension HomeViewController: EditIncomeDelegate {
 //    func enterIncome(amount: Double) {
@@ -233,12 +237,19 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return viewModel.numberOfCategory
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath) as? HomeCategoryCell else { fatalError("no category cell")}
+        let category = viewModel.categories.value[indexPath.row]
+        let viewModel = HomeCategoryCellViewModel(category: category)
+        cell.setupWith(viewModel: viewModel)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 70
     }
 }
 

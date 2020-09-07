@@ -133,7 +133,7 @@ class SliderView: UIView {
         view.backgroundColor = .clear
         view.axis = .horizontal
         //view.alignment = .fill
-        view.distribution = .fillProportionally
+        view.distribution = .fill
         return view
     }()
     
