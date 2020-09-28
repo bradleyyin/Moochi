@@ -59,10 +59,11 @@ class AppCoordinator: Coordinator {
     func startMain() {
             if tabBarController == nil {
                 let home = HomeCoordinator(with: presenter, dependency: dependency)
+                let add = AddExpenseCoordinator(with: presenter, dependency: dependency)
                 
                 homeCoordinator = home
 
-                let tabBar = TabBarController(viewControllers: [home.homeViewController, home.homeViewController, home.homeViewController, home.homeViewController, home.homeViewController])
+                let tabBar = TabBarController(viewControllers: [home.homeViewController, UIViewController(), UIViewController(), UIViewController(), UIViewController()])
                 tabBar.actionDelegate = self
                 tabBarController = tabBar
 
@@ -128,6 +129,7 @@ extension AppCoordinator: TabBarActionDelegate {
             if isCurrentTab {
                 //theiaActivityCoordinator?.activityViewController.scrollsToTop(animated: true)
             }
+            didStartAdd()
         case .calendar:
             if isCurrentTab {
                 //theiaProfileCoordinator?.profileViewController.scrollsToTop(animated: true)
@@ -139,10 +141,11 @@ extension AppCoordinator: TabBarActionDelegate {
         }
     }
 
-//    func didStartStudio() {
-//        let studioCoordinator = TheiaStudioCoordinator(with: presenter, dependency: dependency)
-//        studioCoordinator.delegate = self
-//        studioCoordinator.start(nil, tryonIDArray: [], currentIndex: 0)
-//        addChildCoordinator(childCoordinator: studioCoordinator)
-//    }
+    func didStartAdd() {
+        let add = AddExpenseCoordinator(with: presenter, dependency: dependency)
+        //add.delegate = self
+        //studioCoordinator.start(nil, tryonIDArray: [], currentIndex: 0)
+        add.start()
+        addChildCoordinator(childCoordinator: add)
+    }
 }

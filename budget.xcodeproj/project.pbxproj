@@ -59,14 +59,17 @@
 		75CD181022C5DD6800E2FB12 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CD180F22C5DD6800E2FB12 /* HomeViewController.swift */; };
 		75CD181522C5DD6B00E2FB12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75CD181422C5DD6B00E2FB12 /* Assets.xcassets */; };
 		75CD181822C5DD6B00E2FB12 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75CD181622C5DD6B00E2FB12 /* LaunchScreen.storyboard */; };
+		75DE6496251FD2E40017DD1E /* UITextField+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DE6495251FD2E40017DD1E /* UITextField+Utilities.swift */; };
 		75E0BD5C22CDA7DB00FE0F6C /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0BD5B22CDA7DB00FE0F6C /* MenuViewController.swift */; };
 		75E0BD6022CDB91600FE0F6C /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0BD5F22CDB91600FE0F6C /* MenuTableViewCell.swift */; };
 		75E0BD6222CDBCC000FE0F6C /* GlobalStuffs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0BD6122CDBCC000FE0F6C /* GlobalStuffs.swift */; };
 		75E0BD6422CDC63500FE0F6C /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0BD6322CDC63500FE0F6C /* DetailsViewController.swift */; };
 		75E0BD6722CDD1BA00FE0F6C /* DetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0BD6622CDD1BA00FE0F6C /* DetailsTableViewCell.swift */; };
+		75E32A362506BD0C00731D9C /* AddExpenseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32A352506BD0C00731D9C /* AddExpenseCoordinator.swift */; };
+		75E32A38250704F900731D9C /* AddExpenseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32A37250704F900731D9C /* AddExpenseViewModel.swift */; };
+		75E32A3B25070AC700731D9C /* AddExpenseViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32A3A25070AC700731D9C /* AddExpenseViewModelTests.swift */; };
 		75E6F65D23666A8B002F3BF3 /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E6F65C23666A8B002F3BF3 /* ChartViewController.swift */; };
 		75F227E9249B2CAD000F21A0 /* IncomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F227E8249B2CAD000F21A0 /* IncomeViewModel.swift */; };
-		75F227EB249D4EE8000F21A0 /* AddEntryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F227EA249D4EE8000F21A0 /* AddEntryViewModel.swift */; };
 		75F2FB7F235138B9006007D8 /* DateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F2FB7E235138B9006007D8 /* DateCollectionViewCell.swift */; };
 		75F2FB8223513C9F006007D8 /* Date+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F2FB8123513C9F006007D8 /* Date+Utility.swift */; };
 		75F2FB842352E296006007D8 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F2FB832352E296006007D8 /* TabBarController.swift */; };
@@ -145,14 +148,17 @@
 		75CD180F22C5DD6800E2FB12 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		75CD181422C5DD6B00E2FB12 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		75CD181722C5DD6B00E2FB12 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		75DE6495251FD2E40017DD1E /* UITextField+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Utilities.swift"; sourceTree = "<group>"; };
 		75E0BD5B22CDA7DB00FE0F6C /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		75E0BD5F22CDB91600FE0F6C /* MenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		75E0BD6122CDBCC000FE0F6C /* GlobalStuffs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalStuffs.swift; sourceTree = "<group>"; };
 		75E0BD6322CDC63500FE0F6C /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		75E0BD6622CDD1BA00FE0F6C /* DetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsTableViewCell.swift; sourceTree = "<group>"; };
+		75E32A352506BD0C00731D9C /* AddExpenseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseCoordinator.swift; sourceTree = "<group>"; };
+		75E32A37250704F900731D9C /* AddExpenseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseViewModel.swift; sourceTree = "<group>"; };
+		75E32A3A25070AC700731D9C /* AddExpenseViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseViewModelTests.swift; sourceTree = "<group>"; };
 		75E6F65C23666A8B002F3BF3 /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
 		75F227E8249B2CAD000F21A0 /* IncomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeViewModel.swift; sourceTree = "<group>"; };
-		75F227EA249D4EE8000F21A0 /* AddEntryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEntryViewModel.swift; sourceTree = "<group>"; };
 		75F2FB7E235138B9006007D8 /* DateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCollectionViewCell.swift; sourceTree = "<group>"; };
 		75F2FB8123513C9F006007D8 /* Date+Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Utility.swift"; sourceTree = "<group>"; };
 		75F2FB832352E296006007D8 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -256,6 +262,7 @@
 		756A645623754063000BCBF3 /* BudgetTests */ = {
 			isa = PBXGroup;
 			children = (
+				75E32A3925070AAF00731D9C /* Add */,
 				75BB36782505C1CF00CD92A4 /* Home */,
 				756A645923754063000BCBF3 /* Info.plist */,
 			);
@@ -304,7 +311,8 @@
 			children = (
 				75AEC12A22E577590006A057 /* AddEntryViewController.swift */,
 				75BB936F22EAC77E002C57AF /* AddEntryTableViewCell.swift */,
-				75F227EA249D4EE8000F21A0 /* AddEntryViewModel.swift */,
+				75E32A352506BD0C00731D9C /* AddExpenseCoordinator.swift */,
+				75E32A37250704F900731D9C /* AddExpenseViewModel.swift */,
 			);
 			path = Add;
 			sourceTree = "<group>";
@@ -440,9 +448,18 @@
 			path = VC;
 			sourceTree = "<group>";
 		};
+		75E32A3925070AAF00731D9C /* Add */ = {
+			isa = PBXGroup;
+			children = (
+				75E32A3A25070AC700731D9C /* AddExpenseViewModelTests.swift */,
+			);
+			path = Add;
+			sourceTree = "<group>";
+		};
 		75F2FB8023513C72006007D8 /* extension */ = {
 			isa = PBXGroup;
 			children = (
+				75DE6495251FD2E40017DD1E /* UITextField+Utilities.swift */,
 				75ADCEC92495F96D00320593 /* UIViewController+extension.swift */,
 				756A643F23700E19000BCBF3 /* UIImage+Scaling.swift */,
 				75F2FB8123513C9F006007D8 /* Date+Utility.swift */,
@@ -660,6 +677,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75BB367D2505F41500CD92A4 /* HomeViewModelTest.swift in Sources */,
+				75E32A3B25070AC700731D9C /* AddExpenseViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -694,10 +712,10 @@
 				75F2FB8223513C9F006007D8 /* Date+Utility.swift in Sources */,
 				75ADCEB32492035E00320593 /* SharedUI.swift in Sources */,
 				75E6F65D23666A8B002F3BF3 /* ChartViewController.swift in Sources */,
-				75F227EB249D4EE8000F21A0 /* AddEntryViewModel.swift in Sources */,
 				75ADCEB52493414C00320593 /* HomeViewModel.swift in Sources */,
 				75AEC11722E3D7170006A057 /* SharedView.swift in Sources */,
 				75373B4522ED747600113E81 /* RecietAlbumViewController.swift in Sources */,
+				75DE6496251FD2E40017DD1E /* UITextField+Utilities.swift in Sources */,
 				75373B4722ED792D00113E81 /* ReceiptAlbumTableViewCell.swift in Sources */,
 				751DE0BB24D628D500AD04C9 /* SliderView.swift in Sources */,
 				75CD180E22C5DD6800E2FB12 /* AppDelegate.swift in Sources */,
@@ -712,12 +730,14 @@
 				75AEC12B22E577590006A057 /* AddEntryViewController.swift in Sources */,
 				75ADCEAC2491F91E00320593 /* Coordinator.swift in Sources */,
 				75F227E9249B2CAD000F21A0 /* IncomeViewModel.swift in Sources */,
+				75E32A38250704F900731D9C /* AddExpenseViewModel.swift in Sources */,
 				75C2BF80236819050028720B /* ChartTableViewCell.swift in Sources */,
 				755FFBE12345AA4D0085C5E5 /* BudgetController.swift in Sources */,
 				75ADCEB92495C27D00320593 /* TabHeaderView.swift in Sources */,
 				75BCC2CD234ABAC2001CA01A /* CircleView.swift in Sources */,
 				75373B4022ECF70500113E81 /* SingleExpenseDetailViewController.swift in Sources */,
 				755FFBEB2345BCCB0085C5E5 /* ImageSaver.swift in Sources */,
+				75E32A362506BD0C00731D9C /* AddExpenseCoordinator.swift in Sources */,
 				75E0BD6722CDD1BA00FE0F6C /* DetailsTableViewCell.swift in Sources */,
 				75F2FB7F235138B9006007D8 /* DateCollectionViewCell.swift in Sources */,
 			);

@@ -164,7 +164,7 @@ class TabBarController: UITabBarController {
             case .details:
                 detailsImageView.image = selectedDetailsImage
             case .add:
-                addImageView.image = selectedAddImage
+                addImageView.image = unselectedAddImage
             case .calendar:
                 calendarImageView.image = selectedCalendarImage
             case .goal:
@@ -306,6 +306,9 @@ extension TabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if let index = tabBarController.viewControllers?.firstIndex(of: viewController), let tab = TabItem(rawValue: index) {
             didSelect(index: index, isCurrentTab: self.selectedIndex == index)
+            if tab == .add {
+                return false
+            }
         }
         return true
     }
