@@ -50,7 +50,6 @@ final class AddExpenseViewModel: NSObject {
         }
     }
 
-
     var expenseAmountText: String? {
         if let amount = amount.value, amount != 0 {
             return "\(amount)"
@@ -103,6 +102,10 @@ final class AddExpenseViewModel: NSObject {
                 amount.accept(0.0)
             }
         }
+    }
+
+    func updateDate(_ date: Date) {
+        self.date.accept(date)
     }
 
     private func setupWithExpense(_ expense: Expense?) {

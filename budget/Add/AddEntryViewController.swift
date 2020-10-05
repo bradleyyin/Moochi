@@ -37,7 +37,6 @@ final class AddEntryViewController: UIViewController {
         //categoryPicker.delegate = self
         //categoryPicker.dataSource = self
         //showCategoryPicker()
-        showDatePicker()
 
         view.addSubview(closeButton)
         view.addSubview(checkButton)
@@ -64,6 +63,7 @@ final class AddEntryViewController: UIViewController {
 
         setupConstraint()
         setupBinding()
+        setupDatePicker()
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -274,11 +274,11 @@ final class AddEntryViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    func showDatePicker() {
+    func setupDatePicker() {
         //format date
-//        if let date = viewModel.date {
-//            datePicker.date = date
-//        }
+        if let date = viewModel.date.value {
+            datePicker.date = date
+        }
         
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
@@ -286,8 +286,8 @@ final class AddEntryViewController: UIViewController {
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
         toolbar.setItems([cancelButton, space, doneButton], animated: false)
-        //dateTextField.inputAccessoryView = toolbar
-        //dateTextField.inputView = datePicker
+        entryDateTextField.inputAccessoryView = toolbar
+        entryDateTextField.inputView = datePicker
     }
     
     func addToolBarNameAndAmount() {
@@ -297,15 +297,13 @@ final class AddEntryViewController: UIViewController {
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
         toolbar.setItems([cancelButton, space, doneButton], animated: false)
-        //amountTextField.inputAccessoryView = toolbar
-        //nameTextField.inputAccessoryView = toolbar
-        
+        entryAmountTextField.inputAccessoryView = toolbar
+        entryNameTextField.inputAccessoryView = toolbar
     }
     
     @objc func doneDatePicker() {
-//
-//        dateTextField.text = formatter.string(from: datePicker.date)
-//        self.view.endEditing(true)
+        viewModel.updateDate(datePicker.date)
+        self.view.endEditing(true)
     }
     
     @objc func cancelDatePicker() {
@@ -444,6 +442,11 @@ final class AddEntryViewController: UIViewController {
         let picker = UIDatePicker()
         picker.datePickerMode = .date
         picker.minimumDate = Date(timeIntervalSinceReferenceDate: 0)
+        if #available(iOS 13.4, *) {
+            picker.preferredDatePickerStyle = .wheels
+        } else {
+            // Fallback on earlier versions
+        }
         return picker
     }()
 }
@@ -486,7 +489,7 @@ extension AddEntryViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        1
+        6
     }
     
     
