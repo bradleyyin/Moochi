@@ -23,6 +23,7 @@ class AddExpenseCoordinator: Coordinator {
 
     lazy var addExpenseViewController: AddEntryViewController = {
         let addVC = AddEntryViewController(expense: nil, dependency: dependency)
+        addVC.modalPresentationStyle = .overFullScreen
         //addVC.delegate = self
         return addVC
     }()

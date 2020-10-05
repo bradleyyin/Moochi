@@ -9,11 +9,13 @@
 //swiftlint:disable function_body_length
 
 import UIKit
+import RxSwift
 
 final class AddEntryViewController: UIViewController {
     typealias Dependency = HasBudgetController & HasBudgetCalculator & HasMonthCalculator
 
     private let dependency: Dependency
+    private let disposeBag = DisposeBag()
 
     private var viewModel: AddExpenseViewModel
 
@@ -73,6 +75,30 @@ final class AddEntryViewController: UIViewController {
 
     private func setupBinding() {
         //expense
+        viewModel.name.asObservable().subscribe(onNext: { [weak self] name in
+            guard let self = self else { return }
+            self.entryNameTextField.text = name
+        }).disposed(by: disposeBag)
+
+        viewModel.date.asObservable().subscribe(onNext: { [weak self] date in
+            guard let self = self else { return }
+            if let date = date {
+                let dateString = self.viewModel.formatter.string(from: date)
+                self.entryDateTextField.text = dateString
+            }
+
+
+        }).disposed(by: disposeBag)
+
+        viewModel.amount.asObservable().subscribe(onNext: { [weak self] amount in
+            guard let self = self else { return }
+            if let amount = amount {
+                self.entryAmountTextField.text = "\(amount)"
+                return
+            } else {
+                self.entryAmountTextField.text = nil
+            }
+        }).disposed(by: disposeBag)
         //image of reciept
     }
 
@@ -97,6 +123,7 @@ final class AddEntryViewController: UIViewController {
         entryNameLabel.snp.makeConstraints { (make) in
             make.leading.equalToSuperview().inset(16)
             make.top.equalTo(closeButton.snp.bottom).offset(20)
+            make.width.equalTo(90)
         }
 
         entryNameTextField.snp.makeConstraints { (make) in
@@ -259,9 +286,9 @@ final class AddEntryViewController: UIViewController {
     
     func showDatePicker() {
         //format date
-        if let date = viewModel.date {
-            datePicker.date = date
-        }
+//        if let date = viewModel.date {
+//            datePicker.date = date
+//        }
         
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
@@ -325,6 +352,7 @@ final class AddEntryViewController: UIViewController {
 
     private lazy var entryNameTextField: UITextField = {
         let textField = UITextField()
+        textField.placeholder = "Name"
         return textField
     }()
 
@@ -342,6 +370,8 @@ final class AddEntryViewController: UIViewController {
 
     private lazy var entryAmountTextField: UITextField = {
         let textField = UITextField()
+        textField.placeholder = "0.00"
+        textField.delegate = self
         return textField
     }()
 
@@ -359,6 +389,7 @@ final class AddEntryViewController: UIViewController {
 
     private lazy var entryDateTextField: UITextField = {
         let textField = UITextField()
+        textField.placeholder = viewModel.formatter.string(from: Date())
         return textField
     }()
 
@@ -444,7 +475,7 @@ final class AddEntryViewController: UIViewController {
 //extension AddEntryViewController: UITextFieldDelegate {
 //    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 //
-//        if textField == amountTextField {
+//        if textField == entryAmountTextField {
 //
 //            let formatter = NumberFormatter()
 //            formatter.minimumFractionDigits = 2

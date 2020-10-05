@@ -17,11 +17,15 @@ final class AddExpenseViewModel: NSObject {
 
     let formatter = DateFormatter()
     let recieptImage = BehaviorRelay<UIImage?>(value: nil)
+    let name = BehaviorRelay<String?>(value: nil)
+    let amount = BehaviorRelay<Double?>(value: nil)
+    let date = BehaviorRelay<Date?>(value: nil)
+    let category = BehaviorRelay<Category?>(value: nil)
 
     var expense: Expense?
     var categories: [Category] = []
     var selectedCategory: String = "uncategorized"
-    var date: Date?
+    //var date: Date?
     var amountTypedString = ""
 
     //String
@@ -33,22 +37,9 @@ final class AddExpenseViewModel: NSObject {
         }
     }
 
-    var expenseNameText: String? {
-        return expense?.name
-    }
-
     var expenseAmountText: String? {
         if let expense = expense {
             return "\(expense.amount)"
-        } else {
-            return nil
-        }
-    }
-
-    var expenseDateText: String? {
-        if let expense = expense {
-            let dateString = formatter.string(from: expense.date)
-            return dateString
         } else {
             return nil
         }
@@ -69,14 +60,21 @@ final class AddExpenseViewModel: NSObject {
 
     init(expense: Expense?, dependency: Dependency) {
         self.dependency = dependency
-        self.expense = expense
         super.init()
+        setupWithExpense(expense)
         fetchCategories()
-        formatter.dateFormat = "MM/dd/yyyy"
+        formatter.dateFormat = "yyyy.MM.dd"
     }
 
     func refresh() {
         fetchCategories()
+    }
+
+    private func setupWithExpense(_ expense: Expense?) {
+        self.expense = expense
+        self.name.accept(expense?.name)
+        self.amount.accept(expense?.amount)
+        self.date.accept(expense?.date)
     }
 
     private func fetchCategories() {
