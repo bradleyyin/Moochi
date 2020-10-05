@@ -75,29 +75,19 @@ final class AddEntryViewController: UIViewController {
 
     private func setupBinding() {
         //expense
-        viewModel.name.asObservable().subscribe(onNext: { [weak self] name in
+        viewModel.name.asObservable().subscribe(onNext: { [weak self] _ in
             guard let self = self else { return }
-            self.entryNameTextField.text = name
+            self.entryNameTextField.text = self.viewModel.expenseNameText
         }).disposed(by: disposeBag)
 
-        viewModel.date.asObservable().subscribe(onNext: { [weak self] date in
+        viewModel.date.asObservable().subscribe(onNext: { [weak self] _ in
             guard let self = self else { return }
-            if let date = date {
-                let dateString = self.viewModel.formatter.string(from: date)
-                self.entryDateTextField.text = dateString
-            }
-
-
+            self.entryDateTextField.text = self.viewModel.expenseDateText
         }).disposed(by: disposeBag)
 
-        viewModel.amount.asObservable().subscribe(onNext: { [weak self] amount in
+        viewModel.amount.asObservable().subscribe(onNext: { [weak self] _ in
             guard let self = self else { return }
-            if let amount = amount {
-                self.entryAmountTextField.text = "\(amount)"
-                return
-            } else {
-                self.entryAmountTextField.text = nil
-            }
+            self.entryAmountTextField.text = self.viewModel.expenseAmountText
         }).disposed(by: disposeBag)
         //image of reciept
     }
@@ -372,6 +362,7 @@ final class AddEntryViewController: UIViewController {
         let textField = UITextField()
         textField.placeholder = "0.00"
         textField.delegate = self
+        textField.keyboardType = .numberPad
         return textField
     }()
 
@@ -472,48 +463,21 @@ final class AddEntryViewController: UIViewController {
 //    }
 //}
 
-//extension AddEntryViewController: UITextFieldDelegate {
-//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//
-//        if textField == entryAmountTextField {
-//
-//            let formatter = NumberFormatter()
-//            formatter.minimumFractionDigits = 2
-//            formatter.maximumFractionDigits = 2
-//
-//            if !string.isEmpty {
-//                amountTypedString += string
-//                let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
-//                //let numbString = NSString(format:"%.2f", decNumber) as String
-//                let newString = formatter.string(from: decNumber)!
-//                //let newString = "$" + numbString
-//                textField.text = newString
-//            } else {
-//                amountTypedString = String(amountTypedString.dropLast())
-//                if !amountTypedString.isEmpty {
-//
-//                    let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
-//
-//                    let newString = formatter.string(from: decNumber)!
-//                    textField.text = newString
-//                } else {
-//                    textField.text = "0.00"
-//                }
-//
-//            }
-//        }
-//
-//
-//        return false
-//
-//    }
-//
-//    func textFieldShouldClear(_ textField: UITextField) -> Bool {
-//        amountTypedString = ""
-//        return true
-//    }
-//
-//}
+extension AddEntryViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == entryAmountTextField {
+            viewModel.updateAmount(string: string)
+        }
+        
+        return false
+    }
+
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        viewModel.amountTypedString = ""
+        return true
+    }
+
+}
 
 
 extension AddEntryViewController: UIPickerViewDataSource, UIPickerViewDelegate {

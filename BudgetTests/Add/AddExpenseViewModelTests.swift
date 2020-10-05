@@ -41,10 +41,15 @@ class AddExpenseViewModelTests: XCTestCase {
 
     func testPropertiesWithNoExpense() {
         viewModel.expense = nil
-        XCTAssertEqual(viewModel.screenTitleText, "edit entry")
-        XCTAssertEqual(viewModel.expenseNameText, "edit entry")
-        XCTAssertEqual(viewModel.expenseAmountText, "edit entry")
-        XCTAssertEqual(viewModel.expenseDateText, "edit entry")
+        XCTAssertEqual(viewModel.screenTitleText, "Add")
+        XCTAssertEqual(viewModel.expenseNameText, nil)
+        XCTAssertEqual(viewModel.expenseAmountText, nil)
+        XCTAssertEqual(viewModel.expenseDateText, nil)
         //XCTAssertEqual(viewModel.remainingBalanceNumberText, "$5000.00")
+    }
+
+    func testConvertAmountNumber() {
+        viewModel.updateAmount(string: "4565")
+        XCTAssertEqual(viewModel.expenseAmountText, "45.65")
     }
 }

@@ -37,9 +37,23 @@ final class AddExpenseViewModel: NSObject {
         }
     }
 
+    var expenseNameText: String? {
+        return name.value
+    }
+
+    var expenseDateText: String? {
+        if let date = date.value {
+            let dateString = formatter.string(from: date)
+            return dateString
+        } else {
+            return nil
+        }
+    }
+
+
     var expenseAmountText: String? {
-        if let expense = expense {
-            return "\(expense.amount)"
+        if let amount = amount.value, amount != 0 {
+            return "\(amount)"
         } else {
             return nil
         }
@@ -70,6 +84,27 @@ final class AddExpenseViewModel: NSObject {
         fetchCategories()
     }
 
+    func updateAmount(string: String) {
+        let formatter = NumberFormatter()
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 2
+        if !string.isEmpty {
+            amountTypedString += string
+            let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
+            let newString = formatter.string(from: decNumber)!
+            amount.accept(Double(newString))
+        } else {
+            amountTypedString = String(amountTypedString.dropLast())
+            if !amountTypedString.isEmpty {
+                let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
+                let newString = formatter.string(from: decNumber)!
+                amount.accept(Double(newString))
+            } else {
+                amount.accept(0.0)
+            }
+        }
+    }
+
     private func setupWithExpense(_ expense: Expense?) {
         self.expense = expense
         self.name.accept(expense?.name)
@@ -80,6 +115,7 @@ final class AddExpenseViewModel: NSObject {
     private func fetchCategories() {
         let categories = dependency.budgetController.readCategories()
         self.categories = categories
+        print(categories.count, "herer")
     }
 
     private func fetchRecieptImage() {
