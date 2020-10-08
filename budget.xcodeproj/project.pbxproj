@@ -60,6 +60,9 @@
 		75CD181522C5DD6B00E2FB12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75CD181422C5DD6B00E2FB12 /* Assets.xcassets */; };
 		75CD181822C5DD6B00E2FB12 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75CD181622C5DD6B00E2FB12 /* LaunchScreen.storyboard */; };
 		75DE6496251FD2E40017DD1E /* UITextField+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DE6495251FD2E40017DD1E /* UITextField+Utilities.swift */; };
+		75DE6C28252D611D0017DD1E /* CategorySelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DE6C27252D611D0017DD1E /* CategorySelectionCell.swift */; };
+		75DE6C2C252D61C40017DD1E /* UIView+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DE6C2B252D61C40017DD1E /* UIView+Utilities.swift */; };
+		75DE6C30252D63820017DD1E /* CategorySelectionCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DE6C2F252D63820017DD1E /* CategorySelectionCellViewModel.swift */; };
 		75E0BD5C22CDA7DB00FE0F6C /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0BD5B22CDA7DB00FE0F6C /* MenuViewController.swift */; };
 		75E0BD6022CDB91600FE0F6C /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0BD5F22CDB91600FE0F6C /* MenuTableViewCell.swift */; };
 		75E0BD6222CDBCC000FE0F6C /* GlobalStuffs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0BD6122CDBCC000FE0F6C /* GlobalStuffs.swift */; };
@@ -149,6 +152,9 @@
 		75CD181422C5DD6B00E2FB12 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		75CD181722C5DD6B00E2FB12 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		75DE6495251FD2E40017DD1E /* UITextField+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Utilities.swift"; sourceTree = "<group>"; };
+		75DE6C27252D611D0017DD1E /* CategorySelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectionCell.swift; sourceTree = "<group>"; };
+		75DE6C2B252D61C40017DD1E /* UIView+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Utilities.swift"; sourceTree = "<group>"; };
+		75DE6C2F252D63820017DD1E /* CategorySelectionCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectionCellViewModel.swift; sourceTree = "<group>"; };
 		75E0BD5B22CDA7DB00FE0F6C /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		75E0BD5F22CDB91600FE0F6C /* MenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		75E0BD6122CDBCC000FE0F6C /* GlobalStuffs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalStuffs.swift; sourceTree = "<group>"; };
@@ -313,6 +319,8 @@
 				75BB936F22EAC77E002C57AF /* AddEntryTableViewCell.swift */,
 				75E32A352506BD0C00731D9C /* AddExpenseCoordinator.swift */,
 				75E32A37250704F900731D9C /* AddExpenseViewModel.swift */,
+				75DE6C27252D611D0017DD1E /* CategorySelectionCell.swift */,
+				75DE6C2F252D63820017DD1E /* CategorySelectionCellViewModel.swift */,
 			);
 			path = Add;
 			sourceTree = "<group>";
@@ -463,6 +471,7 @@
 				75ADCEC92495F96D00320593 /* UIViewController+extension.swift */,
 				756A643F23700E19000BCBF3 /* UIImage+Scaling.swift */,
 				75F2FB8123513C9F006007D8 /* Date+Utility.swift */,
+				75DE6C2B252D61C40017DD1E /* UIView+Utilities.swift */,
 			);
 			path = extension;
 			sourceTree = "<group>";
@@ -687,6 +696,7 @@
 			files = (
 				75B4D3BA22E9854E00438A7A /* ExpenseTableViewCell.swift in Sources */,
 				75373B4922ED842000113E81 /* ReceiptCollectionViewCell.swift in Sources */,
+				75DE6C28252D611D0017DD1E /* CategorySelectionCell.swift in Sources */,
 				75ADCECA2495F96D00320593 /* UIViewController+extension.swift in Sources */,
 				75AEC11C22E3E2480006A057 /* MonthView.swift in Sources */,
 				7514AEE8238B366000D9D436 /* SearchExpensesViewController.swift in Sources */,
@@ -695,6 +705,7 @@
 				75BCC2CB234A9175001CA01A /* BudgetCalculator.swift in Sources */,
 				75373B7D22F4085500113E81 /* EditIncomeView.swift in Sources */,
 				75AEC12022E409DE0006A057 /* WeekdayView.swift in Sources */,
+				75DE6C30252D63820017DD1E /* CategorySelectionCellViewModel.swift in Sources */,
 				75AEC11E22E3E2700006A057 /* CalendarView.swift in Sources */,
 				75CB81012504BA5600F511B0 /* HomeCategoryCellViewModel.swift in Sources */,
 				75ADCEA92491DE4000320593 /* Category.swift in Sources */,
@@ -725,6 +736,7 @@
 				75ADCEA52491DBDF00320593 /* Income.swift in Sources */,
 				75ADCEC02495F41000320593 /* FontPalette.swift in Sources */,
 				75E0BD6422CDC63500FE0F6C /* DetailsViewController.swift in Sources */,
+				75DE6C2C252D61C40017DD1E /* UIView+Utilities.swift in Sources */,
 				75AEC12422E446600006A057 /* SegueDirection.swift in Sources */,
 				756A644023700E19000BCBF3 /* UIImage+Scaling.swift in Sources */,
 				75AEC12B22E577590006A057 /* AddEntryViewController.swift in Sources */,

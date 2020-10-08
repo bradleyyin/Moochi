@@ -143,7 +143,6 @@ class TabBarController: UITabBarController {
 
     //MARK: Actions
     @objc func tabButtonTapped(sender: UIButton) {
-        print(sender.tag)
         didSelect(index: sender.tag, isCurrentTab: self.selectedIndex == sender.tag)
         self.selectedIndex = sender.tag
     }

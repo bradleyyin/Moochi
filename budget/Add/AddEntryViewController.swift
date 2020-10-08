@@ -89,6 +89,12 @@ final class AddEntryViewController: UIViewController {
             guard let self = self else { return }
             self.entryAmountTextField.text = self.viewModel.expenseAmountText
         }).disposed(by: disposeBag)
+
+        viewModel.category.asObservable().subscribe(onNext: { [weak self] _ in
+            guard let self = self else { return }
+            self.categoryCollectionView.reloadData()
+            self.selectedCategoryLabel.text = self.viewModel.expenseCategoryText
+        }).disposed(by: disposeBag)
         //image of reciept
     }
 
@@ -174,16 +180,16 @@ final class AddEntryViewController: UIViewController {
         }
 
         categoryCollectionView.snp.makeConstraints { (make) in
-            make.leading.equalTo(entryCategoryLabel)
+            make.leading.equalTo(entryCategoryLabel).offset(-4)
             make.trailing.equalToSuperview()
-            make.top.equalTo(entryCategoryLabel.snp.bottom).offset(16)
-            make.height.equalTo(56)
+            make.top.equalTo(entryCategoryLabel.snp.bottom)
+            make.height.equalTo(88)
         }
 
         entryCategorySeparator.snp.makeConstraints { (make) in
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(1)
-            make.top.equalTo(categoryCollectionView.snp.bottom).offset(16)
+            make.top.equalTo(categoryCollectionView.snp.bottom)
         }
 
         noteLabel.snp.makeConstraints { (make) in
@@ -194,14 +200,14 @@ final class AddEntryViewController: UIViewController {
         noteTextView.snp.makeConstraints { (make) in
             make.leading.equalTo(entryNameTextField)
             make.top.equalTo(noteLabel)
-            make.height.equalTo(100) //dynamic later
+            make.height.equalTo(74) //dynamic later
             make.trailing.equalToSuperview().inset(8)
         }
 
         noteSeparator.snp.makeConstraints { (make) in
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(1)
-            make.top.equalTo(noteLabel.snp.bottom).offset(16)
+            make.top.equalTo(noteTextView.snp.bottom).offset(16)
         }
 
         recieptLabel.snp.makeConstraints { (make) in
@@ -390,6 +396,7 @@ final class AddEntryViewController: UIViewController {
 
     private lazy var entryCategoryLabel: UILabel = {
         let label = UILabel()
+        label.text = "Entry Category"
         return label
     }()
 
@@ -401,8 +408,13 @@ final class AddEntryViewController: UIViewController {
     private lazy var categoryCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumInteritemSpacing = 8
+        layout.minimumInteritemSpacing = 0
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        view.register(CategorySelectionCell.self, forCellWithReuseIdentifier: "categoryCell")
+        view.delegate = self
+        view.dataSource = self
+        view.showsHorizontalScrollIndicator = false
+        view.backgroundColor = .white
         return view
     }()
 
@@ -414,6 +426,7 @@ final class AddEntryViewController: UIViewController {
 
     private lazy var noteLabel: UILabel = {
         let label = UILabel()
+        label.text = "Notes"
         return label
     }()
 
@@ -482,6 +495,26 @@ extension AddEntryViewController: UITextFieldDelegate {
 
 }
 
+extension AddEntryViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModel.categories.count + 1
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "categoryCell", for: indexPath) as! CategorySelectionCell
+        let cellViewModel = viewModel.viewModelForCell(at: indexPath)
+        cell.setupWith(viewModel: cellViewModel)
+        return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.selectCategory(at: indexPath)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 92, height: 88)
+    }
+}
 
 extension AddEntryViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -491,23 +524,4 @@ extension AddEntryViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         6
     }
-    
-    
-//    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-//        return categorypickerData.count
-//    }
-//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-//        return 1
-//    }
-//
-//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-//        return categorypickerData[row].uppercased()
-//    }
-//    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-//        return 200
-//    }
-//    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-//        selectedCategory = categorypickerData[row]
-//    }
-    
 }

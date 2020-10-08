@@ -24,10 +24,9 @@ final class AddExpenseViewModel: NSObject {
 
     var expense: Expense?
     var categories: [Category] = []
-    var selectedCategory: String = "uncategorized"
+
     //var date: Date?
     var amountTypedString = ""
-
     //String
     var screenTitleText: String {
         if expense != nil  {
@@ -55,6 +54,14 @@ final class AddExpenseViewModel: NSObject {
             return "\(amount)"
         } else {
             return nil
+        }
+    }
+
+    var expenseCategoryText: String? {
+        if let category = category.value {
+            return "\(category.name)"
+        } else {
+            return "Uncategorized"
         }
     }
 
@@ -108,6 +115,28 @@ final class AddExpenseViewModel: NSObject {
         self.date.accept(date)
     }
 
+    func selectCategory(at indexPath: IndexPath) {
+        if indexPath.row == 0 {
+            self.category.accept(nil)
+        } else {
+            let adjustedIndex = indexPath.row - 1
+            let category = categories[adjustedIndex]
+            self.category.accept(category)
+        }
+    }
+
+    func viewModelForCell(at indexPath: IndexPath) -> CategorySelectionCellViewModel {
+        if indexPath.row == 0 {
+            let viewModel = CategorySelectionCellViewModel(category: nil, isSelected: self.category.value == nil)
+            return viewModel
+        } else {
+            let adjustedIndex = indexPath.row - 1
+            let category = categories[adjustedIndex]
+            let viewModel = CategorySelectionCellViewModel(category: category, isSelected: category == self.category.value)
+            return viewModel
+        }
+    }
+
     private func setupWithExpense(_ expense: Expense?) {
         self.expense = expense
         self.name.accept(expense?.name)
@@ -118,7 +147,9 @@ final class AddExpenseViewModel: NSObject {
     private func fetchCategories() {
         let categories = dependency.budgetController.readCategories()
         self.categories = categories
-        print(categories.count, "herer")
+//        dependency.budgetController.createCategory(name: "Travel", totalAmount: 500, isGoal: false)
+//        dependency.budgetController.createCategory(name: "Game", totalAmount: 200, isGoal: false)
+//        dependency.budgetController.createCategory(name: "Japan", totalAmount: 300, isGoal: true)
     }
 
     private func fetchRecieptImage() {
