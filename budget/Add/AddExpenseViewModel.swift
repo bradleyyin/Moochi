@@ -21,6 +21,7 @@ final class AddExpenseViewModel: NSObject {
     let amount = BehaviorRelay<Double?>(value: nil)
     let date = BehaviorRelay<Date?>(value: nil)
     let category = BehaviorRelay<Category?>(value: nil)
+    let note = BehaviorRelay<String?>(value: nil)
 
     var expense: Expense?
     var categories: [Category] = []
@@ -69,13 +70,11 @@ final class AddExpenseViewModel: NSObject {
         return expense?.parentCategory
     }
 
-    var expenseNoteText: String? {
-        if let expense = expense {
-            let dateString = formatter.string(from: expense.date)
-            return dateString
-        } else {
-            return nil
-        }
+    var noteHeight: CGFloat {
+        let emptySize = "note".boundingRect(with: CGSize(width: UIScreen.main.bounds.width - 189, height: CGFloat.greatestFiniteMagnitude), options: [.usesFontLeading, .usesLineFragmentOrigin], attributes: [NSAttributedString.Key.font: FontPalette.font(size: 17, fontType: .regular)], context: nil)
+        guard let note = note.value else { return emptySize.height }
+        let estimatedSize = note.boundingRect(with: CGSize(width: UIScreen.main.bounds.width - 189, height: CGFloat.greatestFiniteMagnitude), options: [.usesFontLeading, .usesLineFragmentOrigin], attributes: [NSAttributedString.Key.font: FontPalette.font(size: 17, fontType: .regular)], context: nil)
+        return min(estimatedSize.height, 100)
     }
 
     init(expense: Expense?, dependency: Dependency) {
@@ -115,6 +114,10 @@ final class AddExpenseViewModel: NSObject {
         self.date.accept(date)
     }
 
+    func updateNote(_ note: String) {
+        self.note.accept(note)
+    }
+
     func selectCategory(at indexPath: IndexPath) {
         if indexPath.row == 0 {
             self.category.accept(nil)
@@ -142,6 +145,7 @@ final class AddExpenseViewModel: NSObject {
         self.name.accept(expense?.name)
         self.amount.accept(expense?.amount)
         self.date.accept(expense?.date)
+        self.note.accept(expense?.note)
     }
 
     private func fetchCategories() {

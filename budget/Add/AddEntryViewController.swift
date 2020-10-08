@@ -64,6 +64,7 @@ final class AddEntryViewController: UIViewController {
         setupConstraint()
         setupBinding()
         setupDatePicker()
+        setupTapToDismissKeyBoard()
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -94,6 +95,16 @@ final class AddEntryViewController: UIViewController {
             guard let self = self else { return }
             self.categoryCollectionView.reloadData()
             self.selectedCategoryLabel.text = self.viewModel.expenseCategoryText
+        }).disposed(by: disposeBag)
+
+        viewModel.note.asObservable().subscribe(onNext: { [weak self] _ in
+            guard let self = self else { return }
+            self.noteTextView.snp.remakeConstraints { (make) in
+                make.leading.equalTo(self.entryNameTextField)
+                make.top.equalTo(self.noteLabel)
+                make.height.equalTo(self.viewModel.noteHeight) //dynamic later
+                make.trailing.equalToSuperview().inset(8)
+            }
         }).disposed(by: disposeBag)
         //image of reciept
     }
@@ -223,6 +234,12 @@ final class AddEntryViewController: UIViewController {
         }
     }
 
+    private func setupTapToDismissKeyBoard() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(viewTappedToDismissKeyboard))
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(tap)
+    }
+
     private func loadCategories() {
         //categories = budgetController.readCategories()
     }
@@ -278,6 +295,10 @@ final class AddEntryViewController: UIViewController {
     }
     @objc func cancelTapped() {
         dismiss(animated: true, completion: nil)
+    }
+
+    @objc func viewTappedToDismissKeyboard() {
+        view.endEditing(true)
     }
     
     func setupDatePicker() {
@@ -432,6 +453,12 @@ final class AddEntryViewController: UIViewController {
 
     private lazy var noteTextView: UITextView = {
         let view = UITextView()
+        view.delegate = self
+        view.text = "Notes"
+        view.textColor = .gray
+        view.textContainer.lineFragmentPadding = 0
+        view.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        view.font = FontPalette.font(size: 17, fontType: .regular)
         return view
     }()
 
@@ -513,6 +540,26 @@ extension AddEntryViewController: UICollectionViewDelegate, UICollectionViewData
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 92, height: 88)
+    }
+}
+
+extension AddEntryViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        viewModel.updateNote(textView.text)
+    }
+
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == "Notes" {
+            textView.text = nil
+            textView.textColor = .black
+        }
+    }
+
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "Notes"
+            textView.textColor = .gray
+        }
     }
 }
 
