@@ -71,9 +71,9 @@ final class AddExpenseViewModel: NSObject {
     }
 
     var noteHeight: CGFloat {
-        let emptySize = "note".boundingRect(with: CGSize(width: UIScreen.main.bounds.width - 189, height: CGFloat.greatestFiniteMagnitude), options: [.usesFontLeading, .usesLineFragmentOrigin], attributes: [NSAttributedString.Key.font: FontPalette.font(size: 17, fontType: .regular)], context: nil)
+        let emptySize = "note".boundingRect(with: CGSize(width: UIScreen.main.bounds.width - 189, height: CGFloat.greatestFiniteMagnitude), options: [.usesFontLeading, .usesLineFragmentOrigin], attributes: [NSAttributedString.Key.font: FontPalette.font(size: 17, fontType: .light)], context: nil)
         guard let note = note.value else { return emptySize.height }
-        let estimatedSize = note.boundingRect(with: CGSize(width: UIScreen.main.bounds.width - 189, height: CGFloat.greatestFiniteMagnitude), options: [.usesFontLeading, .usesLineFragmentOrigin], attributes: [NSAttributedString.Key.font: FontPalette.font(size: 17, fontType: .regular)], context: nil)
+        let estimatedSize = note.boundingRect(with: CGSize(width: UIScreen.main.bounds.width - 189, height: CGFloat.greatestFiniteMagnitude), options: [.usesFontLeading, .usesLineFragmentOrigin], attributes: [NSAttributedString.Key.font: FontPalette.font(size: 17, fontType: .light)], context: nil)
         return min(estimatedSize.height, 100)
     }
 

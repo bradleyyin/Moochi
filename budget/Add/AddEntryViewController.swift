@@ -496,7 +496,7 @@ final class AddEntryViewController: UIViewController {
         view.textColor = .gray
         view.textContainer.lineFragmentPadding = 0
         view.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        view.font = FontPalette.font(size: 17, fontType: .regular)
+        view.font = FontPalette.font(size: 17, fontType: .light)
         return view
     }()
 

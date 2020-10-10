@@ -11,10 +11,10 @@ import UIKit
 
 public struct FontPalette {
     public enum FontType: String {
-        case lightItalic = "Montserrat-LightItalic"
-        case medium = "Montserrat-Medium"
-        case regular = "Montserrat-Regular"
-        case semiBold = "Montserrat-SemiBold"
+        case light = "SFCompactText-Light"
+        case medium = "SFCompactText-Medium"
+        //case regular = "Montserrat-Regular"
+        case semiBold = "SFCompactText-Semibold"
     }
 
     public static func attrString(text: String?, characterSpacing: CGFloat, lineHeight: CGFloat, fontSize: CGFloat, fontType: FontType, textColor: UIColor) -> NSAttributedString {

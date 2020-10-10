@@ -26,6 +26,7 @@ class AppCoordinator: Coordinator {
 
     private var tabBarController: TabBarController?
     private var homeCoordinator: HomeCoordinator?
+    private var detailsCoordinator: DetailsCoordinator?
 
     private let disposeBag = DisposeBag()
 
@@ -59,11 +60,13 @@ class AppCoordinator: Coordinator {
     func startMain() {
             if tabBarController == nil {
                 let home = HomeCoordinator(with: presenter, dependency: dependency)
+                let details = DetailsCoordinator(with: presenter, dependency: dependency)
                 let add = AddExpenseCoordinator(with: presenter, dependency: dependency)
                 
                 homeCoordinator = home
+                detailsCoordinator = details
 
-                let tabBar = TabBarController(viewControllers: [home.homeViewController, UIViewController(), UIViewController(), UIViewController(), UIViewController()])
+                let tabBar = TabBarController(viewControllers: [home.homeViewController, details.detailsViewController, UIViewController(), UIViewController(), UIViewController()])
                 tabBar.actionDelegate = self
                 tabBarController = tabBar
 
