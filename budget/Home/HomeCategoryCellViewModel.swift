@@ -20,7 +20,7 @@ final class HomeCategoryCellViewModel {
     }
 
     var icon: UIImage? {
-        return UIImage(named: "cart")
+        return UIImage(named: "category_cart")
     }
 
     var remainingMoneyText: String {

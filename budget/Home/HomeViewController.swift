@@ -168,13 +168,13 @@ class HomeViewController: UIViewController {
     //MARK: UI
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
-        label.font = FontPalette.font(size: 30, fontType: .regular)
+        label.font = FontPalette.font(size: 30, fontType: .light)
         return label
     }()
     
     private lazy var remainingBalanceLabel: UILabel = {
         let label = UILabel()
-        label.font = FontPalette.font(size: 14, fontType: .regular)
+        label.font = FontPalette.font(size: 14, fontType: .light)
         label.textColor = UIColor.black.withAlphaComponent(0.5)
         label.text = "Remaining Balance"
         return label
@@ -182,7 +182,7 @@ class HomeViewController: UIViewController {
     
     private lazy var remainingBalanceNumberLabel: UILabel = {
         let label = UILabel()
-        label.font = FontPalette.font(size: 40, fontType: .regular)
+        label.font = FontPalette.font(size: 40, fontType: .light)
         label.textAlignment = .center
         return label
     }()

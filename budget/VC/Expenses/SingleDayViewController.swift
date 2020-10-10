@@ -111,11 +111,11 @@ class SingleDayViewController: UIViewController {
     }
     
     @objc func showVC() {
-        let addEntryVC = AddEntryViewController()
-        addEntryVC.date = date
+        //let addEntryVC = AddEntryViewController()
+        //addEntryVC.date = date
         //addEntryVC.budgetController = budgetController
-        addEntryVC.modalPresentationStyle = .fullScreen
-        present(addEntryVC, animated: true)
+        //addEntryVC.modalPresentationStyle = .fullScreen
+        //present(addEntryVC, animated: true)
     }
 }
 

@@ -9,298 +9,275 @@
 //swiftlint:disable function_body_length
 
 import UIKit
-import CoreData
+import RxSwift
 
-class AddEntryViewController: UIViewController {
-    
-    var imageView: UIImageView!
-    var nameLabel: UILabel!
-    var nameTextField: UITextField!
-    var amountLabel: UILabel!
-    var amountTextField: UITextField!
-    var dateLabel: UILabel!
-    var dateTextField: UITextField!
-    var categoryLabel: UILabel!
-    var categoryTextField: UITextField!
-    var cancelButton: UIButton!
-    var checkButton: UIButton!
-    var screenTitleLabel: UILabel!
-    
-    var imagePicker: UIImagePickerController!
-    var budgetController: BudgetController!
-    var datePicker: UIDatePicker!
-    var categoryPicker: UIPickerView!
-    let formatter = DateFormatter()
-    var expense: Expense?
+protocol AddEntryViewControllerDelegate: class {
+    func didTapClose()
+}
 
-    var selectedCategory: String = "uncategorized"
-    
-    var date: Date?
-    var amountTypedString = ""
-    
+final class AddEntryViewController: UIViewController {
+    typealias Dependency = HasBudgetController & HasBudgetCalculator & HasMonthCalculator
 
+    private let dependency: Dependency
+    private let disposeBag = DisposeBag()
+
+    private var viewModel: AddExpenseViewModel
+    weak var delegate: AddEntryViewControllerDelegate?
+
+    init(expense: Expense?, dependency: Dependency) {
+        self.dependency = dependency
+        self.viewModel = AddExpenseViewModel(expense: expense, dependency: dependency)
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
-       
-        formatter.dateFormat = "MM/dd/yyyy"
         super.viewDidLoad()
-        setupUI()
-        updateViews()
+        view.backgroundColor = .white
         loadCategories()
-        self.datePicker = UIDatePicker()
-        self.categoryPicker = UIPickerView()
-        categoryPicker.delegate = self
-        categoryPicker.dataSource = self
-        showCategoryPicker()
-        showDatePicker()
+        //self.categoryPicker = UIPickerView()
+        //categoryPicker.delegate = self
+        //categoryPicker.dataSource = self
+        //showCategoryPicker()
 
+        view.addSubview(closeButton)
+        view.addSubview(checkButton)
+        view.addSubview(titleLabel)
+        view.addSubview(entryNameLabel)
+        view.addSubview(entryNameTextField)
+        view.addSubview(entryNameSeparator)
+        view.addSubview(entryAmountLabel)
+        view.addSubview(entryAmountTextField)
+        view.addSubview(entryAmountSeparator)
+        view.addSubview(entryDateLabel)
+        view.addSubview(entryDateTextField)
+        view.addSubview(entryDateSeparator)
+        view.addSubview(entryCategoryLabel)
+        view.addSubview(selectedCategoryLabel)
+        view.addSubview(categoryCollectionView)
+        view.addSubview(entryCategorySeparator)
+        view.addSubview(noteLabel)
+        view.addSubview(noteTextView)
+        view.addSubview(noteSeparator)
+        view.addSubview(recieptLabel)
+        view.addSubview(recieptInstructionLabel)
+        view.addSubview(recieptIconImageView)
+        view.addSubview(recieptImageView)
+        view.addSubview(deleteIconImageView)
         // Do any additional setup after loading the view.
+
+        setupConstraint()
+        setupBinding()
+        setupDatePicker()
+        setupTapToDismissKeyBoard()
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("view did appear")
-        self.imagePicker = UIImagePickerController()
-        self.imagePicker.delegate = self
-        self.imagePicker.allowsEditing = false
+        //self.imagePicker = UIImagePickerController()
+        //self.imagePicker.delegate = self
+        //self.imagePicker.allowsEditing = false
     }
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        setupUIColor()
-    }
-    private func updateViews() {
-        guard let expense = expense else {
-            screenTitleLabel.text = "add an entry".uppercased()
-            return
-        }
-        screenTitleLabel.text = "edit entry".uppercased()
-        nameTextField.text = expense.name
-        amountTextField.text = String(format: "%.2f", expense.amount)
-        if let categoryName = expense.parentCategory?.name {
-            categoryTextField.text = categoryName
-        } else {
-            categoryTextField.text = "uncategorized".uppercased()
-        }
-        loadImage()
-    }
-    func loadImage() {
-        guard let expense = expense else { return }
-        
-        if let filePathComponent = expense.imagePath {
-            print(filePathComponent)
-            let fm = FileManager.default
-            guard let dir = fm.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
-            
-            let filePath = dir.appendingPathComponent(filePathComponent).path
-            
-            if FileManager.default.fileExists(atPath: filePath) {
-                
-                imageView.image = UIImage(contentsOfFile: filePath)
-                imageView.contentMode = .scaleAspectFill
-                imageView.clipsToBounds = true
-            }
-        } else {
-            imageView.image = UIImage(named: "addImage")
-        }
-    }
-    private func setupUIColor() {
-        if traitCollection.userInterfaceStyle == .light {
-            self.view.backgroundColor = .white
-            nameLabel.textColor = .black
-            nameTextField.textColor = .black
-            nameTextField.setBottomBorder()
-            dateLabel.textColor = .black
-            dateTextField.textColor = .black
-            dateTextField.setBottomBorder()
-            categoryLabel.textColor = .black
-            categoryTextField.textColor = .black
-            categoryTextField.setBottomBorder()
-            amountLabel.textColor = .black
-            amountTextField.textColor = .black
-            amountTextField.setBottomBorder()
-            checkButton.tintColor = .black
-            cancelButton.tintColor = .black
-        } else {
-            self.view.backgroundColor = .black
-            nameLabel.textColor = .white
-            nameTextField.textColor = .white
-            nameTextField.setBottomBorder(withColor: .white)
-            dateLabel.textColor = .white
-            dateTextField.textColor = .white
-            dateTextField.setBottomBorder(withColor: .white)
-            categoryLabel.textColor = .white
-            categoryTextField.textColor = .white
-            categoryTextField.setBottomBorder(withColor: .white)
-            amountLabel.textColor = .white
-            amountTextField.textColor = .white
-            amountTextField.setBottomBorder(withColor: .white)
-            checkButton.tintColor = .white
-            cancelButton.tintColor = .white
-        }
-    }
-    private func setupUI() {
-        let label = TitleLabel()
-        label.textAlignment = .left
-        self.view.addSubview(label)
-        label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50 * heightRatio - buttonHeight / 2).isActive = true
-        label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-                
-        self.screenTitleLabel = label
-        
-        label.widthAnchor.constraint(equalToConstant: screenWidth * 3 / 4).isActive = true
-        
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(button)
-        button.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -10).isActive = true
-        button.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
-        button.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
-        button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
-        button.setImage(UIImage(named: "checkMark")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        button.addTarget(self, action: #selector(checkMarkTapped), for: .touchUpInside)
-        checkButton = button
-        
-        let button2 = UIButton()
-        button2.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(button2)
-        button2.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -10).isActive = true
-        button2.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
-        button2.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
-        button2.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50 * heightRatio - buttonHeight / 2).isActive = true
-        button2.setImage(UIImage(named: "cancel")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        button2.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
-        cancelButton = button2
 
-        let nameLabel = UILabel()
-        nameLabel.text = "NAME"
-        nameLabel.font = UIFont(name: fontName, size: 20)
-        nameLabel.adjustsFontSizeToFitWidth = true
-        nameLabel.minimumScaleFactor = 0.3
-        nameLabel.backgroundColor = .clear
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.nameLabel = nameLabel
-        
-        let nameTextField = UITextField()
-        nameTextField.autocorrectionType = .no
-        nameTextField.translatesAutoresizingMaskIntoConstraints = false
-        self.nameTextField = nameTextField
-        
-        let amountLabel = UILabel()
-        amountLabel.text = "AMOUNT"
-        amountLabel.font = UIFont(name: fontName, size: 20)
-        amountLabel.adjustsFontSizeToFitWidth = true
-        amountLabel.minimumScaleFactor = 0.3
-        self.amountLabel = amountLabel
-        
-        let amountTextField = UITextField()
-        amountTextField.text = "0.00"
-        amountTextField.delegate = self
-        amountTextField.keyboardType = .numberPad
-        self.amountTextField = amountTextField
-        addToolBarNameAndAmount()
-        
-        let dateLabel = UILabel()
-        dateLabel.text = "DATE"
-        dateLabel.font = UIFont(name: fontName, size: 20)
-        dateLabel.adjustsFontSizeToFitWidth = true
-        dateLabel.minimumScaleFactor = 0.3
-        self.dateLabel = dateLabel
-        
-        let dateTextField = UITextField()
-        if let date = date {
-            dateTextField.text = formatter.string(from: date)
-        } else {
-            dateTextField.text = formatter.string(from: Date())
-        }
-        self.dateTextField = dateTextField
-        
-        let categoryLabel = UILabel()
-        categoryLabel.text = "CATEGORY"
-        categoryLabel.font = UIFont(name: fontName, size: 20)
-        categoryLabel.textColor = .black
-        //categoryLabel.adjustsFontSizeToFitWidth = true
-        //categoryLabel.minimumScaleFactor = 0.3
-        categoryLabel.translatesAutoresizingMaskIntoConstraints = false
-        categoryLabel.widthAnchor.constraint(equalToConstant: screenWidth * 3 / 10).isActive = true
-        self.categoryLabel = categoryLabel
-        
-        let categoryTextField = UITextField()
-        categoryTextField.textColor =  .black
-        categoryTextField.text = "UNCATEGORIZED"
-        self.categoryTextField = categoryTextField
-        
-        
-        let nameStackView = UIStackView(arrangedSubviews: [nameLabel, nameTextField])
-        nameStackView.axis = .horizontal
-        nameStackView.distribution = .fill
-        nameStackView.alignment = .fill
-        nameStackView.spacing = 16
-        
-        let amountStackView = UIStackView(arrangedSubviews: [amountLabel, amountTextField])
-        amountStackView.axis = .horizontal
-        amountStackView.distribution = .fill
-        amountStackView.alignment = .fill
-        amountStackView.spacing = 16.0
-        
-        let dateStackView = UIStackView(arrangedSubviews: [dateLabel, dateTextField])
-        dateStackView.axis = .horizontal
-        dateStackView.distribution = .fill
-        dateStackView.alignment = .fill
-        dateStackView.spacing = 16.0
-        
-        let categoryStackView = UIStackView(arrangedSubviews: [categoryLabel, categoryTextField])
-        categoryStackView.axis = .horizontal
-        categoryStackView.distribution = .fill
-        categoryStackView.alignment = .fill
-        categoryStackView.spacing = 16.0
-        
-        let totalStackView = UIStackView(arrangedSubviews: [nameStackView, amountStackView, dateStackView, categoryStackView])
-        totalStackView.axis = .vertical
-        totalStackView.distribution = .fillEqually
-        totalStackView.alignment = .fill
-        totalStackView.spacing = 40 * heightRatio
-        totalStackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        amountTextField.leadingAnchor.constraint(equalTo: categoryTextField.leadingAnchor).isActive = true
-        nameTextField.leadingAnchor.constraint(equalTo: categoryTextField.leadingAnchor).isActive = true
-        dateTextField.leadingAnchor.constraint(equalTo: categoryTextField.leadingAnchor).isActive = true
-        
-        self.view.addSubview(totalStackView)
-        
-        totalStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        totalStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        
-        totalStackView.topAnchor.constraint(equalTo: button2.bottomAnchor, constant: 20 * heightRatio).isActive = true
-        
-        
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(imageView)
-        imageView.topAnchor.constraint(equalTo: totalStackView.bottomAnchor, constant: 30 * heightRatio).isActive = true
-        imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: 300 * heightRatio).isActive = true
-        imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
-        
-        imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100 * heightRatio).isActive = true
-        
-        imageView.isUserInteractionEnabled = true
-        imageView.image = UIImage(named: "addImage")
-        imageView.contentMode = .center
-        imageView.backgroundColor = superLightGray
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
-        imageView.addGestureRecognizer(tapGesture)
-        
-        self.imageView = imageView
+    private func setupBinding() {
+        //expense
+        viewModel.name.asObservable().subscribe(onNext: { [weak self] _ in
+            guard let self = self else { return }
+            self.entryNameTextField.text = self.viewModel.expenseNameText
+        }).disposed(by: disposeBag)
+
+        viewModel.date.asObservable().subscribe(onNext: { [weak self] _ in
+            guard let self = self else { return }
+            self.entryDateTextField.text = self.viewModel.expenseDateText
+        }).disposed(by: disposeBag)
+
+        viewModel.amount.asObservable().subscribe(onNext: { [weak self] _ in
+            guard let self = self else { return }
+            self.entryAmountTextField.text = self.viewModel.expenseAmountText
+        }).disposed(by: disposeBag)
+
+        viewModel.category.asObservable().subscribe(onNext: { [weak self] _ in
+            guard let self = self else { return }
+            self.categoryCollectionView.reloadData()
+            self.selectedCategoryLabel.text = self.viewModel.expenseCategoryText
+        }).disposed(by: disposeBag)
+
+        viewModel.note.asObservable().subscribe(onNext: { [weak self] _ in
+            guard let self = self else { return }
+            self.noteTextView.snp.remakeConstraints { (make) in
+                make.leading.equalTo(self.entryNameTextField)
+                make.top.equalTo(self.noteLabel)
+                make.height.equalTo(self.viewModel.noteHeight) //dynamic later
+                make.trailing.equalToSuperview().inset(8)
+            }
+        }).disposed(by: disposeBag)
+        //image of reciept
     }
+
+    private func setupConstraint() {
+        closeButton.snp.makeConstraints { (make) in
+            make.height.width.equalTo(36)
+            make.leading.equalToSuperview().inset(8)
+            make.top.equalTo(top).inset(8)
+        }
+
+        titleLabel.snp.makeConstraints { (make) in
+            make.centerX.equalToSuperview()
+            make.centerY.equalTo(closeButton)
+        }
+
+        checkButton.snp.makeConstraints { (make) in
+            make.trailing.equalToSuperview().inset(8)
+            make.centerY.equalTo(closeButton)
+            make.height.width.equalTo(36)
+        }
+
+        entryNameLabel.snp.makeConstraints { (make) in
+            make.leading.equalToSuperview().inset(16)
+            make.top.equalTo(closeButton.snp.bottom).offset(20)
+            make.width.equalTo(90)
+        }
+
+        entryNameTextField.snp.makeConstraints { (make) in
+            make.leading.equalTo(entryNameLabel.snp.trailing).offset(67)
+            make.centerY.equalTo(entryNameLabel)
+            make.trailing.equalToSuperview().inset(8)
+        }
+
+        entryNameSeparator.snp.makeConstraints { (make) in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(1)
+            make.top.equalTo(entryNameLabel.snp.bottom).offset(16)
+        }
+
+        entryAmountLabel.snp.makeConstraints { (make) in
+            make.leading.equalToSuperview().inset(16)
+            make.top.equalTo(entryNameSeparator.snp.bottom).offset(16)
+        }
+
+        entryAmountTextField.snp.makeConstraints { (make) in
+            make.leading.equalTo(entryNameTextField)
+            make.centerY.equalTo(entryAmountLabel)
+            make.trailing.equalToSuperview().inset(8)
+        }
+
+        entryAmountSeparator.snp.makeConstraints { (make) in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(1)
+            make.top.equalTo(entryAmountLabel.snp.bottom).offset(16)
+        }
+
+        entryDateLabel.snp.makeConstraints { (make) in
+            make.leading.equalToSuperview().inset(16)
+            make.top.equalTo(entryAmountSeparator.snp.bottom).offset(16)
+        }
+
+        entryDateTextField.snp.makeConstraints { (make) in
+            make.leading.equalTo(entryNameTextField)
+            make.centerY.equalTo(entryDateLabel)
+            make.trailing.equalToSuperview().inset(8)
+        }
+
+        entryDateSeparator.snp.makeConstraints { (make) in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(1)
+            make.top.equalTo(entryDateLabel.snp.bottom).offset(16)
+        }
+
+        entryCategoryLabel.snp.makeConstraints { (make) in
+            make.leading.equalToSuperview().inset(16)
+            make.top.equalTo(entryDateSeparator.snp.bottom).offset(16)
+        }
+
+        selectedCategoryLabel.snp.makeConstraints { (make) in
+            make.leading.equalTo(entryNameTextField)
+            make.centerY.equalTo(entryCategoryLabel)
+            make.trailing.equalToSuperview().inset(8)
+        }
+
+        categoryCollectionView.snp.makeConstraints { (make) in
+            make.leading.equalTo(entryCategoryLabel).offset(-4)
+            make.trailing.equalToSuperview()
+            make.top.equalTo(entryCategoryLabel.snp.bottom)
+            make.height.equalTo(88)
+        }
+
+        entryCategorySeparator.snp.makeConstraints { (make) in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(1)
+            make.top.equalTo(categoryCollectionView.snp.bottom)
+        }
+
+        noteLabel.snp.makeConstraints { (make) in
+            make.leading.equalToSuperview().inset(16)
+            make.top.equalTo(entryCategorySeparator.snp.bottom).offset(16)
+        }
+
+        noteTextView.snp.makeConstraints { (make) in
+            make.leading.equalTo(entryNameTextField)
+            make.top.equalTo(noteLabel)
+            make.height.equalTo(74) //dynamic later
+            make.trailing.equalToSuperview().inset(8)
+        }
+
+        noteSeparator.snp.makeConstraints { (make) in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(1)
+            make.top.equalTo(noteTextView.snp.bottom).offset(16)
+        }
+
+        recieptLabel.snp.makeConstraints { (make) in
+            make.leading.equalToSuperview().inset(16)
+            make.top.equalTo(noteSeparator.snp.bottom).offset(16)
+        }
+
+        recieptImageView.snp.makeConstraints { (make) in
+            make.leading.equalTo(recieptLabel.snp.trailing).offset(16)
+            make.top.equalTo(recieptLabel)
+            make.trailing.equalToSuperview().inset(8)
+        }
+
+        recieptInstructionLabel.snp.makeConstraints { (make) in
+            make.leading.equalTo(entryNameTextField)
+            make.top.equalTo(recieptLabel)
+        }
+
+        recieptIconImageView.snp.makeConstraints { (make) in
+            make.top.equalTo(recieptLabel)
+            make.height.width.equalTo(22)
+            make.trailing.equalToSuperview().inset(16)
+        }
+
+        deleteIconImageView.snp.makeConstraints { (make) in
+            make.width.height.equalTo(24)
+            make.centerX.equalToSuperview()
+            make.top.equalTo(recieptImageView.snp.bottom).offset(24)
+            make.bottom.equalToSuperview().inset(16)
+        }
+    }
+
+    private func setupTapToDismissKeyBoard() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(viewTappedToDismissKeyboard))
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(tap)
+    }
+
     private func loadCategories() {
         //categories = budgetController.readCategories()
     }
+
+    //MARK: Action
     @objc func imageTapped() {
         let alertController = UIAlertController(title: "select source", message: nil, preferredStyle: .actionSheet)
-        
+
         let choseCam = UIAlertAction(title: "Camera", style: .default) { _ in
             self.imagePicker.sourceType = .camera
             self.present(self.imagePicker, animated: true)
         }
+
         let choseLibrary = UIAlertAction(title: "Photo", style: .default) { _ in
             self.imagePicker.sourceType = .photoLibrary
             self.present(self.imagePicker, animated: true)
@@ -312,48 +289,48 @@ class AddEntryViewController: UIViewController {
         alertController.addAction(choseLibrary)
         alertController.addAction(cancelAction)
         self.present(alertController, animated: true)
-        
     }
     @objc func checkMarkTapped() {
-        
-        guard let name = nameTextField.text, !name.isEmpty,
-            let amountString = amountTextField.text, let amount = Double(amountString),
-            let dateString = dateTextField.text,
-            let date = formatter.date(from: dateString) else { return }
-        
-        var image: UIImage? = imageView.image
-        if imageView.image == UIImage(named: "addImage") {
-            image = nil
-        }
-        var category: Category? = expense?.parentCategory
-        if categoryPicker.selectedRow(inComponent: 0) == 0 && category != nil && categoryTextField.text == "UNCATEGORIZED" {
-            category = nil
-        } else if categoryPicker.selectedRow(inComponent: 0) != 0 {
-            //category = categories[categoryPicker.selectedRow(inComponent: 0) - 1]
-        }
-        if let expense = expense {
-            budgetController.updateExpense(expense: expense, name: name, amount: amount, date: date, category: category, image: image)
-        } else {
-            budgetController.createNewExpense(name: name, amount: amount, date: date, category: category, image: image)
-        }
-        
-        NotificationCenter.default.post(name: Notification.Name("changedEntry"), object: nil)
-        dismiss(animated: true, completion: nil)
-        
-        
+//
+//        guard let name = nameTextField.text, !name.isEmpty,
+//            let amountString = amountTextField.text, let amount = Double(amountString),
+//            let dateString = dateTextField.text,
+//            let date = formatter.date(from: dateString) else { return }
+//
+//        var image: UIImage? = imageView.image
+//        if imageView.image == UIImage(named: "addImage") {
+//            image = nil
+//        }
+//        var category: Category? = expense?.parentCategory
+//        if categoryPicker.selectedRow(inComponent: 0) == 0 && category != nil && categoryTextField.text == "UNCATEGORIZED" {
+//            category = nil
+//        } else if categoryPicker.selectedRow(inComponent: 0) != 0 {
+//            //category = categories[categoryPicker.selectedRow(inComponent: 0) - 1]
+//        }
+//        if let expense = expense {
+//            budgetController.updateExpense(expense: expense, name: name, amount: amount, date: date, category: category, image: image)
+//        } else {
+//            budgetController.createNewExpense(name: name, amount: amount, date: date, category: category, image: image)
+//        }
+//
+//        NotificationCenter.default.post(name: Notification.Name("changedEntry"), object: nil)
+//        dismiss(animated: true, completion: nil)
+//
+//
     }
     @objc func cancelTapped() {
         dismiss(animated: true, completion: nil)
     }
+
+    @objc func viewTappedToDismissKeyboard() {
+        view.endEditing(true)
+    }
     
-    func showDatePicker() {
+    func setupDatePicker() {
         //format date
-        if let date = date {
+        if let date = viewModel.date.value {
             datePicker.date = date
         }
-        datePicker.datePickerMode = .date
-        datePicker.minimumDate = Date(timeIntervalSinceReferenceDate: 0)
-    
         
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
@@ -361,21 +338,8 @@ class AddEntryViewController: UIViewController {
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
         toolbar.setItems([cancelButton, space, doneButton], animated: false)
-        dateTextField.inputAccessoryView = toolbar
-        dateTextField.inputView = datePicker
-    }
-    func showCategoryPicker() {
-        
-        let toolbar = UIToolbar()
-        toolbar.sizeToFit()
-        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneCategoryPicker))
-        let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
-        toolbar.setItems([cancelButton, space, doneButton], animated: false)
-        categoryTextField.inputAccessoryView = toolbar
-        categoryTextField.inputView = categoryPicker
-        
-        
+        entryDateTextField.inputAccessoryView = toolbar
+        entryDateTextField.inputView = datePicker
     }
     
     func addToolBarNameAndAmount() {
@@ -385,25 +349,218 @@ class AddEntryViewController: UIViewController {
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
         toolbar.setItems([cancelButton, space, doneButton], animated: false)
-        amountTextField.inputAccessoryView = toolbar
-        nameTextField.inputAccessoryView = toolbar
-        
+        entryAmountTextField.inputAccessoryView = toolbar
+        entryNameTextField.inputAccessoryView = toolbar
     }
     
     @objc func doneDatePicker() {
-        
-        dateTextField.text = formatter.string(from: datePicker.date)
+        viewModel.updateDate(datePicker.date)
         self.view.endEditing(true)
     }
     
     @objc func cancelDatePicker() {
         self.view.endEditing(true)
     }
-    
-    @objc func doneCategoryPicker() {
-        categoryTextField.text = selectedCategory.uppercased()
-        self.view.endEditing(true)
+
+    @objc func closeButtonTapped() {
+        delegate?.didTapClose()
     }
+
+    @objc func checkButtonTapped() {
+        viewModel.confirmExpense()
+        delegate?.didTapClose()
+    }
+
+    @objc func deleteButtonTapped() {
+        viewModel.deleteExpense()
+        delegate?.didTapClose()
+    }
+
+    //MARK: UI
+    private lazy var closeButton: UIButton = {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
+        button.setImage(UIImage(named: "close"), for: .normal)
+        return button
+    }()
+
+    private lazy var checkButton: UIButton = {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(checkMarkTapped), for: .touchUpInside)
+        button.setImage(UIImage(named: "check"), for: .normal)
+        return button
+    }()
+
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = viewModel.screenTitleText
+        return label
+    }()
+
+    private lazy var entryNameLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Entry Name"
+        return label
+    }()
+
+    private lazy var entryNameTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Name"
+        return textField
+    }()
+
+    private lazy var entryNameSeparator: UIView = {
+        let view = UIView()
+        view.backgroundColor = ColorPalette.separatorGray.withAlphaComponent(0.3)
+        return view
+    }()
+
+    private lazy var entryAmountLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Entry Amount"
+        return label
+    }()
+
+    private lazy var entryAmountTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "0.00"
+        textField.delegate = self
+        textField.keyboardType = .numberPad
+        return textField
+    }()
+
+    private lazy var entryAmountSeparator: UIView = {
+        let view = UIView()
+        view.backgroundColor = ColorPalette.separatorGray.withAlphaComponent(0.3)
+        return view
+    }()
+
+    private lazy var entryDateLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Entry Date"
+        return label
+    }()
+
+    private lazy var entryDateTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = viewModel.formatter.string(from: Date())
+        return textField
+    }()
+
+    private lazy var entryDateSeparator: UIView = {
+        let view = UIView()
+        view.backgroundColor = ColorPalette.separatorGray.withAlphaComponent(0.3)
+        return view
+    }()
+
+    private lazy var entryCategoryLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Entry Category"
+        return label
+    }()
+
+    private lazy var selectedCategoryLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+
+    private lazy var categoryCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 0
+        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        view.register(CategorySelectionCell.self, forCellWithReuseIdentifier: "categoryCell")
+        view.delegate = self
+        view.dataSource = self
+        view.showsHorizontalScrollIndicator = false
+        view.backgroundColor = .white
+        return view
+    }()
+
+    private lazy var entryCategorySeparator: UIView = {
+        let view = UIView()
+        view.backgroundColor = ColorPalette.separatorGray.withAlphaComponent(0.3)
+        return view
+    }()
+
+    private lazy var noteLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Notes"
+        return label
+    }()
+
+    private lazy var noteTextView: UITextView = {
+        let view = UITextView()
+        view.delegate = self
+        view.text = "Notes"
+        view.textColor = .gray
+        view.textContainer.lineFragmentPadding = 0
+        view.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        view.font = FontPalette.font(size: 17, fontType: .light)
+        return view
+    }()
+
+    private lazy var noteSeparator: UIView = {
+        let view = UIView()
+        view.backgroundColor = ColorPalette.separatorGray.withAlphaComponent(0.3)
+        return view
+    }()
+
+    private lazy var recieptLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Receipt"
+        return label
+    }()
+
+    private lazy var recieptInstructionLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Tap to add a photo"
+        label.textColor = .gray
+        return label
+    }()
+
+    private lazy var recieptIconImageView: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "AddEntry_addPhotoIcon")
+        return view
+    }()
+
+    private lazy var deleteIconImageView: UIButton = {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        button.setImage(UIImage(named: "AddEntry_deleteIcon"), for: .normal)
+        return button
+    }()
+
+    private lazy var recieptImageView: UIImageView = {
+        let view = UIImageView()
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(tapImageViewGesture)
+        return view
+    }()
+
+    private lazy var tapImageViewGesture: UIGestureRecognizer = {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+        return tap
+    }()
+
+    private lazy var imagePicker: UIImagePickerController = {
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        return picker
+    }()
+
+    private lazy var datePicker: UIDatePicker = {
+        let picker = UIDatePicker()
+        picker.datePickerMode = .date
+        picker.minimumDate = Date(timeIntervalSinceReferenceDate: 0)
+        if #available(iOS 13.4, *) {
+            picker.preferredDatePickerStyle = .wheels
+        } else {
+            // Fallback on earlier versions
+        }
+        return picker
+    }()
 }
 
 extension AddEntryViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -413,76 +570,70 @@ extension AddEntryViewController: UIImagePickerControllerDelegate, UINavigationC
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         if let userPickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            imageView.image = userPickedImage
-            imageView.contentMode = .scaleAspectFill
-            imageView.clipsToBounds = true
+            recieptImageView.image = userPickedImage
+            recieptImageView.contentMode = .scaleAspectFill
+            recieptImageView.clipsToBounds = true
             imagePicker.dismiss(animated: true, completion: nil)
         }
     }
 }
 
-extension UITextField {
-    
-    //To add bottom border only
-    func setBottomBorder(withColor color: UIColor = .black) {
-        self.borderStyle = UITextField.BorderStyle.none
-        self.backgroundColor = UIColor.clear
-        let width: CGFloat = 1.0
-        
-        let borderLine = UIView()
-        borderLine.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(borderLine)
-        borderLine.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        borderLine.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        borderLine.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        borderLine.heightAnchor.constraint(equalToConstant: width).isActive = true
-        borderLine.backgroundColor = color
-        
-    }
-}
 extension AddEntryViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        if textField == amountTextField {
-            
-            let formatter = NumberFormatter()
-            formatter.minimumFractionDigits = 2
-            formatter.maximumFractionDigits = 2
-            
-            if !string.isEmpty {
-                amountTypedString += string
-                let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
-                //let numbString = NSString(format:"%.2f", decNumber) as String
-                let newString = formatter.string(from: decNumber)!
-                //let newString = "$" + numbString
-                textField.text = newString
-            } else {
-                amountTypedString = String(amountTypedString.dropLast())
-                if !amountTypedString.isEmpty {
-                    
-                    let decNumber = NSDecimalNumber(string: amountTypedString).multiplying(by: 0.01)
-                    
-                    let newString = formatter.string(from: decNumber)!
-                    textField.text = newString
-                } else {
-                    textField.text = "0.00"
-                }
-                
-            }
+        if textField == entryAmountTextField {
+            viewModel.updateAmount(string: string)
         }
         
-        
         return false
-        
     }
-    
+
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        amountTypedString = ""
+        viewModel.amountTypedString = ""
         return true
     }
-    
+
 }
 
+extension AddEntryViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModel.categories.count + 1
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "categoryCell", for: indexPath) as! CategorySelectionCell
+        let cellViewModel = viewModel.viewModelForCell(at: indexPath)
+        cell.setupWith(viewModel: cellViewModel)
+        return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.selectCategory(at: indexPath)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 92, height: 88)
+    }
+}
+
+extension AddEntryViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        viewModel.updateNote(textView.text)
+    }
+
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == "Notes" {
+            textView.text = nil
+            textView.textColor = .black
+        }
+    }
+
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "Notes"
+            textView.textColor = .gray
+        }
+    }
+}
 
 extension AddEntryViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -490,25 +641,6 @@ extension AddEntryViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        1
+        6
     }
-    
-    
-//    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-//        return categorypickerData.count
-//    }
-//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-//        return 1
-//    }
-//
-//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-//        return categorypickerData[row].uppercased()
-//    }
-//    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-//        return 200
-//    }
-//    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-//        selectedCategory = categorypickerData[row]
-//    }
-    
 }

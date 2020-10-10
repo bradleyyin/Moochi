@@ -11,6 +11,7 @@ import RealmSwift
 
 class Expense: Object {
     @objc dynamic var name = ""
+    @objc dynamic var note = ""
     @objc dynamic var imagePath: String?
     @objc dynamic var date: Date = Date()
     @objc dynamic var amount: Double = 0
