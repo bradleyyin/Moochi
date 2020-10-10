@@ -11,6 +11,10 @@
 import UIKit
 import RxSwift
 
+protocol AddEntryViewControllerDelegate: class {
+    func didTapClose()
+}
+
 final class AddEntryViewController: UIViewController {
     typealias Dependency = HasBudgetController & HasBudgetCalculator & HasMonthCalculator
 
@@ -18,6 +22,7 @@ final class AddEntryViewController: UIViewController {
     private let disposeBag = DisposeBag()
 
     private var viewModel: AddExpenseViewModel
+    weak var delegate: AddEntryViewControllerDelegate?
 
     init(expense: Expense?, dependency: Dependency) {
         self.dependency = dependency
@@ -58,7 +63,10 @@ final class AddEntryViewController: UIViewController {
         view.addSubview(noteTextView)
         view.addSubview(noteSeparator)
         view.addSubview(recieptLabel)
+        view.addSubview(recieptInstructionLabel)
+        view.addSubview(recieptIconImageView)
         view.addSubview(recieptImageView)
+        view.addSubview(deleteIconImageView)
         // Do any additional setup after loading the view.
 
         setupConstraint()
@@ -122,7 +130,7 @@ final class AddEntryViewController: UIViewController {
         }
 
         checkButton.snp.makeConstraints { (make) in
-            make.centerX.equalToSuperview()
+            make.trailing.equalToSuperview().inset(8)
             make.centerY.equalTo(closeButton)
             make.height.width.equalTo(36)
         }
@@ -227,10 +235,27 @@ final class AddEntryViewController: UIViewController {
         }
 
         recieptImageView.snp.makeConstraints { (make) in
+            make.leading.equalTo(recieptLabel.snp.trailing).offset(16)
+            make.top.equalTo(recieptLabel)
+            make.trailing.equalToSuperview().inset(8)
+        }
+
+        recieptInstructionLabel.snp.makeConstraints { (make) in
             make.leading.equalTo(entryNameTextField)
             make.top.equalTo(recieptLabel)
-            make.height.equalTo(100) //dynamic later
-            make.trailing.equalToSuperview().inset(8)
+        }
+
+        recieptIconImageView.snp.makeConstraints { (make) in
+            make.top.equalTo(recieptLabel)
+            make.height.width.equalTo(22)
+            make.trailing.equalToSuperview().inset(16)
+        }
+
+        deleteIconImageView.snp.makeConstraints { (make) in
+            make.width.height.equalTo(24)
+            make.centerX.equalToSuperview()
+            make.top.equalTo(recieptImageView.snp.bottom).offset(24)
+            make.bottom.equalToSuperview().inset(16)
         }
     }
 
@@ -246,24 +271,24 @@ final class AddEntryViewController: UIViewController {
 
     //MARK: Action
     @objc func imageTapped() {
-//        let alertController = UIAlertController(title: "select source", message: nil, preferredStyle: .actionSheet)
-//
-//        let choseCam = UIAlertAction(title: "Camera", style: .default) { _ in
-//            self.imagePicker.sourceType = .camera
-//            self.present(self.imagePicker, animated: true)
-//        }
-//        let choseLibrary = UIAlertAction(title: "Photo", style: .default) { _ in
-//            self.imagePicker.sourceType = .photoLibrary
-//            self.present(self.imagePicker, animated: true)
-//        }
-//        let cancelAction = UIAlertAction(title: "cancel", style: .cancel) { _ in
-//            //cancel
-//        }
-//        alertController.addAction(choseCam)
-//        alertController.addAction(choseLibrary)
-//        alertController.addAction(cancelAction)
-//        self.present(alertController, animated: true)
-        
+        let alertController = UIAlertController(title: "select source", message: nil, preferredStyle: .actionSheet)
+
+        let choseCam = UIAlertAction(title: "Camera", style: .default) { _ in
+            self.imagePicker.sourceType = .camera
+            self.present(self.imagePicker, animated: true)
+        }
+
+        let choseLibrary = UIAlertAction(title: "Photo", style: .default) { _ in
+            self.imagePicker.sourceType = .photoLibrary
+            self.present(self.imagePicker, animated: true)
+        }
+        let cancelAction = UIAlertAction(title: "cancel", style: .cancel) { _ in
+            //cancel
+        }
+        alertController.addAction(choseCam)
+        alertController.addAction(choseLibrary)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true)
     }
     @objc func checkMarkTapped() {
 //
@@ -336,8 +361,12 @@ final class AddEntryViewController: UIViewController {
     @objc func cancelDatePicker() {
         self.view.endEditing(true)
     }
-    
-    @objc func doneCategoryPicker() {
+
+    @objc func closeButtonTapped() {
+        delegate?.didTapClose()
+    }
+
+    @objc func checkButtonTapped() {
 //        categoryTextField.text = selectedCategory.uppercased()
 //        self.view.endEditing(true)
     }
@@ -345,11 +374,15 @@ final class AddEntryViewController: UIViewController {
     //MARK: UI
     private lazy var closeButton: UIButton = {
         let button = UIButton()
+        button.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
+        button.setImage(UIImage(named: "close"), for: .normal)
         return button
     }()
 
     private lazy var checkButton: UIButton = {
         let button = UIButton()
+        button.addTarget(self, action: #selector(checkMarkTapped), for: .touchUpInside)
+        button.setImage(UIImage(named: "check"), for: .normal)
         return button
     }()
 
@@ -470,12 +503,45 @@ final class AddEntryViewController: UIViewController {
 
     private lazy var recieptLabel: UILabel = {
         let label = UILabel()
+        label.text = "Receipt"
         return label
+    }()
+
+    private lazy var recieptInstructionLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Tap to add a photo"
+        label.textColor = .gray
+        return label
+    }()
+
+    private lazy var recieptIconImageView: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "AddEntry_addPhotoIcon")
+        return view
+    }()
+
+    private lazy var deleteIconImageView: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "AddEntry_deleteIcon")
+        return view
     }()
 
     private lazy var recieptImageView: UIImageView = {
         let view = UIImageView()
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(tapImageViewGesture)
         return view
+    }()
+
+    private lazy var tapImageViewGesture: UIGestureRecognizer = {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+        return tap
+    }()
+
+    private lazy var imagePicker: UIImagePickerController = {
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        return picker
     }()
 
     private lazy var datePicker: UIDatePicker = {
@@ -491,20 +557,20 @@ final class AddEntryViewController: UIViewController {
     }()
 }
 
-//extension AddEntryViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-//    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-//        picker.dismiss(animated: true, completion: nil)
-//    }
-//    func imagePickerController(_ picker: UIImagePickerController,
-//                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-//        if let userPickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-//            imageView.image = userPickedImage
-//            imageView.contentMode = .scaleAspectFill
-//            imageView.clipsToBounds = true
-//            imagePicker.dismiss(animated: true, completion: nil)
-//        }
-//    }
-//}
+extension AddEntryViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        if let userPickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            recieptImageView.image = userPickedImage
+            recieptImageView.contentMode = .scaleAspectFill
+            recieptImageView.clipsToBounds = true
+            imagePicker.dismiss(animated: true, completion: nil)
+        }
+    }
+}
 
 extension AddEntryViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

@@ -24,7 +24,7 @@ class AddExpenseCoordinator: Coordinator {
     lazy var addExpenseViewController: AddEntryViewController = {
         let addVC = AddEntryViewController(expense: nil, dependency: dependency)
         addVC.modalPresentationStyle = .overFullScreen
-        //addVC.delegate = self
+        addVC.delegate = self
         return addVC
     }()
 
@@ -38,6 +38,8 @@ class AddExpenseCoordinator: Coordinator {
     }
 }
 
-extension AddExpenseCoordinator: HomeViewControllerDelegate {
-
+extension AddExpenseCoordinator: AddEntryViewControllerDelegate {
+    func didTapClose() {
+        presenter.dismiss(animated: true, completion: nil)
+    }
 }
