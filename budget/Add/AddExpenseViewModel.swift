@@ -140,6 +140,25 @@ final class AddExpenseViewModel: NSObject {
         }
     }
 
+    func confirmExpense() {
+        if let expense = expense {
+
+        } else {
+            let name = self.name.value ?? ""
+            let amount = self.amount.value ?? 0
+            let date = self.date.value ?? Date()
+            let category = self.category.value
+            let image = self.recieptImage.value
+            dependency.budgetController.createNewExpense(name: name, amount: amount, date: date, category: category, image: image)
+        }
+    }
+
+    func deleteExpense() {
+        if let expense = expense {
+            dependency.budgetController.deleteExpense(expense: expense)
+        }
+    }
+
     private func setupWithExpense(_ expense: Expense?) {
         self.expense = expense
         self.name.accept(expense?.name)

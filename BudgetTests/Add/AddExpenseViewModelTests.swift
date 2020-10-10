@@ -52,4 +52,16 @@ class AddExpenseViewModelTests: XCTestCase {
         viewModel.updateAmount(string: "4565")
         XCTAssertEqual(viewModel.expenseAmountText, "45.65")
     }
+
+    func testConfirmExpense() {
+        viewModel.name.accept("test expense")
+        viewModel.amount.accept(1337)
+        viewModel.date.accept(Date(timeIntervalSince1970: 1351522))
+        viewModel.category.accept(nil)
+        viewModel.confirmExpense()
+
+        realm = try! Realm()
+        let expense = try! realm.objects(Expense.self).first
+        XCTAssertEqual(expense?.name, "test expense")
+    }
 }

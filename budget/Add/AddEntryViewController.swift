@@ -367,8 +367,13 @@ final class AddEntryViewController: UIViewController {
     }
 
     @objc func checkButtonTapped() {
-//        categoryTextField.text = selectedCategory.uppercased()
-//        self.view.endEditing(true)
+        viewModel.confirmExpense()
+        delegate?.didTapClose()
+    }
+
+    @objc func deleteButtonTapped() {
+        viewModel.deleteExpense()
+        delegate?.didTapClose()
     }
 
     //MARK: UI
@@ -520,10 +525,11 @@ final class AddEntryViewController: UIViewController {
         return view
     }()
 
-    private lazy var deleteIconImageView: UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(named: "AddEntry_deleteIcon")
-        return view
+    private lazy var deleteIconImageView: UIButton = {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        button.setImage(UIImage(named: "AddEntry_deleteIcon"), for: .normal)
+        return button
     }()
 
     private lazy var recieptImageView: UIImageView = {
