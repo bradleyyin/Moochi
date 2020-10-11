@@ -20,7 +20,11 @@ final class HomeCategoryCellViewModel {
     }
 
     var icon: UIImage? {
-        return UIImage(named: "category_cart")
+        if category.iconImageName.isEmpty {
+            return UIImage(named: "category_uncategorized")
+        } else {
+            return UIImage(named: category.iconImageName)
+        }
     }
 
     var remainingMoneyText: String {

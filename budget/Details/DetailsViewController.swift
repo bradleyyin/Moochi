@@ -11,6 +11,7 @@ import RxSwift
 import SnapKit
 
 protocol DetailsViewControllerDelegate: class {
+    func addButtonTapped()
 }
 
 class DetailsViewController: UIViewController {
@@ -117,7 +118,7 @@ class DetailsViewController: UIViewController {
     }
 
     @objc private func plusButtonTapped() {
-
+        delegate?.addButtonTapped()
     }
 
     @objc private func menuButtonTapped() {

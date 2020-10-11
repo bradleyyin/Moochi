@@ -72,7 +72,7 @@ final class AddEntryViewController: UIViewController {
         setupConstraint()
         setupBinding()
         setupDatePicker()
-        setupTapToDismissKeyBoard()
+        setupPanToDismissKeyBoard()
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -259,10 +259,10 @@ final class AddEntryViewController: UIViewController {
         }
     }
 
-    private func setupTapToDismissKeyBoard() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(viewTappedToDismissKeyboard))
+    private func setupPanToDismissKeyBoard() {
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(viewTappedToDismissKeyboard))
         view.isUserInteractionEnabled = true
-        view.addGestureRecognizer(tap)
+        view.addGestureRecognizer(pan)
     }
 
     private func loadCategories() {
@@ -289,37 +289,6 @@ final class AddEntryViewController: UIViewController {
         alertController.addAction(choseLibrary)
         alertController.addAction(cancelAction)
         self.present(alertController, animated: true)
-    }
-    @objc func checkMarkTapped() {
-//
-//        guard let name = nameTextField.text, !name.isEmpty,
-//            let amountString = amountTextField.text, let amount = Double(amountString),
-//            let dateString = dateTextField.text,
-//            let date = formatter.date(from: dateString) else { return }
-//
-//        var image: UIImage? = imageView.image
-//        if imageView.image == UIImage(named: "addImage") {
-//            image = nil
-//        }
-//        var category: Category? = expense?.parentCategory
-//        if categoryPicker.selectedRow(inComponent: 0) == 0 && category != nil && categoryTextField.text == "UNCATEGORIZED" {
-//            category = nil
-//        } else if categoryPicker.selectedRow(inComponent: 0) != 0 {
-//            //category = categories[categoryPicker.selectedRow(inComponent: 0) - 1]
-//        }
-//        if let expense = expense {
-//            budgetController.updateExpense(expense: expense, name: name, amount: amount, date: date, category: category, image: image)
-//        } else {
-//            budgetController.createNewExpense(name: name, amount: amount, date: date, category: category, image: image)
-//        }
-//
-//        NotificationCenter.default.post(name: Notification.Name("changedEntry"), object: nil)
-//        dismiss(animated: true, completion: nil)
-//
-//
-    }
-    @objc func cancelTapped() {
-        dismiss(animated: true, completion: nil)
     }
 
     @objc func viewTappedToDismissKeyboard() {
@@ -386,7 +355,7 @@ final class AddEntryViewController: UIViewController {
 
     private lazy var checkButton: UIButton = {
         let button = UIButton()
-        button.addTarget(self, action: #selector(checkMarkTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
         button.setImage(UIImage(named: "check"), for: .normal)
         return button
     }()
@@ -406,6 +375,7 @@ final class AddEntryViewController: UIViewController {
     private lazy var entryNameTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Name"
+        textField.delegate = self
         return textField
     }()
 
@@ -583,6 +553,10 @@ extension AddEntryViewController: UITextFieldDelegate {
         if textField == entryAmountTextField {
             viewModel.updateAmount(string: string)
         }
+
+        if textField == entryNameTextField {
+            viewModel.updateName(string: string)
+        }
         
         return false
     }
@@ -642,5 +616,15 @@ extension AddEntryViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         6
+    }
+}
+
+extension AddEntryViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer.view == self.view {
+            return true
+        }
+
+        return false
     }
 }

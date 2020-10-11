@@ -122,10 +122,11 @@ extension BudgetController {
 
 //- MARK: category
 extension BudgetController {
-    func createCategory(name: String, totalAmount: Double, isGoal: Bool) {
+    func createCategory(name: String, totalAmount: Double, iconName: String, isGoal: Bool) {
         let category = Category()
         category.name = name
         category.totalAmount = totalAmount
+        category.iconImageName = iconName
         category.isGoal = isGoal
         try! realm.write {
             realm.add(category)

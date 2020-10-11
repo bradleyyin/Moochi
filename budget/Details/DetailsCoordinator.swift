@@ -28,6 +28,14 @@ class DetailsCoordinator: Coordinator {
     }
 }
 
-extension DetailsCoordinator: DetailsViewControllerDelegate {
+extension DetailsCoordinator: DetailsViewControllerDelegate, AddCategoriesViewControllerDelegate {
+    func didTapClose() {
+        presenter.dismiss(animated: true, completion: nil)
+    }
 
+    func addButtonTapped() {
+        let vc = AddCategoriesViewController(category: nil, dependency: dependency)
+        vc.delegate = self
+        presenter.present(vc, animated: true)
+    }
 }

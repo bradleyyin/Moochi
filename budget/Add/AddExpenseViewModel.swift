@@ -110,6 +110,16 @@ final class AddExpenseViewModel: NSObject {
         }
     }
 
+    func updateName(string: String) {
+        if !string.isEmpty {
+            let temp = name.value ?? ""
+            name.accept(temp + string)
+        } else {
+            let temp = name.value ?? ""
+            name.accept(String(temp.dropLast()))
+        }
+    }
+
     func updateDate(_ date: Date) {
         self.date.accept(date)
     }
