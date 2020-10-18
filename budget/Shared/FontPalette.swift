@@ -13,7 +13,7 @@ public struct FontPalette {
     public enum FontType: String {
         case light = "SFCompactText-Light"
         case medium = "SFCompactText-Medium"
-        //case regular = "Montserrat-Regular"
+        case regular = "SFCompactText-Regular"
         case semiBold = "SFCompactText-Semibold"
     }
 

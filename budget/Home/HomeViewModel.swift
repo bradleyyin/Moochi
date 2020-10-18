@@ -8,7 +8,6 @@
 
 import RxRelay
 import RealmSwift
-import RxRealm
 import RxSwift
 
 final class HomeViewModel: NSObject {

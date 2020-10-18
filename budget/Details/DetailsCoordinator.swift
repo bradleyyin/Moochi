@@ -38,4 +38,13 @@ extension DetailsCoordinator: DetailsViewControllerDelegate, AddCategoriesViewCo
         vc.delegate = self
         presenter.present(vc, animated: true)
     }
+
+    func categoryTapped(category: Category) {
+        let vc = ChartViewController(category: category, dependency: dependency)
+
+        //vc.delegate = self
+        if let nav = presenter as? UINavigationController {
+            nav.pushViewController(vc, animated: true)
+        }
+    }
 }

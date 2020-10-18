@@ -54,8 +54,18 @@ extension BudgetController {
 //                print("error loading all expenses")
 //            }
 //        }
+//
+//
+//        var expenses: [Expense] = []
+//        let results = realm.objects(Expense.self).filter("parentCategory == %@", category).
+//        expenses = Array(results)
 //        return expenses
 //    }
+
+    func readAllExpenses(of category: Category) -> Results<Expense> {
+        let results = realm.objects(Expense.self).filter("parentCategory == %@", category)
+        return results
+    }
     
     func readMonthlyExpense() -> [Expense] {
         let currentDate = Date()
@@ -63,6 +73,16 @@ extension BudgetController {
         let endOfMonth = currentDate.getThisMonthEnd()
         var expenses: [Expense] = []
         let results = realm.objects(Expense.self).filter("(date => %@) AND (date <= %@)", startOfMonth as NSDate, endOfMonth as NSDate)
+        expenses = Array(results)
+        return expenses
+    }
+
+    func readMonthlyExpense(of category: Category, numberOfMonthPassed: Int) -> [Expense] {
+        let targetDate = Date().numberOfMonthAgo(numberOfMonth: numberOfMonthPassed)
+        let startOfMonth = targetDate.getThisMonthStart()
+        let endOfMonth = targetDate.getThisMonthEnd()
+        var expenses: [Expense] = []
+        let results = realm.objects(Expense.self).filter("(date => %@) AND (date <= %@) AND parentCategory == %@", startOfMonth as NSDate, endOfMonth as NSDate, category)
         expenses = Array(results)
         return expenses
     }

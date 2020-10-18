@@ -12,6 +12,7 @@ import SnapKit
 
 protocol DetailsViewControllerDelegate: class {
     func addButtonTapped()
+    func categoryTapped(category: Category)
 }
 
 class DetailsViewController: UIViewController {
@@ -220,6 +221,8 @@ extension DetailsViewController: UITableViewDelegate, UITableViewDataSource {
         return 1
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let category = viewModel.categories.value[indexPath.row]
+        delegate?.categoryTapped(category: category)
 //        let category = fetchedResultsController.fetchedObjects?[indexPath.row]
 //        let chartVC = ChartViewController()
 //        chartVC.category = category
