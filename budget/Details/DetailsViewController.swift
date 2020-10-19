@@ -13,6 +13,7 @@ import SnapKit
 protocol DetailsViewControllerDelegate: class {
     func addButtonTapped()
     func categoryTapped(category: Category)
+    func editCategoryTapped(category: Category)
 }
 
 class DetailsViewController: UIViewController {
@@ -213,7 +214,8 @@ extension DetailsViewController: UITableViewDelegate, UITableViewDataSource {
         delete.image = UIImage(named: "deleteIcon")?.withTintColor(.white)
         delete.backgroundColor = ColorPalette.red
         let edit = UIContextualAction(style: .normal, title: "edit") { _, _, _ in
-
+            let category = self.viewModel.categories.value[indexPath.row]
+            self.delegate?.editCategoryTapped(category: category)
         }
 
         edit.image = UIImage(named: "edit")

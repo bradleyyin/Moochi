@@ -109,7 +109,7 @@ final class DetailsViewModel: NSObject {
         for category in self.categories.value {
             totalBudget += category.totalAmount
         }
-        print("budget: \(totalBudget)")
+
         if let income = income.value {
             incomeNotBuget.accept(income - totalBudget)
         } else {

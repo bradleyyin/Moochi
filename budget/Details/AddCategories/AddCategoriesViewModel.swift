@@ -94,18 +94,20 @@ final class AddCategoriesViewModel: NSObject {
     }
 
     func confirmCategory() {
-        if let category = category {
-
-        } else {
-            let name = self.name.value ?? ""
-            let amount = self.amount.value ?? 0
-            var iconName = ""
-            if let number = currentSelectedIconNumber.value {
-                iconName = "category\(number)"
-            }
-            dependency.budgetController.createCategory(name: name, totalAmount: amount, iconName: iconName, isGoal: false)
-            NotificationCenter.default.post(name: Notification.Name(NotificationName.categoryAdded.rawValue), object: nil)
+        let name = self.name.value ?? ""
+        let amount = self.amount.value ?? 0
+        var iconName = ""
+        if let number = currentSelectedIconNumber.value {
+            iconName = "category\(number)"
         }
+
+        if let category = category {
+            dependency.budgetController.updateCategory(category: category, name: name, totalAmount: amount, iconName: iconName)
+        } else {
+            dependency.budgetController.createCategory(name: name, totalAmount: amount, iconName: iconName, isGoal: false)
+        }
+
+        NotificationCenter.default.post(name: Notification.Name(NotificationName.categoryAdded.rawValue), object: nil)
     }
 
 //    func deleteExpense() {

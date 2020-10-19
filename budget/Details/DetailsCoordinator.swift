@@ -47,4 +47,10 @@ extension DetailsCoordinator: DetailsViewControllerDelegate, AddCategoriesViewCo
             nav.pushViewController(vc, animated: true)
         }
     }
+
+    func editCategoryTapped(category: Category) {
+        let vc = AddCategoriesViewController(category: category, dependency: dependency)
+        vc.delegate = self
+        presenter.present(vc, animated: true)
+    }
 }

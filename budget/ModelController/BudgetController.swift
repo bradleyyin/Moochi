@@ -160,10 +160,11 @@ extension BudgetController {
         return categories
     }
     
-    func updateCategory(category: Category, name: String, totalAmount: Double) {
+    func updateCategory(category: Category, name: String, totalAmount: Double, iconName: String) {
         try! realm.write {
             category.name = name
             category.totalAmount = totalAmount
+            category.iconImageName = iconName
         }
     }
     
