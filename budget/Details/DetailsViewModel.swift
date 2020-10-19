@@ -50,6 +50,9 @@ final class DetailsViewModel: NSObject {
             guard let self = self else { return }
             self.calcRemainingBudget()
         }).disposed(by: disposeBag)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshCategories), name: NSNotification.Name(NotificationName.categoryAdded.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshCategories), name: NSNotification.Name(NotificationName.categoryDeleted.rawValue), object: nil)
     }
 
     var numberOfCategory: Int {
@@ -60,6 +63,10 @@ final class DetailsViewModel: NSObject {
         fetchIncomes()
         convertDate()
         getRemainingFunds()
+        fetchCategories()
+    }
+
+    @objc func refreshCategories() {
         fetchCategories()
     }
 
@@ -112,5 +119,11 @@ final class DetailsViewModel: NSObject {
 
     func getExpenses(of category: Category) -> [Expense] {
         return monthlyExpense.value.filter { $0.parentCategory == category }
+    }
+
+    func deleteCategory(at indexPath: IndexPath) {
+        let category = categories.value[indexPath.row]
+        dependency.budgetController.deleteCategory(category: category)
+        fetchCategories()
     }
 }

@@ -53,6 +53,15 @@ class DetailsViewController: UIViewController {
         super.viewWillAppear(animated)
         tableView.reloadData()
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        UIView.performWithoutAnimation {
+            sliderView.setSelectedIndex(0)
+        }
+
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         setupUIColor()
@@ -115,6 +124,11 @@ class DetailsViewController: UIViewController {
             } else {
                 self.incomeNotBudgetLabel.text = "No income information."
             }
+        }).disposed(by: disposeBag)
+
+        viewModel.categories.asObservable().subscribe(onNext: { [weak self] _ in
+            guard let self = self else { return }
+            self.tableView.reloadData()
         }).disposed(by: disposeBag)
     }
 
@@ -191,14 +205,19 @@ extension DetailsViewController: UITableViewDelegate, UITableViewDataSource {
 //
 //    }
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let delete = UIContextualAction(style: .destructive, title: "delete") { _, _, _ in
-            //let category = self.fetchedResultsController.object(at: indexPath)
-            //self.budgetController.deleteCategory(category: category)
+        let delete = UIContextualAction(style: .destructive, title: "") { _, _, _ in
+
+            self.viewModel.deleteCategory(at: indexPath)
         }
+
+        delete.image = UIImage(named: "deleteIcon")?.withTintColor(.white)
+        delete.backgroundColor = ColorPalette.red
         let edit = UIContextualAction(style: .normal, title: "edit") { _, _, _ in
-            //let category = self.fetchedResultsController.object(at: indexPath)
-            //self.showEditCategory(for: category)
+
         }
+
+        edit.image = UIImage(named: "edit")
+        edit.backgroundColor = ColorPalette.separatorGray.withAlphaComponent(0.1)
         let swipeActions = UISwipeActionsConfiguration(actions: [delete, edit])
 
         return swipeActions

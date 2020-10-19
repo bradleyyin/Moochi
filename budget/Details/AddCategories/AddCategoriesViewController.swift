@@ -272,7 +272,7 @@ final class AddCategoriesViewController: UIViewController {
     private lazy var deleteIconImageView: UIButton = {
         let button = UIButton()
         button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
-        button.setImage(UIImage(named: "AddEntry_deleteIcon"), for: .normal)
+        button.setImage(UIImage(named: "deleteIcon"), for: .normal)
         return button
     }()
 }

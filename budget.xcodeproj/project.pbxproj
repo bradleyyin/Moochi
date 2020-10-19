@@ -26,6 +26,7 @@
 		755FFBE12345AA4D0085C5E5 /* BudgetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755FFBE02345AA4D0085C5E5 /* BudgetController.swift */; };
 		755FFBEB2345BCCB0085C5E5 /* ImageSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755FFBEA2345BCCB0085C5E5 /* ImageSaver.swift */; };
 		756A644023700E19000BCBF3 /* UIImage+Scaling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A643F23700E19000BCBF3 /* UIImage+Scaling.swift */; };
+		75A3E594253D0D7F00D92266 /* NotificationName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A3E593253D0D7F00D92266 /* NotificationName.swift */; };
 		75ADCEA52491DBDF00320593 /* Income.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ADCEA42491DBDF00320593 /* Income.swift */; };
 		75ADCEA72491DE3400320593 /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ADCEA62491DE3400320593 /* Expense.swift */; };
 		75ADCEA92491DE4000320593 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ADCEA82491DE4000320593 /* Category.swift */; };
@@ -130,6 +131,7 @@
 		756A644F23753FB0000BCBF3 /* ScrollableGraphView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ScrollableGraphView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		756A645523754063000BCBF3 /* BudgetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BudgetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		756A645923754063000BCBF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		75A3E593253D0D7F00D92266 /* NotificationName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationName.swift; sourceTree = "<group>"; };
 		75ADCEA42491DBDF00320593 /* Income.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Income.swift; sourceTree = "<group>"; };
 		75ADCEA62491DE3400320593 /* Expense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
 		75ADCEA82491DE4000320593 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -321,6 +323,7 @@
 				75ADCEBF2495F41000320593 /* FontPalette.swift */,
 				751DE0BA24D628D500AD04C9 /* SliderView.swift */,
 				751805D324DF694800B3FA47 /* ColorPalette.swift */,
+				75A3E593253D0D7F00D92266 /* NotificationName.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -766,6 +769,7 @@
 				75CD181022C5DD6800E2FB12 /* HomeViewController.swift in Sources */,
 				75ADCEB02491FD9D00320593 /* HomeCoordinator.swift in Sources */,
 				75BCC2CB234A9175001CA01A /* BudgetCalculator.swift in Sources */,
+				75A3E594253D0D7F00D92266 /* NotificationName.swift in Sources */,
 				75373B7D22F4085500113E81 /* EditIncomeView.swift in Sources */,
 				75C19A7925328F46002E856E /* CategoryIconCellViewModel.swift in Sources */,
 				75AEC12022E409DE0006A057 /* WeekdayView.swift in Sources */,

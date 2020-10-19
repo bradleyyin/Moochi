@@ -144,12 +144,14 @@ class DetailsCategoryCell: UITableViewCell {
     private lazy var grayLine: UIView = {
         let view = UIView()
         view.backgroundColor = .lightGray
+        view.layer.cornerRadius = 4
         return view
     }()
 
     private lazy var blackLine: UIView = {
         let view = UIView()
         view.backgroundColor = .black
+        view.layer.cornerRadius = 4
         return view
     }()
 }

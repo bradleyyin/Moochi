@@ -59,7 +59,7 @@ final class DetailsCategoryCellViewModel {
     var percent: Double {
         let totalExpense = category.expenses.map({$0.amount}).reduce(0, +)
         let percent = (totalExpense / category.totalAmount * 100).rounded()
-        return percent
+        return min(percent, 1.0)
     }
 
     init(category: Category) {

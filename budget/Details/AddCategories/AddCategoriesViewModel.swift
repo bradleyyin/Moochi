@@ -104,6 +104,7 @@ final class AddCategoriesViewModel: NSObject {
                 iconName = "category\(number)"
             }
             dependency.budgetController.createCategory(name: name, totalAmount: amount, iconName: iconName, isGoal: false)
+            NotificationCenter.default.post(name: Notification.Name(NotificationName.categoryAdded.rawValue), object: nil)
         }
     }
 
