@@ -177,7 +177,7 @@ final class AddExpenseViewModel: NSObject {
     }
 
     private func fetchCategories() {
-        let categories = dependency.budgetController.readCategories()
+        let categories = dependency.budgetController.readMonthlyCategories()
         self.categories = categories
 //        dependency.budgetController.createCategory(name: "Travel", totalAmount: 500, isGoal: false)
 //        dependency.budgetController.createCategory(name: "Game", totalAmount: 200, isGoal: false)
