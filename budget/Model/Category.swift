@@ -15,4 +15,5 @@ class Category: Object {
     let expenses = List<Expense>()
     @objc dynamic var isGoal: Bool = false
     @objc dynamic var iconImageName = ""
+    @objc dynamic var date: Date = Date()
 }

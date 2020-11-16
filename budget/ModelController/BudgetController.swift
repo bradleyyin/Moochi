@@ -159,6 +159,16 @@ extension BudgetController {
         categories = Array(results)
         return categories
     }
+
+    func readMonthlyCategories() -> [Category] {
+        let currentDate = Date()
+        let startOfMonth = currentDate.getThisMonthStart()
+        let endOfMonth = currentDate.getThisMonthEnd()
+        var categories: [Category] = []
+        let results = realm.objects(Category.self).filter("(date => %@) AND (date <= %@)", startOfMonth as NSDate, endOfMonth as NSDate)
+        categories = Array(results)
+        return categories
+    }
     
     func updateCategory(category: Category, name: String, totalAmount: Double, iconName: String) {
         try! realm.write {

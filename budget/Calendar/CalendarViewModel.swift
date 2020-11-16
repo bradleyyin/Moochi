@@ -41,7 +41,6 @@ final class CalendarViewModel: NSObject {
     init(dependency: Dependency) {
         self.dependency = dependency
         super.init()
-        fetchIncomes()
 
         //add notidfication for adding expense
     }
@@ -51,7 +50,6 @@ final class CalendarViewModel: NSObject {
     }
 
     func refresh() {
-        fetchIncomes()
         convertDate()
     }
 

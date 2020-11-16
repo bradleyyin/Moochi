@@ -95,7 +95,7 @@ final class DetailsViewModel: NSObject {
     }
 
     private func fetchCategories() {
-        let realmCategories = dependency.budgetController.readCategories()
+        let realmCategories = dependency.budgetController.readMonthlyCategories()
         categories.accept(realmCategories.filter { !$0.isGoal })
         goals.accept(realmCategories.filter { $0.isGoal })
     }
