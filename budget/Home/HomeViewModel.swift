@@ -77,7 +77,7 @@ final class HomeViewModel: NSObject {
     }
     
     private func fetchCategories() {
-        let realmCategories = dependency.budgetController.readMonthlyCategories()
+        let realmCategories = dependency.budgetController.readMonthlyCategories	()
         categories.accept(realmCategories.filter { !$0.isGoal })
         goals.accept(realmCategories.filter { $0.isGoal })
     }

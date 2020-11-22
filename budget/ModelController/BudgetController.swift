@@ -167,6 +167,22 @@ extension BudgetController {
         var categories: [Category] = []
         let results = realm.objects(Category.self).filter("(date => %@) AND (date <= %@)", startOfMonth as NSDate, endOfMonth as NSDate)
         categories = Array(results)
+        if categories.isEmpty {
+            //load last month's category
+            let lastMonthToday = Calendar.current.date(byAdding: .month, value: -1, to: Date()) ?? Date()
+            let startOfLastMonth = lastMonthToday.getThisMonthStart()
+            let endOfLastMonth = lastMonthToday.getThisMonthEnd()
+            let lastMonthResults = realm.objects(Category.self).filter("(date => %@) AND (date <= %@)", startOfLastMonth as NSDate, endOfLastMonth as NSDate)
+
+            // put last month category into this month
+            let lastMonthCategories = Array(lastMonthResults)
+            for category in lastMonthCategories {
+                createCategory(name: category.name, totalAmount: category.totalAmount, iconName: category.iconImageName, isGoal: category.isGoal)
+            }
+
+            return lastMonthCategories
+        }
+
         return categories
     }
     
