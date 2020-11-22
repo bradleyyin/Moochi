@@ -59,6 +59,7 @@ class DetailsCategoryCell: UITableViewCell {
             make.top.equalToSuperview()
             make.leading.equalTo(iconImageView.snp.trailing).offset(24)
             make.trailing.lessThanOrEqualTo(numberLabel.snp.leading)
+            make.height.equalTo(20)
         }
 
         percentLabel.snp.remakeConstraints { (make) in
@@ -91,7 +92,7 @@ class DetailsCategoryCell: UITableViewCell {
 
         blackLine.snp.makeConstraints { (make) in
             make.leading.top.bottom.equalToSuperview()
-            make.width.equalTo(50)
+            make.width.equalTo(200)
         }
     }
 
@@ -142,13 +143,15 @@ class DetailsCategoryCell: UITableViewCell {
 
     private lazy var grayLine: UIView = {
         let view = UIView()
-        view.backgroundColor = .gray
+        view.backgroundColor = .lightGray
+        view.layer.cornerRadius = 4
         return view
     }()
 
     private lazy var blackLine: UIView = {
         let view = UIView()
         view.backgroundColor = .black
+        view.layer.cornerRadius = 4
         return view
     }()
 }

@@ -30,6 +30,11 @@ extension Date {
         components.day -= 1
         return Calendar.current.date(from: components as DateComponents)!
     }
+
+
+    func numberOfMonthAgo(numberOfMonth: Int) -> Date {
+        return Calendar.current.date(byAdding: .month, value: -numberOfMonth, to: self)!
+    }
     
     static var yesterday: Date { return Date().dayBefore }
     static var tomorrow: Date { return Date().dayAfter }

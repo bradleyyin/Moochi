@@ -8,7 +8,6 @@
 
 import RxRelay
 import RealmSwift
-import RxRealm
 import RxSwift
 
 final class DetailsViewModel: NSObject {
@@ -51,6 +50,9 @@ final class DetailsViewModel: NSObject {
             guard let self = self else { return }
             self.calcRemainingBudget()
         }).disposed(by: disposeBag)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshCategories), name: NSNotification.Name(NotificationName.categoryAdded.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshCategories), name: NSNotification.Name(NotificationName.categoryDeleted.rawValue), object: nil)
     }
 
     var numberOfCategory: Int {
@@ -61,6 +63,10 @@ final class DetailsViewModel: NSObject {
         fetchIncomes()
         convertDate()
         getRemainingFunds()
+        fetchCategories()
+    }
+
+    @objc func refreshCategories() {
         fetchCategories()
     }
 
@@ -89,7 +95,7 @@ final class DetailsViewModel: NSObject {
     }
 
     private func fetchCategories() {
-        let realmCategories = dependency.budgetController.readCategories()
+        let realmCategories = dependency.budgetController.readMonthlyCategories()
         categories.accept(realmCategories.filter { !$0.isGoal })
         goals.accept(realmCategories.filter { $0.isGoal })
     }
@@ -103,7 +109,7 @@ final class DetailsViewModel: NSObject {
         for category in self.categories.value {
             totalBudget += category.totalAmount
         }
-        print("budget: \(totalBudget)")
+
         if let income = income.value {
             incomeNotBuget.accept(income - totalBudget)
         } else {
@@ -113,5 +119,11 @@ final class DetailsViewModel: NSObject {
 
     func getExpenses(of category: Category) -> [Expense] {
         return monthlyExpense.value.filter { $0.parentCategory == category }
+    }
+
+    func deleteCategory(at indexPath: IndexPath) {
+        let category = categories.value[indexPath.row]
+        dependency.budgetController.deleteCategory(category: category)
+        fetchCategories()
     }
 }

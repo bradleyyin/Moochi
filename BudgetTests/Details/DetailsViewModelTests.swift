@@ -35,6 +35,7 @@ class DetailsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.numberOfCategory, 1)
         XCTAssertEqual(viewModel.income.value, 0)
         XCTAssertEqual(viewModel.incomeNotBuget.value, -100)
+        XCTAssertEqual(viewModel.categories.value[0].date.firstDayOfTheMonth, Date().firstDayOfTheMonth)
 //        let formatter = DateFormatter()
 //        formatter.dateFormat = "MMM dd"
 //        XCTAssertEqual(viewModel.currentDate.value, formatter.string(from: Date()))

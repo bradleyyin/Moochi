@@ -54,8 +54,18 @@ extension BudgetController {
 //                print("error loading all expenses")
 //            }
 //        }
+//
+//
+//        var expenses: [Expense] = []
+//        let results = realm.objects(Expense.self).filter("parentCategory == %@", category).
+//        expenses = Array(results)
 //        return expenses
 //    }
+
+    func readAllExpenses(of category: Category) -> Results<Expense> {
+        let results = realm.objects(Expense.self).filter("parentCategory == %@", category)
+        return results
+    }
     
     func readMonthlyExpense() -> [Expense] {
         let currentDate = Date()
@@ -63,6 +73,16 @@ extension BudgetController {
         let endOfMonth = currentDate.getThisMonthEnd()
         var expenses: [Expense] = []
         let results = realm.objects(Expense.self).filter("(date => %@) AND (date <= %@)", startOfMonth as NSDate, endOfMonth as NSDate)
+        expenses = Array(results)
+        return expenses
+    }
+
+    func readMonthlyExpense(of category: Category, numberOfMonthPassed: Int) -> [Expense] {
+        let targetDate = Date().numberOfMonthAgo(numberOfMonth: numberOfMonthPassed)
+        let startOfMonth = targetDate.getThisMonthStart()
+        let endOfMonth = targetDate.getThisMonthEnd()
+        var expenses: [Expense] = []
+        let results = realm.objects(Expense.self).filter("(date => %@) AND (date <= %@) AND parentCategory == %@", startOfMonth as NSDate, endOfMonth as NSDate, category)
         expenses = Array(results)
         return expenses
     }
@@ -122,10 +142,11 @@ extension BudgetController {
 
 //- MARK: category
 extension BudgetController {
-    func createCategory(name: String, totalAmount: Double, isGoal: Bool) {
+    func createCategory(name: String, totalAmount: Double, iconName: String, isGoal: Bool) {
         let category = Category()
         category.name = name
         category.totalAmount = totalAmount
+        category.iconImageName = iconName
         category.isGoal = isGoal
         try! realm.write {
             realm.add(category)
@@ -138,11 +159,38 @@ extension BudgetController {
         categories = Array(results)
         return categories
     }
+
+    func readMonthlyCategories() -> [Category] {
+        let currentDate = Date()
+        let startOfMonth = currentDate.getThisMonthStart()
+        let endOfMonth = currentDate.getThisMonthEnd()
+        var categories: [Category] = []
+        let results = realm.objects(Category.self).filter("(date => %@) AND (date <= %@)", startOfMonth as NSDate, endOfMonth as NSDate)
+        categories = Array(results)
+        if categories.isEmpty {
+            //load last month's category
+            let lastMonthToday = Calendar.current.date(byAdding: .month, value: -1, to: Date()) ?? Date()
+            let startOfLastMonth = lastMonthToday.getThisMonthStart()
+            let endOfLastMonth = lastMonthToday.getThisMonthEnd()
+            let lastMonthResults = realm.objects(Category.self).filter("(date => %@) AND (date <= %@)", startOfLastMonth as NSDate, endOfLastMonth as NSDate)
+
+            // put last month category into this month
+            let lastMonthCategories = Array(lastMonthResults)
+            for category in lastMonthCategories {
+                createCategory(name: category.name, totalAmount: category.totalAmount, iconName: category.iconImageName, isGoal: category.isGoal)
+            }
+
+            return lastMonthCategories
+        }
+
+        return categories
+    }
     
-    func updateCategory(category: Category, name: String, totalAmount: Double) {
+    func updateCategory(category: Category, name: String, totalAmount: Double, iconName: String) {
         try! realm.write {
             category.name = name
             category.totalAmount = totalAmount
+            category.iconImageName = iconName
         }
     }
     

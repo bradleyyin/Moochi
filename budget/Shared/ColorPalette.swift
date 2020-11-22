@@ -27,4 +27,7 @@ public struct ColorPalette {
     public static let tabBarGray = UIColor(0xF1F1F1)
 
     public static let separatorGray = UIColor(0x333333)
+
+    public static let red = UIColor(0xFF3B30)
+
 }

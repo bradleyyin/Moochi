@@ -8,7 +8,6 @@
 
 import RxRelay
 import RealmSwift
-import RxRealm
 import RxSwift
 import UIKit.UIImage
 
@@ -26,7 +25,7 @@ final class CategorySelectionCellViewModel {
 
     var icon: UIImage? {
         if let category = category {
-            return UIImage(named: "category_cart")
+            return UIImage(named: "category0")
         } else {
             return UIImage(named: "category_uncategorized")
         }

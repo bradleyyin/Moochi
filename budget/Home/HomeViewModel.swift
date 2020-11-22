@@ -8,7 +8,6 @@
 
 import RxRelay
 import RealmSwift
-import RxRealm
 import RxSwift
 
 final class HomeViewModel: NSObject {
@@ -78,7 +77,7 @@ final class HomeViewModel: NSObject {
     }
     
     private func fetchCategories() {
-        let realmCategories = dependency.budgetController.readCategories()
+        let realmCategories = dependency.budgetController.readMonthlyCategories	()
         categories.accept(realmCategories.filter { !$0.isGoal })
         goals.accept(realmCategories.filter { $0.isGoal })
     }

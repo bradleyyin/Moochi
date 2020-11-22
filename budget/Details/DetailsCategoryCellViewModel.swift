@@ -8,7 +8,6 @@
 
 import RxRelay
 import RealmSwift
-import RxRealm
 import RxSwift
 import UIKit.UIImage
 
@@ -20,7 +19,11 @@ final class DetailsCategoryCellViewModel {
     }
 
     var icon: UIImage? {
-        return UIImage(named: "category_cart")
+        if category.iconImageName.isEmpty {
+            return UIImage(named: "category_uncategorized")
+        } else {
+            return UIImage(named: category.iconImageName)
+        }
     }
 
     var remainingMoneyText: String {
@@ -56,7 +59,7 @@ final class DetailsCategoryCellViewModel {
     var percent: Double {
         let totalExpense = category.expenses.map({$0.amount}).reduce(0, +)
         let percent = (totalExpense / category.totalAmount * 100).rounded()
-        return percent
+        return min(percent, 1.0)
     }
 
     init(category: Category) {
