@@ -27,6 +27,9 @@
 		755FFBE12345AA4D0085C5E5 /* BudgetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755FFBE02345AA4D0085C5E5 /* BudgetController.swift */; };
 		755FFBEB2345BCCB0085C5E5 /* ImageSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755FFBEA2345BCCB0085C5E5 /* ImageSaver.swift */; };
 		756A644023700E19000BCBF3 /* UIImage+Scaling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A643F23700E19000BCBF3 /* UIImage+Scaling.swift */; };
+		757175BB2569F18E0097AD28 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757175BA2569F18E0097AD28 /* CalendarViewController.swift */; };
+		757175BF2569F1BB0097AD28 /* CalendarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757175BE2569F1BB0097AD28 /* CalendarCoordinator.swift */; };
+		757175C6256B3B870097AD28 /* CalendarViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757175C5256B3B870097AD28 /* CalendarViewModelTests.swift */; };
 		75A3E594253D0D7F00D92266 /* NotificationName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A3E593253D0D7F00D92266 /* NotificationName.swift */; };
 		75ADCEA52491DBDF00320593 /* Income.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ADCEA42491DBDF00320593 /* Income.swift */; };
 		75ADCEA72491DE3400320593 /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ADCEA62491DE3400320593 /* Expense.swift */; };
@@ -133,6 +136,9 @@
 		756A644F23753FB0000BCBF3 /* ScrollableGraphView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ScrollableGraphView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		756A645523754063000BCBF3 /* BudgetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BudgetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		756A645923754063000BCBF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		757175BA2569F18E0097AD28 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		757175BE2569F1BB0097AD28 /* CalendarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCoordinator.swift; sourceTree = "<group>"; };
+		757175C5256B3B870097AD28 /* CalendarViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModelTests.swift; sourceTree = "<group>"; };
 		75A3E593253D0D7F00D92266 /* NotificationName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationName.swift; sourceTree = "<group>"; };
 		75ADCEA42491DBDF00320593 /* Income.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Income.swift; sourceTree = "<group>"; };
 		75ADCEA62491DE3400320593 /* Expense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
@@ -251,7 +257,14 @@
 		7518D86625622F8C00C51521 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				757175BE2569F1BB0097AD28 /* CalendarCoordinator.swift */,
+				757175BA2569F18E0097AD28 /* CalendarViewController.swift */,
 				7518D86725622F9E00C51521 /* CalendarViewModel.swift */,
+				75AEC11B22E3E2480006A057 /* MonthView.swift */,
+				75AEC11D22E3E2700006A057 /* CalendarView.swift */,
+				75BCC2CC234ABAC2001CA01A /* CircleView.swift */,
+				75F2FB7E235138B9006007D8 /* DateCollectionViewCell.swift */,
+				75AEC11F22E409DE0006A057 /* WeekdayView.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -304,12 +317,21 @@
 		756A645623754063000BCBF3 /* BudgetTests */ = {
 			isa = PBXGroup;
 			children = (
+				757175C4256B3B580097AD28 /* Calendar */,
 				75C19A6025326E43002E856E /* Details */,
 				75E32A3925070AAF00731D9C /* Add */,
 				75BB36782505C1CF00CD92A4 /* Home */,
 				756A645923754063000BCBF3 /* Info.plist */,
 			);
 			path = BudgetTests;
+			sourceTree = "<group>";
+		};
+		757175C4256B3B580097AD28 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				757175C5256B3B870097AD28 /* CalendarViewModelTests.swift */,
+			);
+			path = Calendar;
 			sourceTree = "<group>";
 		};
 		75ADCEAA2491F4D500320593 /* Home */ = {
@@ -409,11 +431,6 @@
 		75AEC11A22E3E2250006A057 /* Calender */ = {
 			isa = PBXGroup;
 			children = (
-				75AEC11B22E3E2480006A057 /* MonthView.swift */,
-				75AEC11D22E3E2700006A057 /* CalendarView.swift */,
-				75BCC2CC234ABAC2001CA01A /* CircleView.swift */,
-				75F2FB7E235138B9006007D8 /* DateCollectionViewCell.swift */,
-				75AEC11F22E409DE0006A057 /* WeekdayView.swift */,
 			);
 			path = Calender;
 			sourceTree = "<group>";
@@ -752,6 +769,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				757175C6256B3B870097AD28 /* CalendarViewModelTests.swift in Sources */,
 				75C19A6225326E59002E856E /* DetailsViewModelTests.swift in Sources */,
 				75BB367D2505F41500CD92A4 /* HomeViewModelTest.swift in Sources */,
 				75E32A3B25070AC700731D9C /* AddExpenseViewModelTests.swift in Sources */,
@@ -764,6 +782,7 @@
 			files = (
 				75B4D3BA22E9854E00438A7A /* ExpenseTableViewCell.swift in Sources */,
 				75373B4922ED842000113E81 /* ReceiptCollectionViewCell.swift in Sources */,
+				757175BF2569F1BB0097AD28 /* CalendarCoordinator.swift in Sources */,
 				75DE6C28252D611D0017DD1E /* CategorySelectionCell.swift in Sources */,
 				75ADCECA2495F96D00320593 /* UIViewController+extension.swift in Sources */,
 				75AEC11C22E3E2480006A057 /* MonthView.swift in Sources */,
@@ -804,6 +823,7 @@
 				75373B4522ED747600113E81 /* RecietAlbumViewController.swift in Sources */,
 				75DE6496251FD2E40017DD1E /* UITextField+Utilities.swift in Sources */,
 				75373B4722ED792D00113E81 /* ReceiptAlbumTableViewCell.swift in Sources */,
+				757175BB2569F18E0097AD28 /* CalendarViewController.swift in Sources */,
 				751DE0BB24D628D500AD04C9 /* SliderView.swift in Sources */,
 				75CD180E22C5DD6800E2FB12 /* AppDelegate.swift in Sources */,
 				75ADCEA72491DE3400320593 /* Expense.swift in Sources */,

@@ -15,48 +15,30 @@ final class CalendarViewModel: NSObject {
     private let dependency: Dependency
     private let disposeBag = DisposeBag()
 
-    var currentMonth: Int {
-        let date = Date()
+    var selectedMonth: Int {
         let calendar = Calendar.current
-        let currentMonth = calendar.component(.month, from: date)
+        let currentMonth = calendar.component(.month, from: selectedDate.value)
         return currentMonth
     }
 
-    var currentYear: Int {
-        let date = Date()
+    var selectedDay: Int {
         let calendar = Calendar.current
-        return calendar.component(.year, from: date)
+        return calendar.component(.day, from: selectedDate.value)
     }
 
-    var amountTypedString = ""
+    var selectedWeekday: Int {
+        let calendar = Calendar.current
+        return calendar.component(.weekday, from: selectedDate.value)
+    }
 
-    let income = BehaviorRelay<Double?>(value: nil)
-    let incomeNotBuget = BehaviorRelay<Double?>(value: nil)
-    let remainFund = BehaviorRelay<Double?>(value: nil)
-    let currentDate = BehaviorRelay<String?>(value: nil)
-    let categories = BehaviorRelay<[Category]>(value: [])
-    let goals = BehaviorRelay<[Category]>(value: [])
     let monthlyExpense = BehaviorRelay<[Expense]>(value: [])
+    let selectedDate = BehaviorRelay<Date>(value: Date())
+    let expensesOfDay = BehaviorRelay<[Int : [Expense]]>(value: [:])
 
     init(dependency: Dependency) {
         self.dependency = dependency
         super.init()
-
-        //add notidfication for adding expense
-    }
-
-    var numberOfCategory: Int {
-        return categories.value.count
-    }
-
-    func refresh() {
-        convertDate()
-    }
-
-    private func convertDate() {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMM dd"
-        currentDate.accept(formatter.string(from: Date()))
+        fetchExpenses()
     }
 
     private func fetchExpenses() {
@@ -65,5 +47,10 @@ final class CalendarViewModel: NSObject {
 
     func getExpenses(of category: Category) -> [Expense] {
         return monthlyExpense.value.filter { $0.parentCategory == category }
+    }
+
+    func getExpenses(of date: Date) -> [Expense] {
+        print(self.selectedDate.value)
+        return monthlyExpense.value.filter { $0.date == date }
     }
 }
