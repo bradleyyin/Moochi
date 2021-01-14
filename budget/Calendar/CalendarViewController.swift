@@ -36,13 +36,14 @@ class CalendarViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
+        view.backgroundColor = .white
 
         view.addSubview(titleLabel)
-        view.addSubview(sliderView)
         view.addSubview(menuButton)
         view.addSubview(plusButton)
-        view.addSubview(incomeNotBudgetLabel)
+        view.addSubview(monthCollectionView)
+        view.addSubview(weekdayView)
+        view.addSubview(calendarView)
         view.addSubview(tableView)
 
         setupConstraints()
@@ -55,9 +56,9 @@ class CalendarViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        UIView.performWithoutAnimation {
-            sliderView.setSelectedIndex(0)
-        }
+//        UIView.performWithoutAnimation {
+//            sliderView.setSelectedIndex(0)
+//        }
 
     }
 
@@ -98,33 +99,30 @@ class CalendarViewController: UIViewController {
 
         }
 
-        sliderView.snp.makeConstraints { (make) in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(titleLabel.snp.bottom).offset(34)
-            make.height.equalTo(29)
+        monthCollectionView.snp.makeConstraints { (make) in
+            make.top.equalTo(plusButton.snp.bottom).offset(16)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(44)
         }
 
-        incomeNotBudgetLabel.snp.makeConstraints { (make) in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(sliderView.snp.bottom).offset(16)
+        weekdayView.snp.makeConstraints { (make) in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(monthCollectionView.snp.bottom).offset(16)
+        }
+
+        calendarView.snp.makeConstraints { (make) in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(weekdayView.snp.bottom).offset(16)
         }
 
         tableView.snp.makeConstraints { (make) in
             make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(incomeNotBudgetLabel.snp.bottom).offset(32)
+            make.top.equalTo(calendarView.snp.bottom)
+            make.bottom.equalToSuperview()
         }
     }
 
     private func setupBinding() {
-        viewModel.incomeNotBuget.asObservable().subscribe(onNext: { [weak self] incomeNotBudget in
-            guard let self = self else { return }
-            if let incomeNotBudget = incomeNotBudget {
-                self.incomeNotBudgetLabel.text = "Unbudgeted Income: \(String(format: "%.2f", incomeNotBudget))"
-            } else {
-                self.incomeNotBudgetLabel.text = "No income information."
-            }
-        }).disposed(by: disposeBag)
-
         viewModel.categories.asObservable().subscribe(onNext: { [weak self] _ in
             guard let self = self else { return }
             self.tableView.reloadData()
@@ -140,18 +138,12 @@ class CalendarViewController: UIViewController {
     }
 
     //MARK: UI
+    private let weekdayView = WeekdaysView()
+    private let calendarView = CalendarView()
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Monthly Details"
         return label
-    }()
-
-    private lazy var sliderView: SliderView = {
-        let view = SliderView()
-        view.titles = [NSAttributedString(string: "Category"), NSAttributedString(string: "Goal")]
-        view.layer.cornerRadius = 15
-        view.delegate = self
-        return view
     }()
 
     private lazy var menuButton: UIButton = {
@@ -168,12 +160,6 @@ class CalendarViewController: UIViewController {
         return button
     }()
 
-    private lazy var incomeNotBudgetLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        return label
-    }()
-
     private lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .plain)
         view.dataSource = self
@@ -181,17 +167,26 @@ class CalendarViewController: UIViewController {
         view.register(DetailsCategoryCell.self, forCellReuseIdentifier: "detailsCell")
         return view
     }()
-}
 
-extension CalendarViewController: SliderViewDelegate {
-    func didSelectPage(index: Int, title: String) {
-        //
-    }
+    private lazy var monthCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 16
+        layout.minimumLineSpacing = 48
+        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        view.backgroundColor = .white
+        view.alwaysBounceVertical = false
+        view.dataSource = self
+        view.delegate = self
+        view.showsHorizontalScrollIndicator = false
+        view.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "monthCell")
+        return view
+    }()
 }
 
 extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.numberOfCategory
+        return 4
     }
 //    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 //        let context = CoreDataStack.shared.mainContext
@@ -203,25 +198,25 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
 //        tableView.reloadData()
 //
 //    }
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let delete = UIContextualAction(style: .destructive, title: "") { _, _, _ in
-
-            self.viewModel.deleteCategory(at: indexPath)
-        }
-
-        delete.image = UIImage(named: "deleteIcon")?.withTintColor(.white)
-        delete.backgroundColor = ColorPalette.red
-        let edit = UIContextualAction(style: .normal, title: "edit") { _, _, _ in
-            let category = self.viewModel.categories.value[indexPath.row]
-            //self.delegate?.editCategoryTapped(category: category)
-        }
-
-        edit.image = UIImage(named: "edit")
-        edit.backgroundColor = ColorPalette.separatorGray.withAlphaComponent(0.1)
-        let swipeActions = UISwipeActionsConfiguration(actions: [delete, edit])
-
-        return swipeActions
-    }
+//    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//        let delete = UIContextualAction(style: .destructive, title: "") { _, _, _ in
+//
+//            self.viewModel.deleteCategory(at: indexPath)
+//        }
+//
+//        delete.image = UIImage(named: "deleteIcon")?.withTintColor(.white)
+//        delete.backgroundColor = ColorPalette.red
+//        let edit = UIContextualAction(style: .normal, title: "edit") { _, _, _ in
+//            let category = self.viewModel.categories.value[indexPath.row]
+//            //self.delegate?.editCategoryTapped(category: category)
+//        }
+//
+//        edit.image = UIImage(named: "edit")
+//        edit.backgroundColor = ColorPalette.separatorGray.withAlphaComponent(0.1)
+//        let swipeActions = UISwipeActionsConfiguration(actions: [delete, edit])
+//
+//        return swipeActions
+//    }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70
@@ -232,13 +227,11 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "detailsCell", for: indexPath) as? DetailsCategoryCell else {
             fatalError("cant make DetailTableViewCell")
         }
-        let cellViewModel = viewModel.cellViewModel(at: indexPath)
-        cell.setupWith(viewModel: cellViewModel)
+        //let cellViewModel = viewModel.cellViewModel(at: indexPath)
+        //cell.setupWith(viewModel: cellViewModel)
         return cell
     }
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let category = viewModel.categories.value[indexPath.row]
         //delegate?.categoryTapped(category: category)
@@ -247,4 +240,24 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
 //        chartVC.category = category
 //        self.navigationController?.pushViewController(chartVC, animated: true)
     }
+}
+
+extension CalendarViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 5
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "monthCell", for: indexPath)
+        cell.backgroundColor = .red
+        return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 100, height: 44)
+    }
+
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+//        return 48
+//    }
 }

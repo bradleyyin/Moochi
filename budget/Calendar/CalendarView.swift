@@ -113,7 +113,7 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         return day
     }
     func goToToday() {
-        monthView.gotoThisMonth()
+        //monthView.gotoThisMonth()
 //        let day = Calendar.current.component(.day, from: Date())
 //        let selectedIndexPath = IndexPath(item: day - 1 + firstWeekDayOfMonth - 1, section: 0)
 //        myCollectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: .top)
@@ -151,21 +151,21 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
     }
     
     func setupViews() {
-        addSubview(monthView)
-        monthView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        monthView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        monthView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        monthView.heightAnchor.constraint(equalToConstant: 35).isActive = true
-        monthView.delegate = self
-        
-        addSubview(weekdaysView)
-        weekdaysView.topAnchor.constraint(equalTo: monthView.bottomAnchor).isActive = true
-        weekdaysView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        weekdaysView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        weekdaysView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+//        addSubview(monthView)
+//        monthView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+//        monthView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+//        monthView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+//        monthView.heightAnchor.constraint(equalToConstant: 35).isActive = true
+//        monthView.delegate = self
+//
+//        addSubview(weekdaysView)
+//        weekdaysView.topAnchor.constraint(equalTo: monthView.bottomAnchor).isActive = true
+//        weekdaysView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+//        weekdaysView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+//        weekdaysView.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         addSubview(myCollectionView)
-        myCollectionView.topAnchor.constraint(equalTo: weekdaysView.bottomAnchor, constant: 0).isActive = true
+        myCollectionView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
         myCollectionView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0).isActive = true
         myCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0).isActive = true
         myCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
@@ -183,23 +183,11 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         self.addGestureRecognizer(swipeLeft)
     }
     @objc func goToLastMonth() {
-        monthView.goToLastMonth()
+        //monthView.goToLastMonth()
     }
     @objc func goToNextMonth() {
-        monthView.goToNextMonth()
+        //monthView.goToNextMonth()
     }
-    
-    let monthView: MonthView = {
-        let v = MonthView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
-    
-    let weekdaysView: WeekdaysView = {
-        let v = WeekdaysView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
     
     let myCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
