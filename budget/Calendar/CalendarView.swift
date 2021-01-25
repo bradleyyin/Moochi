@@ -12,7 +12,7 @@ protocol CalendarDelegate: AnyObject {
     func goToSingleDay(date: Date)
 }
 
-class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, MonthViewDelegate {
+class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     var numOfDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     var currentMonthIndex: Int = 0
@@ -21,7 +21,8 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
     var presentYear = 0
     var todaysDate = 0
     var firstWeekDayOfMonth = 0   //(Sunday-Saturday 1-7)
-    
+    var selectedIndexPath = IndexPath(item: 0, section: 0)
+
     weak var delegate: CalendarDelegate?
     
     override init(frame: CGRect) {
@@ -63,42 +64,50 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         if indexPath.item <= firstWeekDayOfMonth - 2 {
             cell.isHidden = true
         } else {
-            let calcDate = indexPath.row - firstWeekDayOfMonth + 2
             cell.isHidden = false
-            cell.lbl.text = "\(calcDate)"
-            
-           
-            cell.isUserInteractionEnabled = true
-            cell.lbl.textColor = .black
+            let calcDate = indexPath.row - firstWeekDayOfMonth + 2
+            //cell.lbl.text = "\(calcDate)"
+
+
+            //cell.isUserInteractionEnabled = true
+            //cell.lbl.textColor = .black
+            if indexPath == selectedIndexPath {
+                cell.setupWith(text: "\(calcDate)", isSelected: true)
+            } else {
+                cell.setupWith(text: "\(calcDate)", isSelected: false)
+            }
         }
-        if cell.lbl.text == "\(todaysDate)" && currentMonthIndex == Calendar.current.component(.month, from: Date()) {
-            cell.isToday = true
-        }
+//        if cell.lbl.text == "\(todaysDate)" && currentMonthIndex == Calendar.current.component(.month, from: Date()) {
+//            cell.isToday = true
+//        }
+
+
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell else { return }
-
-        let lbl = cell.lbl
+        selectedIndexPath = indexPath
+        myCollectionView.reloadData()
+        //let lbl = cell.lbl
  
-        let day = lbl.text ?? "01"
-        if let date = "\(currentYear)-\(currentMonthIndex)-\(day)".date {
-            delegate?.goToSingleDay(date: date)
-        }
+        //let day = lbl.text ?? "01"
+//        if let date = "\(currentYear)-\(currentMonthIndex)-\(day)".date {
+//            delegate?.goToSingleDay(date: date)
+//        }
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width / 7 - 8
-        let height: CGFloat = 50
+        let height: CGFloat = 48
         return CGSize(width: width, height: height)
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 8.0
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -120,7 +129,7 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
     }
     
     func didChangeMonth(monthIndex: Int, year: Int) {
-        currentMonthIndex = monthIndex + 1
+        currentMonthIndex = monthIndex
         currentYear = year
         
         //for leap year, make february month of 29 days
@@ -134,9 +143,7 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         //end
         
         firstWeekDayOfMonth = getFirstWeekDay()
-        
-        myCollectionView.reloadData()
-        var selectedIndexPath = IndexPath(item: firstWeekDayOfMonth - 1, section: 0)
+        selectedIndexPath = IndexPath(item: firstWeekDayOfMonth - 1, section: 0)
         var day = "01"
         let today = Date()
         if currentYear == Calendar.current.component(.year, from: today) && currentMonthIndex == Calendar.current.component(.month, from: today) {
@@ -144,7 +151,9 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
             day = String(format: "%02d", dayInt)
             selectedIndexPath = IndexPath(item: dayInt - 1 + firstWeekDayOfMonth - 1, section: 0)
         }
-        myCollectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: .top)
+
+        myCollectionView.reloadData()
+
         if let date = "\(currentYear)-\(currentMonthIndex)-\(day)".date {
             delegate?.goToSingleDay(date: date)
         }
@@ -170,10 +179,8 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         myCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0).isActive = true
         myCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         let totalNumberOfCells = numOfDaysInMonth[currentMonthIndex - 1] + firstWeekDayOfMonth - 1
-        print("total cells", totalNumberOfCells)
-        let totalRows = (Double(totalNumberOfCells) / 7.0).rounded(.up)
-        print("total row", totalRows)
-        myCollectionView.heightAnchor.constraint(equalToConstant: CGFloat(totalRows * 60)).isActive = true
+        //let totalRows = (Double(totalNumberOfCells) / 7.0).rounded(.up)
+        //myCollectionView.heightAnchor.constraint(equalToConstant: CGFloat(totalRows * 60)).isActive = true
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(goToLastMonth))
         swipeRight.direction = .right
         self.addGestureRecognizer(swipeRight)

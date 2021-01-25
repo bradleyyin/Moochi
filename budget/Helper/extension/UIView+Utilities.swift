@@ -22,11 +22,11 @@ extension UIView {
         }
     }
 
-    func applyShadowWithOffset(_ offset: CGFloat) {
-        self.layer.shadowColor = UIColor.black.withAlphaComponent(0.5).cgColor
+    func applyShadow(offset: CGFloat, radius: CGFloat, color: CGColor) {
+        self.layer.shadowColor = color
         self.layer.shadowOffset = CGSize(width: offset, height: offset)
         self.layer.shadowOpacity = 1
-        self.layer.shadowRadius = 6.0
+        self.layer.shadowRadius = radius
         self.clipsToBounds = false
         self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
     }

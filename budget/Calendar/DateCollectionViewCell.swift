@@ -10,51 +10,71 @@ import UIKit
 
 class DateCollectionViewCell: UICollectionViewCell {
     var isToday = false
+    var cellIsSelected = false
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor.clear
-        layer.cornerRadius = 5
+        contentView.clipsToBounds = true
+        contentView.layer.cornerRadius = 6
         layer.masksToBounds = true
-        setupViews()
+        contentView.addSubview(containerView)
+        containerView.addSubview(lbl)
+
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        if traitCollection.userInterfaceStyle == .light {
-            lbl.textColor = .black
-        } else {
-            lbl.textColor = .white
-        }
+        setupViews()
+//        if traitCollection.userInterfaceStyle == .light {
+//            lbl.textColor = .black
+//        } else {
+//            lbl.textColor = .white
+//        }
 //        if isToday {
 //            lbl.textColor = .lightGray
 //        }
+
+        if cellIsSelected {
+            //containerView.backgroundColor = .black
+            containerView.applyShadow(offset: 4, radius: 6, color: UIColor.black.withAlphaComponent(0.1).cgColor)
+            //lbl.textColor = .white
+        } else {
+            //containerView.backgroundColor = .clear
+            containerView.removeShadow()
+            //lbl.textColor = .black
+        }
+
+
     }
     
     func setupViews() {
-        addSubview(lbl)
-        if isSelected {
-            let circleView = CircleView(frame: CGRect(x: 1,
-                                                      y: self.frame.height / 2 - (self.frame.width / 2),
-                                                      width: self.frame.width - 2,
-                                                      height: self.frame.width - 2))
-            circleView.backgroundColor = .clear
-            circleView.tag = 1
-            self.addSubview(circleView)
-        } else {
-            if let circleView = self.viewWithTag(1) {
-                circleView.removeFromSuperview()
-            }
+        containerView.snp.remakeConstraints { (make) in
+            make.leading.trailing.equalToSuperview().inset(4)
+            make.height.equalTo(containerView.snp.width)
+            make.centerY.equalToSuperview()
+            //make.leading.top.equalToSuperview()
+            //make.trailing.bottom.equalToSuperview().inset(4)
         }
-        lbl.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        lbl.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        lbl.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        lbl.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        
+        lbl.snp.remakeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
     }
+
+    func setupWith(text: String, isSelected: Bool) {
+        lbl.text = text
+        cellIsSelected = isSelected
+        if isSelected {
+            containerView.backgroundColor = .black
+            lbl.textColor = .white
+        } else {
+            containerView.backgroundColor = .clear
+            lbl.textColor = .black
+        }
+    }
+
     override func prepareForReuse() {
         super.prepareForReuse()
-        if let circleView = self.viewWithTag(1) {
-            circleView.removeFromSuperview()
-        }
         isToday = false
     }
     
@@ -62,15 +82,23 @@ class DateCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "00"
         label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 25)
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = FontPalette.font(size: 20, fontType: .light)
         return label
     }()
-    override var isSelected: Bool {
-        didSet {
-            setupViews()
-        }
-    }
+//    override var isSelected: Bool {
+//        didSet {
+//            setupViews()
+//
+//        }
+//    }
+
+    private lazy var containerView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 6
+        view.layer.borderColor = UIColor.black.cgColor
+        view.backgroundColor = .white
+        return view
+    }()
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
