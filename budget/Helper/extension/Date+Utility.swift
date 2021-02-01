@@ -31,6 +31,17 @@ extension Date {
         return Calendar.current.date(from: components as DateComponents)!
     }
 
+    func getTodayStart() -> Date? {
+        var component = Calendar.current.dateComponents([.year, .month, .day], from: self)
+        component.hour = 0
+        return Calendar.current.date(from: component)
+    }
+
+    func getTodayEnd() -> Date? {
+        var component = Calendar.current.dateComponents([.year, .month, .day], from: self)
+        component.hour = 24
+        return Calendar.current.date(from: component)
+    }
 
     func numberOfMonthAgo(numberOfMonth: Int) -> Date {
         return Calendar.current.date(byAdding: .month, value: -numberOfMonth, to: self)!
@@ -41,17 +52,20 @@ extension Date {
     var dayBefore: Date {
         return Calendar.current.date(byAdding: .day, value: -1, to: self)!
     }
+
     var dayAfter: Date {
         return Calendar.current.date(byAdding: .day, value: 1, to: self)!
     }
+
     var noon: Date {
         return Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: self)!
     }
+
     var month: Int {
         return Calendar.current.component(.month, from: self)
     }
+
     var isLastDayOfMonth: Bool {
         return dayAfter.month != month
     }
-    
 }

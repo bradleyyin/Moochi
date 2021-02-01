@@ -124,7 +124,17 @@ class CalendarViewController: UIViewController {
         viewModel.currentDate.asObservable().subscribe(onNext: { [weak self] date in
             guard let self = self else { return }
             self.monthCollectionView.reloadData()
-            self.calendarView.didChangeMonth(monthIndex: self.viewModel.currentMonth, year: self.viewModel.currentYear)
+            if self.viewModel.currentMonth != self.viewModel.prevMonth {
+                self.calendarView.didChangeMonth(monthIndex: self.viewModel.currentMonth, year: self.viewModel.currentYear)
+                self.viewModel.prevMonth = self.viewModel.currentMonth
+            }
+            
+            self.viewModel.getExpenses(of: date)
+        }).disposed(by: disposeBag)
+
+        viewModel.dailyExpense.asObservable().subscribe(onNext: { [weak self] _ in
+            guard let self = self else { return }
+            self.tableView.reloadData()
         }).disposed(by: disposeBag)
     }
 
@@ -209,12 +219,18 @@ class CalendarViewController: UIViewController {
 
     //MARK: UI
     private let weekdayView = WeekdaysView()
-    private let calendarView = CalendarView()
+
 //    private lazy var titleLabel: UILabel = {
 //        let label = UILabel()
 //        label.text = "Monthly Details"
 //        return label
 //    }()
+
+    private lazy var calendarView: CalendarView = {
+        let view = CalendarView()
+        view.delegate = self
+        return view
+    }()
 
     private lazy var todayButton: UIButton = {
         let button = UIButton()
@@ -281,7 +297,7 @@ class CalendarViewController: UIViewController {
         let view = UITableView(frame: .zero, style: .plain)
         view.dataSource = self
         view.delegate = self
-        view.register(DetailsCategoryCell.self, forCellReuseIdentifier: "detailsCell")
+        view.register(CalendarExpenseCell.self, forCellReuseIdentifier: "expenseCell")
         return view
     }()
 
@@ -306,7 +322,7 @@ class CalendarViewController: UIViewController {
 
 extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return viewModel.dailyExpense.value.count
     }
 //    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 //        let context = CoreDataStack.shared.mainContext
@@ -339,16 +355,16 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
 //    }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
+        return 64
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "detailsCell", for: indexPath) as? DetailsCategoryCell else {
-            fatalError("cant make DetailTableViewCell")
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "expenseCell", for: indexPath) as? CalendarExpenseCell else {
+            fatalError("cant make CalendarExpenseCell")
         }
-        //let cellViewModel = viewModel.cellViewModel(at: indexPath)
-        //cell.setupWith(viewModel: cellViewModel)
+        let cellViewModel = viewModel.configureExpenseCellViewModel(at: indexPath)
+        cell.setupWith(viewModel: cellViewModel)
         return cell
     }
 
@@ -460,4 +476,10 @@ extension CalendarViewController: UICollectionViewDelegate, UICollectionViewData
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
 //        return 48
 //    }
+}
+
+extension CalendarViewController: CalendarDelegate {
+    func goToSingleDay(date: Date) {
+        viewModel.currentDate.accept(date)
+    }
 }

@@ -68,6 +68,8 @@
 		75C19A7925328F46002E856E /* CategoryIconCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C19A7825328F46002E856E /* CategoryIconCellViewModel.swift */; };
 		75C19A822533E882002E856E /* ChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C19A812533E882002E856E /* ChartViewModel.swift */; };
 		75C2BF80236819050028720B /* ChartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C2BF7F236819050028720B /* ChartTableViewCell.swift */; };
+		75C5851725C53E5E00BF79DB /* CalendarExpenseCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C5851625C53E5E00BF79DB /* CalendarExpenseCellViewModel.swift */; };
+		75C5851B25C53F0E00BF79DB /* CalendarExpenseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C5851A25C53F0E00BF79DB /* CalendarExpenseCell.swift */; };
 		75CB81012504BA5600F511B0 /* HomeCategoryCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CB81002504BA5600F511B0 /* HomeCategoryCellViewModel.swift */; };
 		75CD180E22C5DD6800E2FB12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CD180D22C5DD6800E2FB12 /* AppDelegate.swift */; };
 		75CD181022C5DD6800E2FB12 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CD180F22C5DD6800E2FB12 /* HomeViewController.swift */; };
@@ -175,6 +177,8 @@
 		75C19A7825328F46002E856E /* CategoryIconCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryIconCellViewModel.swift; sourceTree = "<group>"; };
 		75C19A812533E882002E856E /* ChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewModel.swift; sourceTree = "<group>"; };
 		75C2BF7F236819050028720B /* ChartTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartTableViewCell.swift; sourceTree = "<group>"; };
+		75C5851625C53E5E00BF79DB /* CalendarExpenseCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarExpenseCellViewModel.swift; sourceTree = "<group>"; };
+		75C5851A25C53F0E00BF79DB /* CalendarExpenseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarExpenseCell.swift; sourceTree = "<group>"; };
 		75CB81002504BA5600F511B0 /* HomeCategoryCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCategoryCellViewModel.swift; sourceTree = "<group>"; };
 		75CD180A22C5DD6800E2FB12 /* budget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = budget.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75CD180D22C5DD6800E2FB12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -265,6 +269,8 @@
 				75BCC2CC234ABAC2001CA01A /* CircleView.swift */,
 				75F2FB7E235138B9006007D8 /* DateCollectionViewCell.swift */,
 				75AEC11F22E409DE0006A057 /* WeekdayView.swift */,
+				75C5851625C53E5E00BF79DB /* CalendarExpenseCellViewModel.swift */,
+				75C5851A25C53F0E00BF79DB /* CalendarExpenseCell.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -787,6 +793,7 @@
 				75ADCECA2495F96D00320593 /* UIViewController+extension.swift in Sources */,
 				75AEC11C22E3E2480006A057 /* MonthView.swift in Sources */,
 				75F468F225325ECE00418B74 /* DetailsCategoryCell.swift in Sources */,
+				75C5851B25C53F0E00BF79DB /* CalendarExpenseCell.swift in Sources */,
 				7514AEE8238B366000D9D436 /* SearchExpensesViewController.swift in Sources */,
 				75CD181022C5DD6800E2FB12 /* HomeViewController.swift in Sources */,
 				75ADCEB02491FD9D00320593 /* HomeCoordinator.swift in Sources */,
@@ -827,6 +834,7 @@
 				751DE0BB24D628D500AD04C9 /* SliderView.swift in Sources */,
 				75CD180E22C5DD6800E2FB12 /* AppDelegate.swift in Sources */,
 				75ADCEA72491DE3400320593 /* Expense.swift in Sources */,
+				75C5851725C53E5E00BF79DB /* CalendarExpenseCellViewModel.swift in Sources */,
 				754248BF234A8A55004B6ECF /* MonthCalculator.swift in Sources */,
 				75C19A6D25327F6A002E856E /* AddCategoriesViewController.swift in Sources */,
 				75F468F825325EE200418B74 /* DetailsCategoryCellViewModel.swift in Sources */,

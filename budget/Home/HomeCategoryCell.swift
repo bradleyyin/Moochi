@@ -26,7 +26,7 @@ class HomeCategoryCell: UITableViewCell {
         titleLabel.text = viewModel.title
         iconImageView.image = viewModel.icon
         numberLabel.text = viewModel.remainingMoneyText
-        setupCircle(percent: 0.5)
+        setupCircle(percent: viewModel.percent)
     }
     
 //    private func setupUIColor() {

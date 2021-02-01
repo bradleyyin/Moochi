@@ -31,7 +31,7 @@ final class CalendarViewModel: NSObject {
 //        return calendar.component(.weekday, from: selectedDate.value)
 //    }
 
-    //let monthlyExpense = BehaviorRelay<[Expense]>(value: [])
+    let dailyExpense = BehaviorRelay<[Expense]>(value: [])
     //let monthlyGoal = BehaviorRelay<[Expense]>(value: [])
     let currentDate = BehaviorRelay<Date>(value: Date())
     let today = Date()
@@ -57,7 +57,8 @@ final class CalendarViewModel: NSObject {
         return array
     }
 
-    //var currentDate = Date()
+    lazy var prevMonth = 100
+
     var currentDay: Int {
         return Calendar.current.component(.day, from: currentDate.value)
     }
@@ -90,17 +91,18 @@ final class CalendarViewModel: NSObject {
         self.dependency = dependency
         super.init()
         //fetchExpenses()
+
+        getExpenses(of: Date())
     }
-//
-//    private func fetchExpenses() {
-//        monthlyExpense.accept(dependency.budgetController.readMonthlyExpense())
-//    }
-//
-//    func getExpenses(of category: Category) -> [Expense] {
-//        return monthlyExpense.value.filter { $0.parentCategory == category }
-//    }
-//
-//    func getExpenses(of date: Date) -> [Expense] {
-//        return monthlyExpense.value.filter { $0.date == date }
-//    }
+    
+    func getExpenses(of date: Date) {
+        dailyExpense.accept(dependency.budgetController.readDailyExpense(of: date))
+        print(dependency.budgetController.readDailyExpense(of: date))
+    }
+
+    func configureExpenseCellViewModel(at indexPath: IndexPath) -> CalendarExpenseCellViewModel {
+        let expense = dailyExpense.value[indexPath.item]
+        let vm = CalendarExpenseCellViewModel(expense: expense)
+        return vm
+    }
 }

@@ -90,12 +90,12 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         guard let cell = collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell else { return }
         selectedIndexPath = indexPath
         myCollectionView.reloadData()
-        //let lbl = cell.lbl
+        let lbl = cell.lbl
  
-        //let day = lbl.text ?? "01"
-//        if let date = "\(currentYear)-\(currentMonthIndex)-\(day)".date {
-//            delegate?.goToSingleDay(date: date)
-//        }
+        let day = lbl.text ?? "01"
+        if let date = "\(currentYear)-\(currentMonthIndex)-\(day)".date {
+            delegate?.goToSingleDay(date: date)
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -154,9 +154,9 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
 
         myCollectionView.reloadData()
 
-        if let date = "\(currentYear)-\(currentMonthIndex)-\(day)".date {
-            delegate?.goToSingleDay(date: date)
-        }
+//        if let date = "\(currentYear)-\(currentMonthIndex)-\(day)".date {
+//            delegate?.goToSingleDay(date: date)
+//        }
     }
     
     func setupViews() {
