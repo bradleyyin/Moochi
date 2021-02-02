@@ -11,7 +11,7 @@ import RxSwift
 import SnapKit
 
 protocol CalendarViewControllerDelegate: class {
-    
+    func didTapAdd()
 }
 
 class CalendarViewController: UIViewController {
@@ -139,11 +139,12 @@ class CalendarViewController: UIViewController {
     }
 
     @objc private func plusButtonTapped() {
-        //delegate?.addButtonTapped()
+        delegate?.didTapAdd()
     }
 
     @objc private func searchButtonTapped() {
-
+        let vc = SearchExpensesViewController()
+        self.present(vc, animated: true, completion: nil)
     }
 
     @objc private func todayButtonTapped() {

@@ -29,5 +29,9 @@ class CalendarCoordinator: Coordinator {
 }
 
 extension CalendarCoordinator: CalendarViewControllerDelegate {
-    
+    func didTapAdd() {
+        let add = AddExpenseCoordinator(with: presenter, dependency: dependency)
+        add.start()
+        addChildCoordinator(childCoordinator: add)
+    }
 }

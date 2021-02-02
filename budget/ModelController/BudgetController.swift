@@ -169,6 +169,14 @@ extension BudgetController {
         return categories
     }
 
+    func readGoals() -> [Category] {
+        var categories: [Category] = []
+        let isGoal = true
+        let results = realm.objects(Category.self).filter("isGoal == %@", isGoal)
+        categories = Array(results)
+        return categories
+    }
+
     func readMonthlyCategories() -> [Category] {
         let currentDate = Date()
         let startOfMonth = currentDate.getThisMonthStart()
