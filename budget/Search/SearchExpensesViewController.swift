@@ -9,70 +9,74 @@
 import UIKit
 import CoreData
 import RealmSwift
+import RxSwift
 
 class SearchExpensesViewController: UIViewController {
     var budgetController: BudgetController!
-    
-    var tableView: UITableView!
-    var searchBar: UISearchBar!
-    
     let realm = try! Realm()
+    private var disposeBag = DisposeBag()
+
+    var viewModel: CalendarViewModel? {
+        didSet {
+            setupBinding()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureTableView()
-        configureSearchBar()
+        view.backgroundColor = .white
         setConstraint()
         // Do any additional setup after loading the view.
     }
-    
-    private func configureSearchBar() {
-        let searchBar = UISearchBar()
-        searchBar.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(searchBar)
-        searchBar.showsCancelButton = true
-        searchBar.delegate = self
-        searchBar.placeholder = "Enter name of expense"
-        searchBar.returnKeyType = .done
-        searchBar.enablesReturnKeyAutomatically = false
-        self.searchBar = searchBar
-    }
-    
-    private func configureTableView() {
-        let tableView = UITableView()
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(tableView)
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.backgroundColor = .clear
-        tableView.register(ExpenseTableViewCell.self, forCellReuseIdentifier: "ExpenseCell")
-        self.tableView = tableView
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        searchBar.searchTextField.layer.cornerRadius = 22
+        searchContainerView.addInnerShadow()
+
+        //searchBar.searchTextField.clipsToBounds = true
     }
     
     private func setConstraint() {
-        searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
-        tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        view.addSubview(searchContainerView)
+        view.addSubview(tableView)
+        searchContainerView.addSubview(searchBar)
+
+        searchContainerView.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().inset(8)
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(44)
+        }
+
+        searchBar.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview().inset(4)
+        }
+
+        tableView.snp.makeConstraints { (make) in
+            make.top.equalTo(searchContainerView.snp.bottom)
+            make.bottom.leading.trailing.equalToSuperview()
+        }
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        setupUIColor()
+        //setupUIColor()
     }
     
-    private func setupUIColor() {
-        if traitCollection.userInterfaceStyle == .light {
-            self.view.backgroundColor = .white
-        } else {
-            self.view.backgroundColor = .black
-        }
-    }
+//    private func setupUIColor() {
+//        if traitCollection.userInterfaceStyle == .light {
+//            self.view.backgroundColor = .white
+//        } else {
+//            self.view.backgroundColor = .black
+//        }
+//    }
     
-//    private func setupBinding() {
+    private func setupBinding() {
+        guard  let viewModel = viewModel else { return }
+        viewModel.searchExpense.asObservable().subscribe(onNext: { [weak self] _ in
+            self?.tableView.reloadData()
+        }).disposed(by: disposeBag)
+
 //        realm.objects(Expense.self)
 //        .sort(byKeyPath: "date", ascending: false)
 //        .observe { [weak self] changes in
@@ -86,26 +90,60 @@ class SearchExpensesViewController: UIViewController {
 //                print(error)
 //            }
 //        }
-//    }
+    }
+
+    private lazy var searchContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        return view
+    }()
+
+    private lazy var searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.showsCancelButton = false
+        searchBar.delegate = self
+        searchBar.placeholder = "Enter name of expense"
+        searchBar.returnKeyType = .done
+        searchBar.enablesReturnKeyAutomatically = false
+        searchBar.barTintColor = .white
+        searchBar.searchTextField.backgroundColor = .clear
+        searchBar.backgroundImage = UIImage()
+        return searchBar
+    }()
+
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.backgroundColor = .white
+        tableView.register(SearchResultCell.self, forCellReuseIdentifier: "searchCell")
+        return tableView
+    }()
 }
 
 extension SearchExpensesViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 64
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        guard let viewModel = viewModel else { return 0 }
+        return viewModel.searchExpense.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExpenseCell", for: indexPath) as? ExpenseTableViewCell else {
-            fatalError("cant make ExpenseTableViewCell")
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath) as? SearchResultCell else {
+            fatalError("cant make SearchResultCell")
         }
         //cell.expense = fetchedResultsController?.object(at: indexPath)
-        
+        guard let viewModel = viewModel else { return cell }
+        let expense = viewModel.searchExpense.value[indexPath.row]
+        let vm = CalendarExpenseCellViewModel(expense: expense)
+        cell.setupWith(viewModel: vm)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        
 //        if indexPath.section == 0 {
 //            let singleDayDetailVC = SingleExpenseDetailViewController()
 //            singleDayDetailVC.expense = fetchedResultsController?.object(at: indexPath)
@@ -145,7 +183,8 @@ extension SearchExpensesViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         print(searchText)
         //refreshFRC(keyword: searchText)
-        tableView.reloadData()
+        viewModel?.searchExpense(keyword: searchText)
+        //tableView.reloadData()
     }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         print("cancel")

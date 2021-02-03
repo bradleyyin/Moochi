@@ -66,7 +66,6 @@ class SliderView: UIView {
             selectedPageIndex = index
         }
         if let newView = titleViewAtIndex(selectedPageIndex) {
-            print(newView.frame)
             //newView.isSelected = true
             //Temp: use while there are only 2 selection, change if more in future
             if index == 0 {
@@ -76,10 +75,6 @@ class SliderView: UIView {
                     make.width.equalTo(newView.frame.width)
                     make.leading.equalToSuperview()
                 }
-                
-                UIView.animate(withDuration: 0.3) {
-                    self.layoutIfNeeded()
-                }
             } else if index == 1 {
                 // move moving view to right
                 movingView.snp.remakeConstraints { (make) in
@@ -87,10 +82,15 @@ class SliderView: UIView {
                     make.width.equalTo(newView.frame.width)
                     make.trailing.equalToSuperview()
                 }
-                
-                UIView.animate(withDuration: 0.3) {
-                    self.layoutIfNeeded()
-                }
+            }
+
+            if isInitial {
+                isInitial.toggle()
+                return
+            }
+
+            UIView.animate(withDuration: 0.3) {
+                self.layoutIfNeeded()
             }
         }
         

@@ -300,7 +300,6 @@ final class AddEntryViewController: UIViewController {
         if let date = viewModel.date.value {
             datePicker.date = date
         }
-        
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
         let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneDatePicker))
@@ -524,6 +523,7 @@ final class AddEntryViewController: UIViewController {
         let picker = UIDatePicker()
         picker.datePickerMode = .date
         picker.minimumDate = Date(timeIntervalSinceReferenceDate: 0)
+        viewModel.updateDate(picker.date)
         if #available(iOS 13.4, *) {
             picker.preferredDatePickerStyle = .wheels
         } else {

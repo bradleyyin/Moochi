@@ -18,7 +18,7 @@ class WeekdaysView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        setupUIColor()
+        //setupUIColor()
     }
     
     func setupViews() {
@@ -28,27 +28,29 @@ class WeekdaysView: UIView {
         myStackView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         myStackView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         
-        let daysArr = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
+        let daysArr = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
         for i in 0..<7 {
             let lbl = UILabel()
-            lbl.text = daysArr[i]
+            lbl.text = daysArr[i].uppercased()
             lbl.textAlignment = .center
+            lbl.font = FontPalette.font(size: 13, fontType: .light)
+            lbl.textColor = ColorPalette.separatorGray.withAlphaComponent(0.5)
             myStackView.addArrangedSubview(lbl)
         }
     }
     
-    private func setupUIColor() {
-        var textColor: UIColor
-        if traitCollection.userInterfaceStyle == .light {
-            textColor = .black
-        } else {
-            textColor = .white
-        }
-        for i in 0..<7 {
-            guard let label = myStackView.subviews[i] as? UILabel else { continue }
-            label.textColor = textColor
-        }
-    }
+//    private func setupUIColor() {
+//        var textColor: UIColor
+//        if traitCollection.userInterfaceStyle == .light {
+//            textColor = .black
+//        } else {
+//            textColor = .white
+//        }
+//        for i in 0..<7 {
+//            guard let label = myStackView.subviews[i] as? UILabel else { continue }
+//            label.textColor = textColor
+//        }
+//    }
     
     let myStackView: UIStackView = {
         let stackView = UIStackView()

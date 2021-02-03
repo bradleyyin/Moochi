@@ -86,6 +86,15 @@ extension BudgetController {
         expenses = Array(results)
         return expenses
     }
+
+    func readDailyExpense(of date: Date) -> [Expense] {
+        guard let startOfToday = date.getTodayStart(), let endOfToday = date.getTodayEnd() else { return [] }
+
+        var expenses: [Expense] = []
+        let results = realm.objects(Expense.self).filter("(date => %@) AND (date <= %@)", startOfToday as NSDate, endOfToday as NSDate)
+        expenses = Array(results)
+        return expenses
+    }
     
     func updateExpense(expense: Expense, imagePath: String) {
         try! realm.write {
@@ -115,6 +124,13 @@ extension BudgetController {
         try! realm.write {
             realm.delete(expense)
         }
+    }
+
+    func searchExpense(keyword: String) -> [Expense] {
+        var expenses: [Expense] = []
+        let results = realm.objects(Expense.self).filter("name BEGINSWITH[c] %@", keyword as NSString)
+        expenses = Array(results)
+        return expenses
     }
 }
 
@@ -156,6 +172,14 @@ extension BudgetController {
     func readCategories() -> [Category] {
         var categories: [Category] = []
         let results = realm.objects(Category.self)
+        categories = Array(results)
+        return categories
+    }
+
+    func readGoals() -> [Category] {
+        var categories: [Category] = []
+        let isGoal = true
+        let results = realm.objects(Category.self).filter("isGoal == %@", isGoal)
         categories = Array(results)
         return categories
     }

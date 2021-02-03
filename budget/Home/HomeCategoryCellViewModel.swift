@@ -36,6 +36,12 @@ final class HomeCategoryCellViewModel {
         return String(format: "%.2f", category.totalAmount)
     }
 
+    var percent: Double {
+        let totalExpense = category.expenses.map({$0.amount}).reduce(0, +)
+        let remainAmount = category.totalAmount - totalExpense
+        return remainAmount / category.totalAmount
+    }
+
     init(category: Category) {
         self.category = category
     }

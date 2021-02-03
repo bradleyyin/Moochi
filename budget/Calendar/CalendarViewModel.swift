@@ -15,55 +15,99 @@ final class CalendarViewModel: NSObject {
     private let dependency: Dependency
     private let disposeBag = DisposeBag()
 
+//    var selectedMonth: Int {
+//        let calendar = Calendar.current
+//        let currentMonth = calendar.component(.month, from: selectedDate.value)
+//        return currentMonth
+//    }
+
+//    var selectedDay: Int {
+//        let calendar = Calendar.current
+//        return calendar.component(.day, from: selectedDate.value)
+//    }
+
+//    var selectedWeekday: Int {
+//        let calendar = Calendar.current
+//        return calendar.component(.weekday, from: selectedDate.value)
+//    }
+
+    let dailyExpense = BehaviorRelay<[Expense]>(value: [])
+    let searchExpense = BehaviorRelay<[Expense]>(value: [])
+    //let monthlyGoal = BehaviorRelay<[Expense]>(value: [])
+    let currentDate = BehaviorRelay<Date>(value: Date())
+    let today = Date()
+    //let expensesOfDay = BehaviorRelay<[Int : [Expense]]>(value: [:])
+
+    var monthsArr = ["July", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "July", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun"]
+
+    var currentMonthIndex: Int = Calendar.current.component(.month, from: Date()) - 1 + 6
+
+
+    var currentMonthDisplayIndex: Int {
+        let month = monthsArr[currentMonthIndex]
+        let index = monthArrayToDisplay.firstIndex(of: month) ?? 0
+        return index
+    }
+
+    var monthArrayToDisplay: [String] {
+        let currentMonthIndex = Calendar.current.component(.month, from: today) - 1 + 6
+
+        let indexSixMonthAgo = currentMonthIndex - 6
+        let indexFiveMonthAhead = currentMonthIndex + 5
+        let array = Array(monthsArr[indexSixMonthAgo...indexFiveMonthAhead])
+        return array
+    }
+
+    lazy var prevMonth = 100
+
+    var currentDay: Int {
+        return Calendar.current.component(.day, from: currentDate.value)
+    }
+
     var currentMonth: Int {
-        let date = Date()
-        let calendar = Calendar.current
-        let currentMonth = calendar.component(.month, from: date)
-        return currentMonth
+        return Calendar.current.component(.month, from: currentDate.value)
     }
 
     var currentYear: Int {
-        let date = Date()
-        let calendar = Calendar.current
-        return calendar.component(.year, from: date)
+        return Calendar.current.component(.year, from: currentDate.value)
     }
 
-    var amountTypedString = ""
-
-    let income = BehaviorRelay<Double?>(value: nil)
-    let incomeNotBuget = BehaviorRelay<Double?>(value: nil)
-    let remainFund = BehaviorRelay<Double?>(value: nil)
-    let currentDate = BehaviorRelay<String?>(value: nil)
-    let categories = BehaviorRelay<[Category]>(value: [])
-    let goals = BehaviorRelay<[Category]>(value: [])
-    let monthlyExpense = BehaviorRelay<[Expense]>(value: [])
+    var numOfDaysInMonth: [Int] {
+        //leap year
+        if currentMonth == 2 && currentYear % 4 == 0 {
+            return [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        } else {
+            return [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        }
+    }
+//    var presentedMonthIndex = 0
+//    var presentedYear = 0
+    var firstWeekDayOfMonth: Int {
+        let day = ("\(currentYear)-\(currentMonth)-01".date?.firstDayOfTheMonth.weekday)!
+        //return day == 7 ? 1 : day
+        return day
+    }   //(Sunday-Saturday 1-7)
 
     init(dependency: Dependency) {
         self.dependency = dependency
         super.init()
+        //fetchExpenses()
 
-        //add notidfication for adding expense
+        getExpenses(of: Date())
+    }
+    
+    func getExpenses(of date: Date) {
+        dailyExpense.accept(dependency.budgetController.readDailyExpense(of: date))
     }
 
-    var numberOfCategory: Int {
-        return categories.value.count
+    func searchExpense(keyword: String) {
+        let results = dependency.budgetController.searchExpense(keyword: keyword)
+        searchExpense.accept(results)
     }
 
-    func refresh() {
-        convertDate()
-    }
-
-    private func convertDate() {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMM dd"
-        currentDate.accept(formatter.string(from: Date()))
-    }
-
-    private func fetchExpenses() {
-        monthlyExpense.accept(dependency.budgetController.readMonthlyExpense())
-    }
-
-    func getExpenses(of category: Category) -> [Expense] {
-        return monthlyExpense.value.filter { $0.parentCategory == category }
+    func configureExpenseCellViewModel(at indexPath: IndexPath) -> CalendarExpenseCellViewModel {
+        let expense = dailyExpense.value[indexPath.item]
+        let vm = CalendarExpenseCellViewModel(expense: expense)
+        return vm
     }
 }

@@ -19,7 +19,7 @@ class CategoryIconCell: UICollectionViewCell {
         super.layoutSubviews()
         setupConstraints()
         if let selected = viewModel?.isSelected, selected {
-            containerView.applyShadowWithOffset(4)
+            containerView.applyShadow(offset: 4, radius: 6, color: UIColor.black.withAlphaComponent(0.5).cgColor)
         } else {
             containerView.removeShadow()
         }

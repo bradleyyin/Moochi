@@ -28,6 +28,8 @@ public struct ColorPalette {
 
     public static let separatorGray = UIColor(0x333333)
 
+    public static let indicatorGray = UIColor(0xC0C0C0)
+
     public static let red = UIColor(0xFF3B30)
 
 }
