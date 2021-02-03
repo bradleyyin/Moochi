@@ -9,18 +9,22 @@
 import UIKit
 import CoreData
 import RealmSwift
+import RxSwift
 
 class SearchExpensesViewController: UIViewController {
     var budgetController: BudgetController!
-    
-    var tableView: UITableView!
     let realm = try! Realm()
+    private var disposeBag = DisposeBag()
+
+    var viewModel: CalendarViewModel? {
+        didSet {
+            setupBinding()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        configureTableView()
-        configureSearchBar()
         setConstraint()
         // Do any additional setup after loading the view.
     }
@@ -31,21 +35,6 @@ class SearchExpensesViewController: UIViewController {
         searchContainerView.addInnerShadow()
 
         //searchBar.searchTextField.clipsToBounds = true
-    }
-    
-    private func configureSearchBar() {
-
-    }
-    
-    private func configureTableView() {
-        let tableView = UITableView()
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(tableView)
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.backgroundColor = .white
-        tableView.register(ExpenseTableViewCell.self, forCellReuseIdentifier: "ExpenseCell")
-        self.tableView = tableView
     }
     
     private func setConstraint() {
@@ -82,7 +71,12 @@ class SearchExpensesViewController: UIViewController {
 //        }
 //    }
     
-//    private func setupBinding() {
+    private func setupBinding() {
+        guard  let viewModel = viewModel else { return }
+        viewModel.searchExpense.asObservable().subscribe(onNext: { [weak self] _ in
+            self?.tableView.reloadData()
+        }).disposed(by: disposeBag)
+
 //        realm.objects(Expense.self)
 //        .sort(byKeyPath: "date", ascending: false)
 //        .observe { [weak self] changes in
@@ -96,7 +90,7 @@ class SearchExpensesViewController: UIViewController {
 //                print(error)
 //            }
 //        }
-//    }
+    }
 
     private lazy var searchContainerView: UIView = {
         let view = UIView()
@@ -116,25 +110,40 @@ class SearchExpensesViewController: UIViewController {
         searchBar.backgroundImage = UIImage()
         return searchBar
     }()
+
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.backgroundColor = .white
+        tableView.register(SearchResultCell.self, forCellReuseIdentifier: "searchCell")
+        return tableView
+    }()
 }
 
 extension SearchExpensesViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 64
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        guard let viewModel = viewModel else { return 0 }
+        return viewModel.searchExpense.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExpenseCell", for: indexPath) as? ExpenseTableViewCell else {
-            fatalError("cant make ExpenseTableViewCell")
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath) as? SearchResultCell else {
+            fatalError("cant make SearchResultCell")
         }
         //cell.expense = fetchedResultsController?.object(at: indexPath)
-        
+        guard let viewModel = viewModel else { return cell }
+        let expense = viewModel.searchExpense.value[indexPath.row]
+        let vm = CalendarExpenseCellViewModel(expense: expense)
+        cell.setupWith(viewModel: vm)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        
 //        if indexPath.section == 0 {
 //            let singleDayDetailVC = SingleExpenseDetailViewController()
 //            singleDayDetailVC.expense = fetchedResultsController?.object(at: indexPath)
@@ -174,7 +183,8 @@ extension SearchExpensesViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         print(searchText)
         //refreshFRC(keyword: searchText)
-        tableView.reloadData()
+        viewModel?.searchExpense(keyword: searchText)
+        //tableView.reloadData()
     }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         print("cancel")

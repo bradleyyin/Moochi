@@ -32,6 +32,7 @@ final class CalendarViewModel: NSObject {
 //    }
 
     let dailyExpense = BehaviorRelay<[Expense]>(value: [])
+    let searchExpense = BehaviorRelay<[Expense]>(value: [])
     //let monthlyGoal = BehaviorRelay<[Expense]>(value: [])
     let currentDate = BehaviorRelay<Date>(value: Date())
     let today = Date()
@@ -97,7 +98,11 @@ final class CalendarViewModel: NSObject {
     
     func getExpenses(of date: Date) {
         dailyExpense.accept(dependency.budgetController.readDailyExpense(of: date))
-        print(dependency.budgetController.readDailyExpense(of: date))
+    }
+
+    func searchExpense(keyword: String) {
+        let results = dependency.budgetController.searchExpense(keyword: keyword)
+        searchExpense.accept(results)
     }
 
     func configureExpenseCellViewModel(at indexPath: IndexPath) -> CalendarExpenseCellViewModel {

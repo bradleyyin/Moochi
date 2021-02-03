@@ -19,6 +19,12 @@ struct CalendarExpenseCellViewModel {
         return "\(expense.amount)"
     }
 
+    var dateText: String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy.MM.dd"
+        return "\(dateFormatter.string(from: expense.date))"
+    }
+
     var category: String? {
         return expense.parentCategory?.name
     }

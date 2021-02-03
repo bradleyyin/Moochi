@@ -144,6 +144,7 @@ class CalendarViewController: UIViewController {
 
     @objc private func searchButtonTapped() {
         let vc = SearchExpensesViewController()
+        vc.viewModel = viewModel
         self.present(vc, animated: true, completion: nil)
     }
 

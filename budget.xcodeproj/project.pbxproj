@@ -30,6 +30,7 @@
 		757175BB2569F18E0097AD28 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757175BA2569F18E0097AD28 /* CalendarViewController.swift */; };
 		757175BF2569F1BB0097AD28 /* CalendarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757175BE2569F1BB0097AD28 /* CalendarCoordinator.swift */; };
 		757175C6256B3B870097AD28 /* CalendarViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757175C5256B3B870097AD28 /* CalendarViewModelTests.swift */; };
+		7578529B25C91BDF00F61004 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578529A25C91BDF00F61004 /* SearchResultCell.swift */; };
 		75A3E594253D0D7F00D92266 /* NotificationName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A3E593253D0D7F00D92266 /* NotificationName.swift */; };
 		75ADCEA52491DBDF00320593 /* Income.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ADCEA42491DBDF00320593 /* Income.swift */; };
 		75ADCEA72491DE3400320593 /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ADCEA62491DE3400320593 /* Expense.swift */; };
@@ -141,6 +142,7 @@
 		757175BA2569F18E0097AD28 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		757175BE2569F1BB0097AD28 /* CalendarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCoordinator.swift; sourceTree = "<group>"; };
 		757175C5256B3B870097AD28 /* CalendarViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModelTests.swift; sourceTree = "<group>"; };
+		7578529A25C91BDF00F61004 /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		75A3E593253D0D7F00D92266 /* NotificationName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationName.swift; sourceTree = "<group>"; };
 		75ADCEA42491DBDF00320593 /* Income.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Income.swift; sourceTree = "<group>"; };
 		75ADCEA62491DE3400320593 /* Expense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 			isa = PBXGroup;
 			children = (
 				7514AEE7238B366000D9D436 /* SearchExpensesViewController.swift */,
+				7578529A25C91BDF00F61004 /* SearchResultCell.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -790,6 +793,7 @@
 				75373B4922ED842000113E81 /* ReceiptCollectionViewCell.swift in Sources */,
 				757175BF2569F1BB0097AD28 /* CalendarCoordinator.swift in Sources */,
 				75DE6C28252D611D0017DD1E /* CategorySelectionCell.swift in Sources */,
+				7578529B25C91BDF00F61004 /* SearchResultCell.swift in Sources */,
 				75ADCECA2495F96D00320593 /* UIViewController+extension.swift in Sources */,
 				75AEC11C22E3E2480006A057 /* MonthView.swift in Sources */,
 				75F468F225325ECE00418B74 /* DetailsCategoryCell.swift in Sources */,

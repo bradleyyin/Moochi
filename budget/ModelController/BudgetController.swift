@@ -125,6 +125,13 @@ extension BudgetController {
             realm.delete(expense)
         }
     }
+
+    func searchExpense(keyword: String) -> [Expense] {
+        var expenses: [Expense] = []
+        let results = realm.objects(Expense.self).filter("name BEGINSWITH[c] %@", keyword as NSString)
+        expenses = Array(results)
+        return expenses
+    }
 }
 
 //- MARK: income
