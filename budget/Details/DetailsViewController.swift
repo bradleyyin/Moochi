@@ -12,6 +12,7 @@ import SnapKit
 
 protocol DetailsViewControllerDelegate: class {
     func addButtonTapped()
+    func chartButtonTapped()
     func categoryTapped(category: Category)
     func editCategoryTapped(category: Category)
 }
@@ -138,7 +139,7 @@ class DetailsViewController: UIViewController {
     }
 
     @objc private func menuButtonTapped() {
-
+        delegate?.chartButtonTapped()
     }
 
     //MARK: UI

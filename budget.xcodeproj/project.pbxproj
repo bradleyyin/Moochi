@@ -30,10 +30,14 @@
 		757175BB2569F18E0097AD28 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757175BA2569F18E0097AD28 /* CalendarViewController.swift */; };
 		757175BF2569F1BB0097AD28 /* CalendarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757175BE2569F1BB0097AD28 /* CalendarCoordinator.swift */; };
 		757175C6256B3B870097AD28 /* CalendarViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757175C5256B3B870097AD28 /* CalendarViewModelTests.swift */; };
-		7578529B25C91BDF00F61004 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578529A25C91BDF00F61004 /* SearchResultCell.swift */; };
 		75721D0B25CF97FF00FA91BE /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75721D0A25CF97FF00FA91BE /* Goal.swift */; };
 		75721D0F25CFA84A00FA91BE /* GoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75721D0E25CFA84A00FA91BE /* GoalViewController.swift */; };
 		75721D1325CFA8A300FA91BE /* GoalCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75721D1225CFA8A300FA91BE /* GoalCoordinator.swift */; };
+		75721D2325CFB23E00FA91BE /* GoalStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75721D2225CFB23E00FA91BE /* GoalStrings.swift */; };
+		75721D2725CFB44E00FA91BE /* GoalCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75721D2625CFB44E00FA91BE /* GoalCellViewModel.swift */; };
+		75721D2D25CFB62A00FA91BE /* GoalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75721D2C25CFB62A00FA91BE /* GoalCell.swift */; };
+		75721D3125CFBAAF00FA91BE /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75721D3025CFBAAF00FA91BE /* EmptyView.swift */; };
+		7578529B25C91BDF00F61004 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578529A25C91BDF00F61004 /* SearchResultCell.swift */; };
 		757852A125CA62C900F61004 /* GoalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757852A025CA62C900F61004 /* GoalViewModel.swift */; };
 		757852A525CA64BD00F61004 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757852A425CA64BD00F61004 /* Achievement.swift */; };
 		75A3E594253D0D7F00D92266 /* NotificationName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A3E593253D0D7F00D92266 /* NotificationName.swift */; };
@@ -147,10 +151,14 @@
 		757175BA2569F18E0097AD28 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		757175BE2569F1BB0097AD28 /* CalendarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCoordinator.swift; sourceTree = "<group>"; };
 		757175C5256B3B870097AD28 /* CalendarViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModelTests.swift; sourceTree = "<group>"; };
-		7578529A25C91BDF00F61004 /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		75721D0A25CF97FF00FA91BE /* Goal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
 		75721D0E25CFA84A00FA91BE /* GoalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalViewController.swift; sourceTree = "<group>"; };
 		75721D1225CFA8A300FA91BE /* GoalCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalCoordinator.swift; sourceTree = "<group>"; };
+		75721D2225CFB23E00FA91BE /* GoalStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalStrings.swift; sourceTree = "<group>"; };
+		75721D2625CFB44E00FA91BE /* GoalCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalCellViewModel.swift; sourceTree = "<group>"; };
+		75721D2C25CFB62A00FA91BE /* GoalCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalCell.swift; sourceTree = "<group>"; };
+		75721D3025CFBAAF00FA91BE /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
+		7578529A25C91BDF00F61004 /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		757852A025CA62C900F61004 /* GoalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalViewModel.swift; sourceTree = "<group>"; };
 		757852A425CA64BD00F61004 /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
 		75A3E593253D0D7F00D92266 /* NotificationName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationName.swift; sourceTree = "<group>"; };
@@ -353,6 +361,14 @@
 			path = Calendar;
 			sourceTree = "<group>";
 		};
+		75721D2025CFB20B00FA91BE /* StringsOnView */ = {
+			isa = PBXGroup;
+			children = (
+				75721D2225CFB23E00FA91BE /* GoalStrings.swift */,
+			);
+			path = StringsOnView;
+			sourceTree = "<group>";
+		};
 		75ADCEAA2491F4D500320593 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -375,6 +391,7 @@
 				751DE0BA24D628D500AD04C9 /* SliderView.swift */,
 				751805D324DF694800B3FA47 /* ColorPalette.swift */,
 				75A3E593253D0D7F00D92266 /* NotificationName.swift */,
+				75721D3025CFBAAF00FA91BE /* EmptyView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -411,6 +428,8 @@
 				757852A025CA62C900F61004 /* GoalViewModel.swift */,
 				75721D0E25CFA84A00FA91BE /* GoalViewController.swift */,
 				75721D1225CFA8A300FA91BE /* GoalCoordinator.swift */,
+				75721D2625CFB44E00FA91BE /* GoalCellViewModel.swift */,
+				75721D2C25CFB62A00FA91BE /* GoalCell.swift */,
 			);
 			path = Goal;
 			sourceTree = "<group>";
@@ -533,6 +552,7 @@
 		75CD180C22C5DD6800E2FB12 /* budget */ = {
 			isa = PBXGroup;
 			children = (
+				75721D2025CFB20B00FA91BE /* StringsOnView */,
 				75ADCEBE2495CB7B00320593 /* Deprecated */,
 				7514AEE6238B363900D9D436 /* Search */,
 				7518D86625622F8C00C51521 /* Calendar */,
@@ -844,6 +864,7 @@
 				757852A125CA62C900F61004 /* GoalViewModel.swift in Sources */,
 				75AEC12922E54F1B0006A057 /* SingleDayViewController.swift in Sources */,
 				75F2FB8223513C9F006007D8 /* Date+Utility.swift in Sources */,
+				75721D3125CFBAAF00FA91BE /* EmptyView.swift in Sources */,
 				7518D86825622F9E00C51521 /* CalendarViewModel.swift in Sources */,
 				75ADCEB32492035E00320593 /* SharedUI.swift in Sources */,
 				75E6F65D23666A8B002F3BF3 /* ChartViewController.swift in Sources */,
@@ -858,6 +879,7 @@
 				75ADCEA72491DE3400320593 /* Expense.swift in Sources */,
 				75C5851725C53E5E00BF79DB /* CalendarExpenseCellViewModel.swift in Sources */,
 				754248BF234A8A55004B6ECF /* MonthCalculator.swift in Sources */,
+				75721D2D25CFB62A00FA91BE /* GoalCell.swift in Sources */,
 				75C19A6D25327F6A002E856E /* AddCategoriesViewController.swift in Sources */,
 				75F468F825325EE200418B74 /* DetailsCategoryCellViewModel.swift in Sources */,
 				75E0BD6222CDBCC000FE0F6C /* GlobalStuffs.swift in Sources */,
@@ -869,6 +891,7 @@
 				75DE6C2C252D61C40017DD1E /* UIView+Utilities.swift in Sources */,
 				75AEC12422E446600006A057 /* SegueDirection.swift in Sources */,
 				756A644023700E19000BCBF3 /* UIImage+Scaling.swift in Sources */,
+				75721D2325CFB23E00FA91BE /* GoalStrings.swift in Sources */,
 				75AEC12B22E577590006A057 /* AddEntryViewController.swift in Sources */,
 				75ADCEAC2491F91E00320593 /* Coordinator.swift in Sources */,
 				75F468EE25318B2500418B74 /* DetailsViewModel.swift in Sources */,
@@ -877,6 +900,7 @@
 				75C2BF80236819050028720B /* ChartTableViewCell.swift in Sources */,
 				75F468E82531877E00418B74 /* DetailsCoordinator.swift in Sources */,
 				755FFBE12345AA4D0085C5E5 /* BudgetController.swift in Sources */,
+				75721D2725CFB44E00FA91BE /* GoalCellViewModel.swift in Sources */,
 				75ADCEB92495C27D00320593 /* TabHeaderView.swift in Sources */,
 				75BCC2CD234ABAC2001CA01A /* CircleView.swift in Sources */,
 				75373B4022ECF70500113E81 /* SingleExpenseDetailViewController.swift in Sources */,

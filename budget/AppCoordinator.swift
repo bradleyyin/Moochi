@@ -70,7 +70,7 @@ class AppCoordinator: Coordinator {
                 detailsCoordinator = details
                 calendarCoordinator = calendar
 
-                let tabBar = TabBarController(viewControllers: [home.homeViewController, details.detailsViewController, UIViewController(), calendar.calendarViewController, UIViewController()])
+                let tabBar = TabBarController(viewControllers: [home.homeViewController, details.detailsViewController, UIViewController(), calendar.calendarViewController, goal.goalViewController])
                 tabBar.actionDelegate = self
                 tabBarController = tabBar
 

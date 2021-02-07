@@ -36,7 +36,7 @@ final class DetailsViewModel: NSObject {
     let remainFund = BehaviorRelay<Double?>(value: nil)
     let currentDate = BehaviorRelay<String?>(value: nil)
     let categories = BehaviorRelay<[Category]>(value: [])
-    let goals = BehaviorRelay<[Category]>(value: [])
+    let incompleteGoals = BehaviorRelay<Results<Goal>?>(value: nil)
     let monthlyExpense = BehaviorRelay<[Expense]>(value: [])
 
     init(dependency: Dependency) {
@@ -44,6 +44,7 @@ final class DetailsViewModel: NSObject {
         super.init()
         fetchIncomes()
         fetchCategories()
+        fetchIncompleteGoals()
         //self.monthYear = "\(currentYear)\(currentMonth)"
 
         Observable.combineLatest(income, categories).subscribe(onNext: { [weak self] incomeNotBudget in
@@ -64,6 +65,7 @@ final class DetailsViewModel: NSObject {
         convertDate()
         getRemainingFunds()
         fetchCategories()
+        fetchIncompleteGoals()
     }
 
     @objc func refreshCategories() {
@@ -96,8 +98,13 @@ final class DetailsViewModel: NSObject {
 
     private func fetchCategories() {
         let realmCategories = dependency.budgetController.readMonthlyCategories()
-        categories.accept(realmCategories.filter { !$0.isGoal })
-        goals.accept(realmCategories.filter { $0.isGoal })
+        categories.accept(realmCategories)
+
+    }
+
+    private func fetchIncompleteGoals() {
+        let goals = dependency.budgetController.readIncompleteGoals()
+        incompleteGoals.accept(goals)
     }
 
     private func fetchExpenses() {

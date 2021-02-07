@@ -104,7 +104,7 @@ final class AddCategoriesViewModel: NSObject {
         if let category = category {
             dependency.budgetController.updateCategory(category: category, name: name, totalAmount: amount, iconName: iconName)
         } else {
-            dependency.budgetController.createCategory(name: name, totalAmount: amount, iconName: iconName, isGoal: false)
+            dependency.budgetController.createCategory(name: name, totalAmount: amount, iconName: iconName)
         }
 
         NotificationCenter.default.post(name: Notification.Name(NotificationName.categoryAdded.rawValue), object: nil)
