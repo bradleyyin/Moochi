@@ -29,6 +29,12 @@ class DetailsCoordinator: Coordinator {
 }
 
 extension DetailsCoordinator: DetailsViewControllerDelegate, AddCategoriesViewControllerDelegate {
+    func chartButtonTapped() {
+        let category = Category()
+        let vc = ChartViewController(category: category, dependency: dependency)
+        presenter.present(vc, animated: true)
+    }
+    
     func didTapClose() {
         presenter.dismiss(animated: true, completion: nil)
     }

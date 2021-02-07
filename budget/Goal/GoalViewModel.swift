@@ -18,6 +18,10 @@ final class GoalViewModel: NSObject {
     let incompleteGoals = BehaviorRelay<Results<Goal>?>(value: nil)
 
 
+    var numberOfCategory: Int {
+        return incompleteGoals.value?.count ?? 0
+    }
+
     init(dependency: Dependency) {
         self.dependency = dependency
         super.init()
@@ -26,5 +30,12 @@ final class GoalViewModel: NSObject {
 
     func fetchIncompleteGoals() {
         incompleteGoals.accept(dependency.budgetController.readIncompleteGoals())
+    }
+
+    func cellViewModel(at indexPath: IndexPath) -> GoalCellViewModel? {
+        guard let goals = incompleteGoals.value else { return nil }
+        let goal = goals[indexPath.row]
+        let viewModel = GoalCellViewModel(goal: goal)
+        return viewModel
     }
 }

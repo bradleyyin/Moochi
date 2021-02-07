@@ -12,8 +12,8 @@ import SnapKit
 
 protocol GoalViewControllerDelegate: class {
     func addButtonTapped()
-    func categoryTapped(category: Category)
-    func editCategoryTapped(category: Category)
+    func goalTapped(goal: Goal)
+    //func editCategoryTapped(category: Category)
 }
 
 class GoalViewController: UIViewController {
@@ -23,12 +23,12 @@ class GoalViewController: UIViewController {
     let dependency: Dependency
 
     weak var delegate: GoalViewControllerDelegate?
-    private var viewModel: DetailsViewModel
+    private var viewModel: GoalViewModel
     private var disposeBag = DisposeBag()
 
     init(dependency: Dependency) {
         self.dependency = dependency
-        self.viewModel = DetailsViewModel(dependency: dependency)
+        self.viewModel = GoalViewModel(dependency: dependency)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -42,10 +42,10 @@ class GoalViewController: UIViewController {
 
         view.addSubview(titleLabel)
         view.addSubview(sliderView)
-        //view.addSubview(menuButton)
+        view.addSubview(menuButton)
         view.addSubview(plusButton)
-        view.addSubview(incomeNotBudgetLabel)
         view.addSubview(tableView)
+        view.addSubview(emptyView)
 
         setupConstraints()
         setupBinding()
@@ -87,11 +87,11 @@ class GoalViewController: UIViewController {
             make.top.equalTo(top).inset(12)
         }
 
-//        menuButton.snp.makeConstraints { (make) in
-//            make.height.width.equalTo(36)
-//            make.trailing.equalTo(plusButton.snp.leading).offset(-8)
-//            make.centerY.equalTo(titleLabel)
-//        }
+        menuButton.snp.makeConstraints { (make) in
+            make.height.width.equalTo(36)
+            make.trailing.equalTo(plusButton.snp.leading).offset(-8)
+            make.centerY.equalTo(titleLabel)
+        }
 
         plusButton.snp.makeConstraints { (make) in
             make.height.width.equalTo(36)
@@ -106,28 +106,18 @@ class GoalViewController: UIViewController {
             make.height.equalTo(29)
         }
 
-        incomeNotBudgetLabel.snp.makeConstraints { (make) in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(sliderView.snp.bottom).offset(16)
-        }
-
         tableView.snp.makeConstraints { (make) in
             make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(incomeNotBudgetLabel.snp.bottom).offset(32)
+            make.top.equalTo(sliderView.snp.bottom)
+        }
+
+        emptyView.snp.makeConstraints { (make) in
+            make.edges.equalTo(tableView)
         }
     }
 
     private func setupBinding() {
-        viewModel.incomeNotBuget.asObservable().subscribe(onNext: { [weak self] incomeNotBudget in
-            guard let self = self else { return }
-            if let incomeNotBudget = incomeNotBudget {
-                self.incomeNotBudgetLabel.text = "Unbudgeted Income: \(String(format: "%.2f", incomeNotBudget))"
-            } else {
-                self.incomeNotBudgetLabel.text = "No income information."
-            }
-        }).disposed(by: disposeBag)
-
-        viewModel.categories.asObservable().subscribe(onNext: { [weak self] _ in
+        viewModel.incompleteGoals.asObservable().subscribe(onNext: { [weak self] _ in
             guard let self = self else { return }
             self.tableView.reloadData()
         }).disposed(by: disposeBag)
@@ -150,18 +140,11 @@ class GoalViewController: UIViewController {
 
     private lazy var sliderView: SliderView = {
         let view = SliderView()
-        view.titles = [NSAttributedString(string: "Category"), NSAttributedString(string: "Goal")]
+        view.titles = [NSAttributedString(string: GoalStrings.savingGoal), NSAttributedString(string: GoalStrings.achievements)]
         view.layer.cornerRadius = 15
         view.delegate = self
         return view
     }()
-
-//    private lazy var menuButton: UIButton = {
-//        let button = UIButton()
-//        button.addTarget(self, action: #selector(menuButtonTapped), for: .touchUpInside)
-//        button.setImage(UIImage(named: "menu"), for: .normal)
-//        return button
-//    }()
 
     private lazy var plusButton: UIButton = {
         let button = UIButton()
@@ -170,10 +153,11 @@ class GoalViewController: UIViewController {
         return button
     }()
 
-    private lazy var incomeNotBudgetLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        return label
+    private lazy var menuButton: UIButton = {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(menuButtonTapped), for: .touchUpInside)
+        button.setImage(UIImage(named: "menu"), for: .normal)
+        return button
     }()
 
     private lazy var tableView: UITableView = {
@@ -181,6 +165,21 @@ class GoalViewController: UIViewController {
         view.dataSource = self
         view.delegate = self
         view.register(DetailsCategoryCell.self, forCellReuseIdentifier: "detailsCell")
+        return view
+    }()
+
+    private lazy var emptyView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .blue
+        let label = UILabel()
+        label.text = GoalStrings.emptyViewText
+        label.font = FontPalette.font(size: 17, fontType: .light)
+        label.textColor = .black
+        label.textAlignment = .center
+        view.addSubview(label)
+        label.snp.remakeConstraints { (make) in
+            make.center.equalToSuperview()
+        }
         return view
     }()
 }
@@ -205,25 +204,25 @@ extension GoalViewController: UITableViewDelegate, UITableViewDataSource {
 //        tableView.reloadData()
 //
 //    }
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let delete = UIContextualAction(style: .destructive, title: "") { _, _, _ in
-
-            self.viewModel.deleteCategory(at: indexPath)
-        }
-
-        delete.image = UIImage(named: "deleteIcon")?.withTintColor(.white)
-        delete.backgroundColor = ColorPalette.red
-        let edit = UIContextualAction(style: .normal, title: "edit") { _, _, _ in
-            let category = self.viewModel.categories.value[indexPath.row]
-            self.delegate?.editCategoryTapped(category: category)
-        }
-
-        edit.image = UIImage(named: "edit")
-        edit.backgroundColor = ColorPalette.separatorGray.withAlphaComponent(0.1)
-        let swipeActions = UISwipeActionsConfiguration(actions: [delete, edit])
-
-        return swipeActions
-    }
+//    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//        let delete = UIContextualAction(style: .destructive, title: "") { _, _, _ in
+//
+//            self.viewModel.deleteCategory(at: indexPath)
+//        }
+//
+//        delete.image = UIImage(named: "deleteIcon")?.withTintColor(.white)
+//        delete.backgroundColor = ColorPalette.red
+//        let edit = UIContextualAction(style: .normal, title: "edit") { _, _, _ in
+//            let category = self.viewModel.categories.value[indexPath.row]
+//            self.delegate?.editCategoryTapped(category: category)
+//        }
+//
+//        edit.image = UIImage(named: "edit")
+//        edit.backgroundColor = ColorPalette.separatorGray.withAlphaComponent(0.1)
+//        let swipeActions = UISwipeActionsConfiguration(actions: [delete, edit])
+//
+//        return swipeActions
+//    }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70
@@ -231,19 +230,23 @@ extension GoalViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "detailsCell", for: indexPath) as? DetailsCategoryCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "detailsCell", for: indexPath) as? GoalCell else {
             fatalError("cant make DetailTableViewCell")
         }
-        let cellViewModel = viewModel.cellViewModel(at: indexPath)
-        cell.setupWith(viewModel: cellViewModel)
+        if let cellViewModel = viewModel.cellViewModel(at: indexPath) {
+            cell.setupWith(viewModel: cellViewModel)
+        }
+
         return cell
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let category = viewModel.categories.value[indexPath.row]
-        delegate?.categoryTapped(category: category)
+        if let goal = viewModel.incompleteGoals.value?[indexPath.row] {
+            delegate?.goalTapped(goal: goal)
+        }
+
 //        let category = fetchedResultsController.fetchedObjects?[indexPath.row]
 //        let chartVC = ChartViewController()
 //        chartVC.category = category

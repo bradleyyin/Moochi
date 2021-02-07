@@ -18,7 +18,7 @@ final class HomeViewModel: NSObject {
     let remainFund = BehaviorRelay<Double?>(value: nil)
     let currentDate = BehaviorRelay<String?>(value: nil)
     let categories = BehaviorRelay<[Category]>(value: [])
-    let goals = BehaviorRelay<[Category]>(value: [])
+    let incompleteGoals = BehaviorRelay<Results<Goal>?>(value: nil)
     let monthlyExpense = BehaviorRelay<[Expense]>(value: [])
     
     init(dependency: Dependency) {
@@ -28,6 +28,7 @@ final class HomeViewModel: NSObject {
         convertDate()
         getRemainingFunds()
         fetchCategories()
+        fetchIncompleteGoals()
     }
 
     var numberOfCategory: Int {
@@ -56,6 +57,7 @@ final class HomeViewModel: NSObject {
         convertDate()
         getRemainingFunds()
         fetchCategories()
+        fetchIncompleteGoals()
     }
     
     private func fetchIncomes() {
@@ -77,9 +79,13 @@ final class HomeViewModel: NSObject {
     }
     
     private func fetchCategories() {
-        let realmCategories = dependency.budgetController.readMonthlyCategories	()
-        categories.accept(realmCategories.filter { !$0.isGoal })
-        goals.accept(realmCategories.filter { $0.isGoal })
+        let realmCategories = dependency.budgetController.readMonthlyCategories()
+        categories.accept(realmCategories)
+    }
+
+    private func fetchIncompleteGoals() {
+        let goals = dependency.budgetController.readIncompleteGoals()
+        incompleteGoals.accept(goals)
     }
     
     private func fetchExpenses() {

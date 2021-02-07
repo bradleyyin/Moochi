@@ -16,7 +16,7 @@ class GoalCoordinator: Coordinator {
 
     var navigationController: UINavigationController?
 
-    lazy var detailsViewController: GoalViewController = {
+    lazy var goalViewController: GoalViewController = {
         let detailsVC = GoalViewController(dependency: dependency)
         detailsVC.delegate = self
         return detailsVC
@@ -39,18 +39,18 @@ extension GoalCoordinator: GoalViewControllerDelegate, AddCategoriesViewControll
         presenter.present(vc, animated: true)
     }
 
-    func categoryTapped(category: Category) {
-        let vc = ChartViewController(category: category, dependency: dependency)
-
-        //vc.delegate = self
-        if let nav = presenter as? UINavigationController {
-            nav.pushViewController(vc, animated: true)
-        }
+    func goalTapped(goal: Goal) {
+//        let vc = ChartViewController(category: category, dependency: dependency)
+//
+//        //vc.delegate = self
+//        if let nav = presenter as? UINavigationController {
+//            nav.pushViewController(vc, animated: true)
+//        }
     }
 
-    func editCategoryTapped(category: Category) {
-        let vc = AddCategoriesViewController(category: category, dependency: dependency)
-        vc.delegate = self
-        presenter.present(vc, animated: true)
-    }
+//    func editCategoryTapped(category: Category) {
+//        let vc = AddCategoriesViewController(category: category, dependency: dependency)
+//        vc.delegate = self
+//        presenter.present(vc, animated: true)
+//    }
 }
