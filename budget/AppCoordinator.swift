@@ -64,6 +64,7 @@ class AppCoordinator: Coordinator {
                 let details = DetailsCoordinator(with: presenter, dependency: dependency)
                 let add = AddExpenseCoordinator(with: presenter, dependency: dependency)
                 let calendar = CalendarCoordinator(with: presenter, dependency: dependency)
+                let goal = GoalCoordinator(with: presenter, dependency: dependency)
                 
                 homeCoordinator = home
                 detailsCoordinator = details

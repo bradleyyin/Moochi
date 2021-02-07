@@ -158,12 +158,11 @@ extension BudgetController {
 
 //- MARK: category
 extension BudgetController {
-    func createCategory(name: String, totalAmount: Double, iconName: String, isGoal: Bool) {
+    func createCategory(name: String, totalAmount: Double, iconName: String) {
         let category = Category()
         category.name = name
         category.totalAmount = totalAmount
         category.iconImageName = iconName
-        category.isGoal = isGoal
         try! realm.write {
             realm.add(category)
         }
@@ -201,7 +200,7 @@ extension BudgetController {
             // put last month category into this month
             let lastMonthCategories = Array(lastMonthResults)
             for category in lastMonthCategories {
-                createCategory(name: category.name, totalAmount: category.totalAmount, iconName: category.iconImageName, isGoal: category.isGoal)
+                createCategory(name: category.name, totalAmount: category.totalAmount, iconName: category.iconImageName)
             }
 
             return lastMonthCategories
@@ -222,5 +221,16 @@ extension BudgetController {
         try! realm.write {
             realm.delete(category)
         }
+    }
+
+    //MARK: Goal
+    func readIncompleteGoals() -> Results<Goal> {
+        let results = realm.objects(Goal.self).filter("isCompleted == %@", false)
+        return results
+    }
+
+    func readCompleteGoals() -> Results<Goal> {
+        let results = realm.objects(Goal.self).filter("isCompleted == %@", true)
+        return results
     }
 }

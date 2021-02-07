@@ -31,6 +31,11 @@
 		757175BF2569F1BB0097AD28 /* CalendarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757175BE2569F1BB0097AD28 /* CalendarCoordinator.swift */; };
 		757175C6256B3B870097AD28 /* CalendarViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757175C5256B3B870097AD28 /* CalendarViewModelTests.swift */; };
 		7578529B25C91BDF00F61004 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578529A25C91BDF00F61004 /* SearchResultCell.swift */; };
+		75721D0B25CF97FF00FA91BE /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75721D0A25CF97FF00FA91BE /* Goal.swift */; };
+		75721D0F25CFA84A00FA91BE /* GoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75721D0E25CFA84A00FA91BE /* GoalViewController.swift */; };
+		75721D1325CFA8A300FA91BE /* GoalCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75721D1225CFA8A300FA91BE /* GoalCoordinator.swift */; };
+		757852A125CA62C900F61004 /* GoalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757852A025CA62C900F61004 /* GoalViewModel.swift */; };
+		757852A525CA64BD00F61004 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757852A425CA64BD00F61004 /* Achievement.swift */; };
 		75A3E594253D0D7F00D92266 /* NotificationName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A3E593253D0D7F00D92266 /* NotificationName.swift */; };
 		75ADCEA52491DBDF00320593 /* Income.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ADCEA42491DBDF00320593 /* Income.swift */; };
 		75ADCEA72491DE3400320593 /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ADCEA62491DE3400320593 /* Expense.swift */; };
@@ -143,6 +148,11 @@
 		757175BE2569F1BB0097AD28 /* CalendarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCoordinator.swift; sourceTree = "<group>"; };
 		757175C5256B3B870097AD28 /* CalendarViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModelTests.swift; sourceTree = "<group>"; };
 		7578529A25C91BDF00F61004 /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
+		75721D0A25CF97FF00FA91BE /* Goal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
+		75721D0E25CFA84A00FA91BE /* GoalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalViewController.swift; sourceTree = "<group>"; };
+		75721D1225CFA8A300FA91BE /* GoalCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalCoordinator.swift; sourceTree = "<group>"; };
+		757852A025CA62C900F61004 /* GoalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalViewModel.swift; sourceTree = "<group>"; };
+		757852A425CA64BD00F61004 /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
 		75A3E593253D0D7F00D92266 /* NotificationName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationName.swift; sourceTree = "<group>"; };
 		75ADCEA42491DBDF00320593 /* Income.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Income.swift; sourceTree = "<group>"; };
 		75ADCEA62491DE3400320593 /* Expense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
@@ -398,6 +408,9 @@
 		75ADCEBD2495CAD000320593 /* Goal */ = {
 			isa = PBXGroup;
 			children = (
+				757852A025CA62C900F61004 /* GoalViewModel.swift */,
+				75721D0E25CFA84A00FA91BE /* GoalViewController.swift */,
+				75721D1225CFA8A300FA91BE /* GoalCoordinator.swift */,
 			);
 			path = Goal;
 			sourceTree = "<group>";
@@ -433,6 +446,8 @@
 				75ADCEA82491DE4000320593 /* Category.swift */,
 				75ADCEA62491DE3400320593 /* Expense.swift */,
 				75ADCEA42491DBDF00320593 /* Income.swift */,
+				757852A425CA64BD00F61004 /* Achievement.swift */,
+				75721D0A25CF97FF00FA91BE /* Goal.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -790,6 +805,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75B4D3BA22E9854E00438A7A /* ExpenseTableViewCell.swift in Sources */,
+				75721D0B25CF97FF00FA91BE /* Goal.swift in Sources */,
 				75373B4922ED842000113E81 /* ReceiptCollectionViewCell.swift in Sources */,
 				757175BF2569F1BB0097AD28 /* CalendarCoordinator.swift in Sources */,
 				75DE6C28252D611D0017DD1E /* CategorySelectionCell.swift in Sources */,
@@ -813,6 +829,7 @@
 				75AEC11922E3DC8A0006A057 /* BasicViewController.swift in Sources */,
 				75E0BD5C22CDA7DB00FE0F6C /* MenuViewController.swift in Sources */,
 				75C19A712532801F002E856E /* AddCategoriesViewModel.swift in Sources */,
+				75721D1325CFA8A300FA91BE /* GoalCoordinator.swift in Sources */,
 				75F2FB842352E296006007D8 /* TabBarController.swift in Sources */,
 				751805D424DF694800B3FA47 /* ColorPalette.swift in Sources */,
 				75C19A7525328F38002E856E /* CategoryIconCell.swift in Sources */,
@@ -824,6 +841,7 @@
 				75ADCEAE2491F9A600320593 /* AppCoordinator.swift in Sources */,
 				75373B4222ED144500113E81 /* ReceiptViewController.swift in Sources */,
 				75AEC12222E413290006A057 /* ExpenseViewController.swift in Sources */,
+				757852A125CA62C900F61004 /* GoalViewModel.swift in Sources */,
 				75AEC12922E54F1B0006A057 /* SingleDayViewController.swift in Sources */,
 				75F2FB8223513C9F006007D8 /* Date+Utility.swift in Sources */,
 				7518D86825622F9E00C51521 /* CalendarViewModel.swift in Sources */,
@@ -846,6 +864,8 @@
 				75ADCEA52491DBDF00320593 /* Income.swift in Sources */,
 				75ADCEC02495F41000320593 /* FontPalette.swift in Sources */,
 				75E0BD6422CDC63500FE0F6C /* DetailsViewController.swift in Sources */,
+				757852A525CA64BD00F61004 /* Achievement.swift in Sources */,
+				75721D0F25CFA84A00FA91BE /* GoalViewController.swift in Sources */,
 				75DE6C2C252D61C40017DD1E /* UIView+Utilities.swift in Sources */,
 				75AEC12422E446600006A057 /* SegueDirection.swift in Sources */,
 				756A644023700E19000BCBF3 /* UIImage+Scaling.swift in Sources */,
