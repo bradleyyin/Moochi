@@ -1,19 +1,20 @@
 //
-//  Category.swift
+//  Goal.swift
 //  budget
 //
-//  Created by Bradley Yin on 6/10/20.
-//  Copyright © 2020 bradleyyin. All rights reserved.
+//  Created by Bradley Yin on 2/6/21.
+//  Copyright © 2021 bradleyyin. All rights reserved.
 //
 
 import Foundation
 import RealmSwift
 
-class Category: Object {
+class Goal: Object {
     @objc dynamic var name = ""
     @objc dynamic var totalAmount: Double = 0.0
     let expenses = List<Expense>()
+    @objc dynamic var isCompleted: Bool = false
     //@objc dynamic var isGoal: Bool = false
     @objc dynamic var iconImageName = ""
-    @objc dynamic var date: Date = Date()
+    //@objc dynamic var date: Date = Date()
 }
