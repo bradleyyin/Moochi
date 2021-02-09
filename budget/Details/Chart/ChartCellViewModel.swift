@@ -15,7 +15,7 @@ struct ChartCellViewModel {
 
     var dateString: String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy.mm.dd"
+        formatter.dateFormat = "yyyy.MM.dd"
         return formatter.string(from: date)
     }
 

@@ -12,6 +12,7 @@ pod 'RealmSwift'
 pod 'RxSwift'
 pod 'SnapKit'
 pod 'RxRelay'
+pod 'Charts'
 
 end
 target 'BudgetTests' do

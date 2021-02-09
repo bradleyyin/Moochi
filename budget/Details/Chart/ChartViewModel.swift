@@ -38,10 +38,6 @@ final class ChartViewModel: NSObject {
 
     }
 
-
-
-
-
     func viewModelForCell(at indexPath: IndexPath) -> ChartCellViewModel? {
         guard let expense = expenses?[indexPath.row] else { return nil }
         let cellViewModel = ChartCellViewModel(title: expense.name, date: expense.date, amount: expense.amount)
