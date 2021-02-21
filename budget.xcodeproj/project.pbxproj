@@ -119,6 +119,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		757DC0FF25D25BC100DE4B6D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		2A203DDCA8805D95F029B0A3 /* Pods_BudgetTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BudgetTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B24A615C7E375ACB1EB71FB /* Pods-BudgetTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BudgetTests.release.xcconfig"; path = "Target Support Files/Pods-BudgetTests/Pods-BudgetTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -635,12 +648,15 @@
 				75CD180822C5DD6800E2FB12 /* Resources */,
 				7550A3FB23493F1D0063FE3E /* ShellScript */,
 				9FDD0038BB3DA252A7066169 /* [CP] Embed Pods Frameworks */,
+				757DC0FF25D25BC100DE4B6D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = budget;
+			packageProductDependencies = (
+			);
 			productName = budget;
 			productReference = 75CD180A22C5DD6800E2FB12 /* budget.app */;
 			productType = "com.apple.product-type.application";
@@ -673,6 +689,8 @@
 				Base,
 			);
 			mainGroup = 75CD180122C5DD6800E2FB12;
+			packageReferences = (
+			);
 			productRefGroup = 75CD180B22C5DD6800E2FB12 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
