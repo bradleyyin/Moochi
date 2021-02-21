@@ -114,7 +114,7 @@ class ChartViewController: UIViewController {
             //dataSet.gradientPositions = [0, 40, 100]
         dataSet.fillAlpha = 1
         dataSet.fillColor = UIColor.black.withAlphaComponent(0.5)
-        dataSet.drawFilledEnabled = true
+        dataSet.drawFilledEnabled = false
             dataSet.lineWidth = 1
             dataSet.circleRadius = 3
             dataSet.drawCircleHoleEnabled = false
@@ -146,28 +146,26 @@ class ChartViewController: UIViewController {
 //            return
 //        }
 
-        self.setDataCount(Int(70), range: UInt32(100))
+        self.setDataCount(range: UInt32(100))
     }
 
-    func setDataCount(_ count: Int, range: UInt32) {
-        let values = (0..<count).map { (i) -> ChartDataEntry in
-            let val = Double(arc4random_uniform(range) + 3)
+    func setDataCount(range: UInt32) {
+        let values = (0 ... 11).map { (i) -> ChartDataEntry in
+            let numberOfMonthPassed = 11 - i
+            let val = viewModel.totalExpense(numberOfMonthPassed: numberOfMonthPassed)
             return ChartDataEntry(x: Double(i), y: val, icon: #imageLiteral(resourceName: "unselected_home"))
         }
 
-        let set1 = LineChartDataSet(entries: values, label: "DataSet 1")
+        print(values.count)
+        let set1 = LineChartDataSet(entries: values, label: "")
         set1.drawIconsEnabled = false
         setup(set1)
 
-        let value = ChartDataEntry(x: Double(3), y: 3)
-        set1.addEntryOrdered(value)
-        let gradientColors = [ChartColorTemplates.colorFromString("#00ff0000").cgColor,
-                              ChartColorTemplates.colorFromString("#ffff0000").cgColor]
-        let gradient = CGGradient(colorsSpace: nil, colors: gradientColors as CFArray, locations: nil)!
-
-//        set1.fillAlpha = 1
-//        set1.fillColor = UIColor.black.withAlphaComponent(0.5)
-//        set1.drawFilledEnabled = true
+        //let value = ChartDataEntry(x: Double(3), y: 3)
+        //set1.addEntryOrdered(value)
+        //let gradientColors = [ChartColorTemplates.colorFromString("#00ff0000").cgColor,
+                              //ChartColorTemplates.colorFromString("#ffff0000").cgColor]
+       // let gradient = CGGradient(colorsSpace: nil, colors: gradientColors as CFArray, locations: nil)!
 
         let data = LineChartData(dataSet: set1)
 
@@ -175,6 +173,16 @@ class ChartViewController: UIViewController {
         chartView.scaleXEnabled = true
         chartView.scaleYEnabled = false
         chartView.setVisibleXRangeMaximum(8)
+        chartView.xAxis.valueFormatter = MonthNameFormater()
+        chartView.xAxis.granularity = 1.0
+        chartView.xAxis.drawLabelsEnabled = true
+        chartView.xAxis.drawAxisLineEnabled = false
+        chartView.xAxis.drawGridLinesEnabled = false
+        chartView.xAxis.enabled = true
+        chartView.xAxis.labelPosition = .bottom
+        chartView.xAxis.labelFont = .systemFont(ofSize: 10)
+        chartView.leftAxis.axisMinimum = -10
+        //chartView.xAxis.valueFormatter = IndexAxisValueFormatter(values:dates)
     }
 
     @objc func back() {
@@ -263,6 +271,7 @@ class ChartViewController: UIViewController {
         //marker.minimumSize = CGSize(width: 80, height: 40)
         //view.drawMarkers = false
         //view.highlightPerTapEnabled = false
+        view.highlightPerDragEnabled = true
         view.marker = marker
         view.legend.form = .none
         //view.drawGridBackgroundEnabled = false
@@ -619,5 +628,16 @@ class PillMarker: MarkerImage {
         let formattedString = PillMarker.formatter.string(from: TimeInterval(value))!
         // using this to convert the left axis values formatting, ie 2 min
         return "\(value)"
+    }
+}
+
+final class MonthNameFormater: NSObject, IAxisValueFormatter {
+    func stringForValue( _ value: Double, axis _: AxisBase?) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM"
+        let targetDate = Date().numberOfMonthAgo(numberOfMonth: 11 - Int(value))
+        let dateString = formatter.string(from: targetDate)
+        //dates.append(dateString)
+        return dateString
     }
 }
